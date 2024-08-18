@@ -1,0 +1,1330 @@
+---
+title: "Reshaping the Chinese Ladder of Success"
+subtitle: "Tables" 
+author: "Cécile Armand"
+affiliation: Aix-Marseille University
+date: "`r lubridate::today()`"
+tags: [who's who directory, biography, bilingual, histtext]  
+abstract: |
+  This document provides the detailed tables used in the article titled "Reshaping the Chinese Ladder of Success in the Era of Globalization: Family Strategies and Social Mobility of Early American-educated Chinese (1850-1917) published in *Twentieth-Century China*.      
+  
+  <style>
+    body {
+    text-align: justify}
+  </style>
+    
+output: 
+  html_document:
+    toc: true
+    toc_float: 
+      collapsed: false
+      smooth_scroll: false
+    toc_depth: 2
+    number_sections: false
+    code_folding: show # hide
+    fig_caption: true
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Table 1
+
+
+Students’ native places and share of public funding by province of birth. Source: *Who’s Who of American Returned Students* (1917)
+
+<style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0;}
+.tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+  overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+  font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg .tg-j6zm{font-weight:bold;text-align:left;vertical-align:bottom}
+.tg .tg-7zrl{text-align:left;vertical-align:bottom}
+</style>
+<table class="tg"><thead>
+  <tr>
+    <th class="tg-j6zm">Native&nbsp;&nbsp;&nbsp;Place (Chinese)</th>
+    <th class="tg-j6zm">Native Place (Pinyin)</th>
+    <th class="tg-j6zm">% Government Funding</th>
+    <th class="tg-j6zm">Government support (number)</th>
+    <th class="tg-j6zm">Private support</th>
+    <th class="tg-j6zm">Partial support</th>
+    <th class="tg-j6zm">Unknown</th>
+    <th class="tg-j6zm">Total (by location)</th>
+  </tr></thead>
+<tbody>
+  <tr>
+    <td class="tg-7zrl">江蘇</td>
+    <td class="tg-7zrl">Jiangsu</td>
+    <td class="tg-7zrl">57%</td>
+    <td class="tg-7zrl">78</td>
+    <td class="tg-7zrl">40</td>
+    <td class="tg-7zrl">11</td>
+    <td class="tg-7zrl">7</td>
+    <td class="tg-7zrl">136</td>
+  </tr>
+  <tr>
+    <td class="tg-7zrl">廣東</td>
+    <td class="tg-7zrl">Guangdong</td>
+    <td class="tg-7zrl">36%</td>
+    <td class="tg-7zrl">37</td>
+    <td class="tg-7zrl">44</td>
+    <td class="tg-7zrl">11</td>
+    <td class="tg-7zrl">10</td>
+    <td class="tg-7zrl">102</td>
+  </tr>
+  <tr>
+    <td class="tg-7zrl">浙江</td>
+    <td class="tg-7zrl">Zhejiang</td>
+    <td class="tg-7zrl">72%</td>
+    <td class="tg-7zrl">28</td>
+    <td class="tg-7zrl">6</td>
+    <td class="tg-7zrl">2</td>
+    <td class="tg-7zrl">3</td>
+    <td class="tg-7zrl">39</td>
+  </tr>
+  <tr>
+    <td class="tg-7zrl">河北</td>
+    <td class="tg-7zrl">Hebei</td>
+    <td class="tg-7zrl">61%</td>
+    <td class="tg-7zrl">14</td>
+    <td class="tg-7zrl">8</td>
+    <td class="tg-7zrl">1</td>
+    <td class="tg-7zrl">0</td>
+    <td class="tg-7zrl">23</td>
+  </tr>
+  <tr>
+    <td class="tg-7zrl">福建</td>
+    <td class="tg-7zrl">Fujian</td>
+    <td class="tg-7zrl">24%</td>
+    <td class="tg-7zrl">4</td>
+    <td class="tg-7zrl">11</td>
+    <td class="tg-7zrl">0</td>
+    <td class="tg-7zrl">2</td>
+    <td class="tg-7zrl">17</td>
+  </tr>
+  <tr>
+    <td class="tg-7zrl">美國</td>
+    <td class="tg-7zrl">United States</td>
+    <td class="tg-7zrl">21%</td>
+    <td class="tg-7zrl">3</td>
+    <td class="tg-7zrl">9</td>
+    <td class="tg-7zrl">1</td>
+    <td class="tg-7zrl">1</td>
+    <td class="tg-7zrl">14</td>
+  </tr>
+  <tr>
+    <td class="tg-7zrl">湖北</td>
+    <td class="tg-7zrl">Hubei</td>
+    <td class="tg-7zrl">38%</td>
+    <td class="tg-7zrl">6</td>
+    <td class="tg-7zrl">8</td>
+    <td class="tg-7zrl">2</td>
+    <td class="tg-7zrl">0</td>
+    <td class="tg-7zrl">16</td>
+  </tr>
+  <tr>
+    <td class="tg-7zrl">江西</td>
+    <td class="tg-7zrl">Jiangxi</td>
+    <td class="tg-7zrl">20%</td>
+    <td class="tg-7zrl">2</td>
+    <td class="tg-7zrl">7</td>
+    <td class="tg-7zrl">1</td>
+    <td class="tg-7zrl">0</td>
+    <td class="tg-7zrl">10</td>
+  </tr>
+  <tr>
+    <td class="tg-7zrl">香港</td>
+    <td class="tg-7zrl">Xianggang</td>
+    <td class="tg-7zrl">0%</td>
+    <td class="tg-7zrl">0</td>
+    <td class="tg-7zrl">5</td>
+    <td class="tg-7zrl">0</td>
+    <td class="tg-7zrl">1</td>
+    <td class="tg-7zrl">6</td>
+  </tr>
+  <tr>
+    <td class="tg-7zrl">山東</td>
+    <td class="tg-7zrl">Shandong</td>
+    <td class="tg-7zrl">80%</td>
+    <td class="tg-7zrl">4</td>
+    <td class="tg-7zrl">0</td>
+    <td class="tg-7zrl">1</td>
+    <td class="tg-7zrl">0</td>
+    <td class="tg-7zrl">5</td>
+  </tr>
+  <tr>
+    <td class="tg-7zrl">安徽</td>
+    <td class="tg-7zrl">Anhui</td>
+    <td class="tg-7zrl">38%</td>
+    <td class="tg-7zrl">3</td>
+    <td class="tg-7zrl">4</td>
+    <td class="tg-7zrl">1</td>
+    <td class="tg-7zrl">0</td>
+    <td class="tg-7zrl">8</td>
+  </tr>
+  <tr>
+    <td class="tg-7zrl">四川</td>
+    <td class="tg-7zrl">Sichuan</td>
+    <td class="tg-7zrl">50%</td>
+    <td class="tg-7zrl">3</td>
+    <td class="tg-7zrl">1</td>
+    <td class="tg-7zrl">1</td>
+    <td class="tg-7zrl">1</td>
+    <td class="tg-7zrl">6</td>
+  </tr>
+  <tr>
+    <td class="tg-7zrl">直隸</td>
+    <td class="tg-7zrl">Zhili</td>
+    <td class="tg-7zrl">43%</td>
+    <td class="tg-7zrl">3</td>
+    <td class="tg-7zrl">3</td>
+    <td class="tg-7zrl">1</td>
+    <td class="tg-7zrl">0</td>
+    <td class="tg-7zrl">7</td>
+  </tr>
+  <tr>
+    <td class="tg-7zrl">河南</td>
+    <td class="tg-7zrl">Henan</td>
+    <td class="tg-7zrl">100%</td>
+    <td class="tg-7zrl">2</td>
+    <td class="tg-7zrl">0</td>
+    <td class="tg-7zrl">0</td>
+    <td class="tg-7zrl">0</td>
+    <td class="tg-7zrl">2</td>
+  </tr>
+  <tr>
+    <td class="tg-7zrl">廣西</td>
+    <td class="tg-7zrl">Guangxi</td>
+    <td class="tg-7zrl">100%</td>
+    <td class="tg-7zrl">1</td>
+    <td class="tg-7zrl">0</td>
+    <td class="tg-7zrl">0</td>
+    <td class="tg-7zrl">0</td>
+    <td class="tg-7zrl">1</td>
+  </tr>
+  <tr>
+    <td class="tg-7zrl">湖南</td>
+    <td class="tg-7zrl">Hunan</td>
+    <td class="tg-7zrl">50%</td>
+    <td class="tg-7zrl">1</td>
+    <td class="tg-7zrl">0</td>
+    <td class="tg-7zrl">1</td>
+    <td class="tg-7zrl">0</td>
+    <td class="tg-7zrl">2</td>
+  </tr>
+  <tr>
+    <td class="tg-7zrl">甘肅</td>
+    <td class="tg-7zrl">Gansu</td>
+    <td class="tg-7zrl">100%</td>
+    <td class="tg-7zrl">1</td>
+    <td class="tg-7zrl">0</td>
+    <td class="tg-7zrl">0</td>
+    <td class="tg-7zrl">0</td>
+    <td class="tg-7zrl">1</td>
+  </tr>
+  <tr>
+    <td class="tg-7zrl">貴州</td>
+    <td class="tg-7zrl">Guizhou</td>
+    <td class="tg-7zrl">100%</td>
+    <td class="tg-7zrl">1</td>
+    <td class="tg-7zrl">0</td>
+    <td class="tg-7zrl">0</td>
+    <td class="tg-7zrl">0</td>
+    <td class="tg-7zrl">1</td>
+  </tr>
+  <tr>
+    <td class="tg-7zrl">馬來半島</td>
+    <td class="tg-7zrl">Malaya</td>
+    <td class="tg-7zrl">0%</td>
+    <td class="tg-7zrl">0</td>
+    <td class="tg-7zrl">1</td>
+    <td class="tg-7zrl">0</td>
+    <td class="tg-7zrl">0</td>
+    <td class="tg-7zrl">1</td>
+  </tr>
+  <tr>
+    <td class="tg-7zrl">景陽</td>
+    <td class="tg-7zrl">Jingyang</td>
+    <td class="tg-7zrl">0%</td>
+    <td class="tg-7zrl">0</td>
+    <td class="tg-7zrl">0</td>
+    <td class="tg-7zrl">0</td>
+    <td class="tg-7zrl">1</td>
+    <td class="tg-7zrl">1</td>
+  </tr>
+  <tr>
+    <td class="tg-7zrl">Unknown</td>
+    <td class="tg-7zrl">Unknown</td>
+    <td class="tg-7zrl">0%</td>
+    <td class="tg-7zrl">0</td>
+    <td class="tg-7zrl">2</td>
+    <td class="tg-7zrl">0</td>
+    <td class="tg-7zrl">1</td>
+    <td class="tg-7zrl">3</td>
+  </tr>
+  <tr>
+    <td class="tg-7zrl" colspan="2">Total (type&nbsp;&nbsp;&nbsp;of funding)</td>
+    <td class="tg-7zrl">48%</td>
+    <td class="tg-7zrl">191</td>
+    <td class="tg-7zrl">149</td>
+    <td class="tg-7zrl">34</td>
+    <td class="tg-7zrl">27</td>
+    <td class="tg-7zrl">401</td>
+  </tr>
+</tbody></table>
+
+
+# Table 2
+
+Selected list of fathers and sons mentioned in the *Who’s Who of American Returned Students* (1917). The selected individuals are those for whom we were able to gather sufficient biographical information. The table indicates the family cluster to which each individual belongs, as identified through formal network analysis. It includes their names in Chinese with pinyin transliteration, the generation they represent (1 or 2 for fathers, 2 or 3 for sons), their year of birth, and gender. Additionally, it compares their place of birth, education, occupation, and place of work or residence in 1917. 
+
+<style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0;}
+.tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+  overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+  font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg .tg-cly1{text-align:left;vertical-align:middle}
+.tg .tg-w7t0{background-color:#E8E8E8;font-weight:bold;text-align:center;vertical-align:middle}
+.tg .tg-nrix{text-align:center;vertical-align:middle}
+</style>
+<table class="tg"><thead>
+  <tr>
+    <th class="tg-w7t0">Family No.</th>
+    <th class="tg-w7t0">Generation</th>
+    <th class="tg-w7t0">Name (Chinese)</th>
+    <th class="tg-w7t0">Name (Pinyin)</th>
+    <th class="tg-w7t0">Gender</th>
+    <th class="tg-w7t0">Year of birth</th>
+    <th class="tg-w7t0">Place of birth</th>
+    <th class="tg-w7t0">Studies in the&nbsp;&nbsp;&nbsp;U.S.</th>
+    <th class="tg-w7t0">Discipline or&nbsp;&nbsp;&nbsp;Specialization</th>
+    <th class="tg-w7t0">Funding</th>
+    <th class="tg-w7t0">Workplace in&nbsp;&nbsp;&nbsp;1917</th>
+    <th class="tg-w7t0">Occupation</th>
+    <th class="tg-w7t0">Sector of&nbsp;&nbsp;&nbsp;employment</th>
+  </tr></thead>
+<tbody>
+  <tr>
+    <td class="tg-nrix">1</td>
+    <td class="tg-nrix">1</td>
+    <td class="tg-cly1">伍廷芳</td>
+    <td class="tg-cly1">Wu Tingfang</td>
+    <td class="tg-nrix">M</td>
+    <td class="tg-nrix">1842</td>
+    <td class="tg-cly1">Malacca</td>
+    <td class="tg-nrix">NO (England)</td>
+    <td class="tg-cly1">Law</td>
+    <td class="tg-cly1">Private</td>
+    <td class="tg-cly1"> </td>
+    <td class="tg-cly1">Official</td>
+    <td class="tg-cly1">Law</td>
+  </tr>
+  <tr>
+    <td class="tg-nrix">1</td>
+    <td class="tg-nrix">2</td>
+    <td class="tg-cly1">伍朝樞</td>
+    <td class="tg-cly1">Wu Zhaoshu</td>
+    <td class="tg-nrix">M</td>
+    <td class="tg-nrix">1886</td>
+    <td class="tg-cly1">Tianjin</td>
+    <td class="tg-nrix">1897-1904</td>
+    <td class="tg-cly1">Political Science</td>
+    <td class="tg-cly1">Private</td>
+    <td class="tg-cly1">Shanghai</td>
+    <td class="tg-cly1"> </td>
+    <td class="tg-cly1"> </td>
+  </tr>
+  <tr>
+    <td class="tg-nrix">110</td>
+    <td class="tg-nrix">1</td>
+    <td class="tg-cly1">薩鎭冰</td>
+    <td class="tg-cly1">Sa Zhenbing</td>
+    <td class="tg-nrix">M</td>
+    <td class="tg-nrix">1859</td>
+    <td class="tg-cly1">Fuzhou</td>
+    <td class="tg-cly1">NO (England) (Royal&nbsp;&nbsp;&nbsp;Naval College, Greenwich)</td>
+    <td class="tg-cly1">Official (Naval&nbsp;&nbsp;&nbsp;industry)</td>
+    <td class="tg-cly1">Government</td>
+    <td class="tg-cly1"> </td>
+    <td class="tg-cly1">Official</td>
+    <td class="tg-cly1">Naval industry</td>
+  </tr>
+  <tr>
+    <td class="tg-nrix">110</td>
+    <td class="tg-nrix">2</td>
+    <td class="tg-cly1">薩福均</td>
+    <td class="tg-cly1">Sa Fujun</td>
+    <td class="tg-nrix">M</td>
+    <td class="tg-nrix">1886</td>
+    <td class="tg-cly1">Fuzhou</td>
+    <td class="tg-nrix">1906-1910</td>
+    <td class="tg-cly1">Civil Engineering</td>
+    <td class="tg-cly1">Private</td>
+    <td class="tg-cly1">Yichang (Hubei)</td>
+    <td class="tg-cly1"> </td>
+    <td class="tg-cly1"> </td>
+  </tr>
+  <tr>
+    <td class="tg-nrix">42</td>
+    <td class="tg-nrix">1</td>
+    <td class="tg-cly1">張錦</td>
+    <td class="tg-cly1">Zhang Jin</td>
+    <td class="tg-nrix">M</td>
+    <td class="tg-nrix">1850</td>
+    <td class="tg-cly1">Nanhai (Guangdong)</td>
+    <td class="tg-nrix"> </td>
+    <td class="tg-cly1">Revenue</td>
+    <td class="tg-cly1"> </td>
+    <td class="tg-cly1"> </td>
+    <td class="tg-cly1">Official</td>
+    <td class="tg-cly1">Revenue</td>
+  </tr>
+  <tr>
+    <td class="tg-nrix">42</td>
+    <td class="tg-nrix">2</td>
+    <td class="tg-cly1">張煜全</td>
+    <td class="tg-cly1">Zhang Yuquan</td>
+    <td class="tg-nrix">M</td>
+    <td class="tg-nrix">1880</td>
+    <td class="tg-cly1">Guangzhou (Guangdong)</td>
+    <td class="tg-nrix">1901-1906</td>
+    <td class="tg-cly1">Law</td>
+    <td class="tg-cly1">Government</td>
+    <td class="tg-cly1">Shanghai</td>
+    <td class="tg-cly1"> </td>
+    <td class="tg-cly1"> </td>
+  </tr>
+  <tr>
+    <td class="tg-nrix">23</td>
+    <td class="tg-nrix">1</td>
+    <td class="tg-cly1">周馥</td>
+    <td class="tg-cly1">Zhou Fu</td>
+    <td class="tg-nrix">M</td>
+    <td class="tg-nrix">1837</td>
+    <td class="tg-cly1">Jiande (Anhui)</td>
+    <td class="tg-nrix"> </td>
+    <td class="tg-cly1">Official (governor,&nbsp;&nbsp;&nbsp;Viceroy)</td>
+    <td class="tg-cly1"> </td>
+    <td class="tg-cly1"> </td>
+    <td class="tg-cly1">Official</td>
+    <td class="tg-cly1"> </td>
+  </tr>
+  <tr>
+    <td class="tg-nrix">23</td>
+    <td class="tg-nrix">2</td>
+    <td class="tg-cly1">周逵</td>
+    <td class="tg-cly1">Zhou Kui</td>
+    <td class="tg-nrix">M</td>
+    <td class="tg-nrix">1889</td>
+    <td class="tg-cly1">Jiande (Anhui)</td>
+    <td class="tg-nrix">1910-1915</td>
+    <td class="tg-cly1">Medicine</td>
+    <td class="tg-cly1">Private</td>
+    <td class="tg-cly1">Shanghai</td>
+    <td class="tg-cly1"> </td>
+    <td class="tg-cly1"> </td>
+  </tr>
+  <tr>
+    <td class="tg-nrix">50</td>
+    <td class="tg-nrix">1</td>
+    <td class="tg-cly1">施肇曾</td>
+    <td class="tg-cly1">Shi Zhaoceng</td>
+    <td class="tg-nrix">M</td>
+    <td class="tg-nrix">1866</td>
+    <td class="tg-cly1">Hangxian (Zhejiang)</td>
+    <td class="tg-nrix"> </td>
+    <td class="tg-cly1">Official (railway)</td>
+    <td class="tg-cly1"> </td>
+    <td class="tg-cly1"> </td>
+    <td class="tg-cly1">Official</td>
+    <td class="tg-cly1">Railway</td>
+  </tr>
+  <tr>
+    <td class="tg-nrix">50</td>
+    <td class="tg-nrix">2</td>
+    <td class="tg-cly1">施贊元</td>
+    <td class="tg-cly1">Shi Zanyuan</td>
+    <td class="tg-nrix">M</td>
+    <td class="tg-nrix">1888</td>
+    <td class="tg-cly1">Suzhou (Jiangsu)</td>
+    <td class="tg-nrix">1904-1916</td>
+    <td class="tg-cly1">Medicine</td>
+    <td class="tg-cly1">Partial</td>
+    <td class="tg-cly1">Tianjin</td>
+    <td class="tg-cly1"> </td>
+    <td class="tg-cly1"> </td>
+  </tr>
+  <tr>
+    <td class="tg-nrix">50</td>
+    <td class="tg-nrix">2</td>
+    <td class="tg-cly1">施厚元</td>
+    <td class="tg-cly1">Shi Houyuan</td>
+    <td class="tg-nrix">M</td>
+    <td class="tg-nrix">1889</td>
+    <td class="tg-cly1">Shanghai (Jiangsu)</td>
+    <td class="tg-nrix">1906-1914</td>
+    <td class="tg-cly1">Liberal arts</td>
+    <td class="tg-cly1">Private</td>
+    <td class="tg-cly1">Beijing</td>
+    <td class="tg-cly1"> </td>
+    <td class="tg-cly1"> </td>
+  </tr>
+  <tr>
+    <td class="tg-nrix">48</td>
+    <td class="tg-nrix">1</td>
+    <td class="tg-cly1">徐勤</td>
+    <td class="tg-cly1">Xu Qin</td>
+    <td class="tg-nrix">M</td>
+    <td class="tg-nrix">1872</td>
+    <td class="tg-cly1">Sanshui (Guangdong)</td>
+    <td class="tg-nrix"> </td>
+    <td class="tg-cly1">Entrepreneur (Press)</td>
+    <td class="tg-cly1"> </td>
+    <td class="tg-cly1">Macao-Hongkong</td>
+    <td class="tg-cly1">Entrepreneur</td>
+    <td class="tg-cly1"> </td>
+  </tr>
+  <tr>
+    <td class="tg-nrix">48</td>
+    <td class="tg-nrix">2</td>
+    <td class="tg-cly1">徐良</td>
+    <td class="tg-cly1">Xu Liang</td>
+    <td class="tg-nrix">M</td>
+    <td class="tg-nrix">1892</td>
+    <td class="tg-cly1">Guangzhou (Guangdong)</td>
+    <td class="tg-nrix">1905-1913</td>
+    <td class="tg-cly1">Liberal arts</td>
+    <td class="tg-cly1">Private</td>
+    <td class="tg-cly1">Guangzhou</td>
+    <td class="tg-cly1"> </td>
+    <td class="tg-cly1"> </td>
+  </tr>
+  <tr>
+    <td class="tg-nrix">85</td>
+    <td class="tg-nrix">1</td>
+    <td class="tg-cly1">王海濤</td>
+    <td class="tg-cly1">Wang Haitao</td>
+    <td class="tg-nrix">M</td>
+    <td class="tg-nrix"> </td>
+    <td class="tg-cly1">Yancheng (Jiangsu)</td>
+    <td class="tg-nrix"> </td>
+    <td class="tg-cly1">Physician? </td>
+    <td class="tg-cly1"> </td>
+    <td class="tg-cly1">Beijing?</td>
+    <td class="tg-cly1"> </td>
+    <td class="tg-cly1"> </td>
+  </tr>
+  <tr>
+    <td class="tg-nrix">85</td>
+    <td class="tg-nrix">2</td>
+    <td class="tg-cly1">王仁輔</td>
+    <td class="tg-cly1">Wang Renfu</td>
+    <td class="tg-nrix">M</td>
+    <td class="tg-nrix">1885</td>
+    <td class="tg-cly1">Kunshan (Jiangsu)</td>
+    <td class="tg-nrix">1909-1913</td>
+    <td class="tg-cly1">Mathematics-Political&nbsp;&nbsp;&nbsp;Science</td>
+    <td class="tg-cly1">Government</td>
+    <td class="tg-cly1">Kunshan (Jiangsu)</td>
+    <td class="tg-cly1"> </td>
+    <td class="tg-cly1"> </td>
+  </tr>
+  <tr>
+    <td class="tg-nrix">138</td>
+    <td class="tg-nrix">1</td>
+    <td class="tg-cly1">錢鑅</td>
+    <td class="tg-cly1">Qian Heng</td>
+    <td class="tg-nrix">M</td>
+    <td class="tg-nrix"> </td>
+    <td class="tg-cly1">Changzhou (Jiangsu)</td>
+    <td class="tg-nrix"> </td>
+    <td class="tg-cly1">Scholar-industrialist&nbsp;&nbsp;&nbsp;(commerce, timber)</td>
+    <td class="tg-cly1"> </td>
+    <td class="tg-cly1"> </td>
+    <td class="tg-cly1"> </td>
+    <td class="tg-cly1"> </td>
+  </tr>
+  <tr>
+    <td class="tg-nrix">138</td>
+    <td class="tg-nrix">2</td>
+    <td class="tg-cly1">錢方軾</td>
+    <td class="tg-cly1">Qian Fangshi</td>
+    <td class="tg-nrix">M</td>
+    <td class="tg-nrix">1886</td>
+    <td class="tg-cly1">Changzhou (Jiangsu)</td>
+    <td class="tg-nrix">1906-1912</td>
+    <td class="tg-cly1">Economics-Business&nbsp;&nbsp;&nbsp;Administration</td>
+    <td class="tg-cly1">Partial</td>
+    <td class="tg-cly1">Tianjin</td>
+    <td class="tg-cly1"> </td>
+    <td class="tg-cly1"> </td>
+  </tr>
+  <tr>
+    <td class="tg-nrix">25</td>
+    <td class="tg-nrix">1</td>
+    <td class="tg-cly1">唐仲良</td>
+    <td class="tg-cly1">Tang Zhongliang</td>
+    <td class="tg-nrix">M</td>
+    <td class="tg-nrix"> </td>
+    <td class="tg-cly1"> </td>
+    <td class="tg-nrix"> </td>
+    <td class="tg-cly1">Merchant</td>
+    <td class="tg-cly1"> </td>
+    <td class="tg-cly1"> </td>
+    <td class="tg-cly1">Merchant</td>
+    <td class="tg-cly1"> </td>
+  </tr>
+  <tr>
+    <td class="tg-nrix">25</td>
+    <td class="tg-nrix">2</td>
+    <td class="tg-cly1">唐寳桐</td>
+    <td class="tg-cly1">Tang Baotong</td>
+    <td class="tg-nrix">M</td>
+    <td class="tg-nrix">1887</td>
+    <td class="tg-cly1">Shanghai</td>
+    <td class="tg-nrix">1903-1913</td>
+    <td class="tg-cly1">Civil Engineering</td>
+    <td class="tg-cly1">Private</td>
+    <td class="tg-cly1">Shanghai</td>
+    <td class="tg-cly1"> </td>
+    <td class="tg-cly1"> </td>
+  </tr>
+  <tr>
+    <td class="tg-nrix">25</td>
+    <td class="tg-nrix">2</td>
+    <td class="tg-cly1">唐寳泰</td>
+    <td class="tg-cly1">Tang Baotai</td>
+    <td class="tg-nrix">M</td>
+    <td class="tg-nrix">1893</td>
+    <td class="tg-cly1">Shanghai</td>
+    <td class="tg-nrix">NO (Germany)</td>
+    <td class="tg-cly1">Military sciences</td>
+    <td class="tg-cly1"> </td>
+    <td class="tg-cly1">Shanghai</td>
+    <td class="tg-cly1">Entrepreneur</td>
+    <td class="tg-cly1">Textile, Banking </td>
+  </tr>
+  <tr>
+    <td class="tg-nrix">25</td>
+    <td class="tg-nrix">3</td>
+    <td class="tg-cly1">唐曉天</td>
+    <td class="tg-cly1">Tang Xiaotian</td>
+    <td class="tg-nrix">M</td>
+    <td class="tg-nrix"> </td>
+    <td class="tg-cly1">Shanghai</td>
+    <td class="tg-nrix">NO (St Johns)</td>
+    <td class="tg-cly1">Economics</td>
+    <td class="tg-cly1"> </td>
+    <td class="tg-cly1">Shanghai</td>
+    <td class="tg-cly1">Entrepreneur</td>
+    <td class="tg-cly1">Textile, Construction</td>
+  </tr>
+  <tr>
+    <td class="tg-nrix">25</td>
+    <td class="tg-nrix">3</td>
+    <td class="tg-cly1">唐百平</td>
+    <td class="tg-cly1">Tang Baiping</td>
+    <td class="tg-nrix">M</td>
+    <td class="tg-nrix"> </td>
+    <td class="tg-cly1">Shanghai</td>
+    <td class="tg-nrix">NO (St Johns)</td>
+    <td class="tg-cly1">Sociology</td>
+    <td class="tg-cly1"> </td>
+    <td class="tg-cly1">Shanghai</td>
+    <td class="tg-cly1">Entrepreneur</td>
+    <td class="tg-cly1">Textile, Construction</td>
+  </tr>
+  <tr>
+    <td class="tg-nrix">132</td>
+    <td class="tg-nrix">1</td>
+    <td class="tg-cly1">鄭慈穀 (鄭式如)</td>
+    <td class="tg-cly1">Zheng Cigu (Zheng&nbsp;&nbsp;&nbsp;Shiru)</td>
+    <td class="tg-nrix">M</td>
+    <td class="tg-nrix"> </td>
+    <td class="tg-cly1">Wujiang (Jiangsu)</td>
+    <td class="tg-nrix"> </td>
+    <td class="tg-cly1">Scholar</td>
+    <td class="tg-cly1"> </td>
+    <td class="tg-cly1"> </td>
+    <td class="tg-cly1">Scholar</td>
+    <td class="tg-cly1"> </td>
+  </tr>
+  <tr>
+    <td class="tg-nrix">132</td>
+    <td class="tg-nrix">2</td>
+    <td class="tg-cly1">鄭之蕃</td>
+    <td class="tg-cly1">Zheng Zhifan</td>
+    <td class="tg-nrix">M</td>
+    <td class="tg-nrix">1887</td>
+    <td class="tg-cly1">Wujiang (Jiangsu)</td>
+    <td class="tg-nrix">1909-1911</td>
+    <td class="tg-cly1">Liberal Arts</td>
+    <td class="tg-cly1">Government</td>
+    <td class="tg-cly1">Wujiang (Jiangsu)</td>
+    <td class="tg-cly1"> </td>
+    <td class="tg-cly1"> </td>
+  </tr>
+  <tr>
+    <td class="tg-nrix">132</td>
+    <td class="tg-nrix">2</td>
+    <td class="tg-cly1">鄭佩宜</td>
+    <td class="tg-cly1">Zheng Peiyi</td>
+    <td class="tg-nrix">F</td>
+    <td class="tg-nrix">1888</td>
+    <td class="tg-cly1"> </td>
+    <td class="tg-nrix"> </td>
+    <td class="tg-cly1"> </td>
+    <td class="tg-cly1"> </td>
+    <td class="tg-cly1"> </td>
+    <td class="tg-cly1"> </td>
+    <td class="tg-cly1"> </td>
+  </tr>
+  <tr>
+    <td class="tg-nrix">69</td>
+    <td class="tg-nrix">1</td>
+    <td class="tg-cly1">林雨亭</td>
+    <td class="tg-cly1">Lin Yuting</td>
+    <td class="tg-nrix">M</td>
+    <td class="tg-nrix">1861</td>
+    <td class="tg-cly1">Panyu (Guangdong)</td>
+    <td class="tg-nrix"> </td>
+    <td class="tg-cly1">Insurance</td>
+    <td class="tg-cly1"> </td>
+    <td class="tg-cly1">Shanghai</td>
+    <td class="tg-cly1">Entrepreneur</td>
+    <td class="tg-cly1">Insurance</td>
+  </tr>
+  <tr>
+    <td class="tg-nrix">69</td>
+    <td class="tg-nrix">2</td>
+    <td class="tg-cly1">林鑑誠</td>
+    <td class="tg-cly1">Lin Jiancheng</td>
+    <td class="tg-nrix">M</td>
+    <td class="tg-nrix">1890</td>
+    <td class="tg-cly1">Tianjin</td>
+    <td class="tg-nrix">1911-1915</td>
+    <td class="tg-cly1">Civil Engineering</td>
+    <td class="tg-cly1">Private</td>
+    <td class="tg-cly1">Shanghai</td>
+    <td class="tg-cly1"> </td>
+    <td class="tg-cly1"> </td>
+  </tr>
+  <tr>
+    <td class="tg-nrix">74</td>
+    <td class="tg-nrix">1</td>
+    <td class="tg-cly1">楊信之</td>
+    <td class="tg-cly1">Yang Xinzhi</td>
+    <td class="tg-nrix">M</td>
+    <td class="tg-nrix">1846</td>
+    <td class="tg-cly1">Wuxing (Zhejiang)</td>
+    <td class="tg-nrix"> </td>
+    <td class="tg-cly1">Silk Merchant</td>
+    <td class="tg-cly1"> </td>
+    <td class="tg-cly1">Shanghai</td>
+    <td class="tg-cly1">Entrepreneur</td>
+    <td class="tg-cly1">Silk</td>
+  </tr>
+  <tr>
+    <td class="tg-nrix">74</td>
+    <td class="tg-nrix">2</td>
+    <td class="tg-cly1">楊奎侯</td>
+    <td class="tg-cly1">Yang Kuihou</td>
+    <td class="tg-nrix">M</td>
+    <td class="tg-nrix">1889</td>
+    <td class="tg-cly1">Shanghai</td>
+    <td class="tg-nrix">1912-1916</td>
+    <td class="tg-cly1">Commerce-Economics-Law</td>
+    <td class="tg-cly1">NA</td>
+    <td class="tg-cly1">Shanghai</td>
+    <td class="tg-cly1"> </td>
+    <td class="tg-cly1"> </td>
+  </tr>
+  <tr>
+    <td class="tg-nrix">35</td>
+    <td class="tg-nrix">1</td>
+    <td class="tg-cly1">尤先甲</td>
+    <td class="tg-cly1">You Xianjia</td>
+    <td class="tg-nrix">M</td>
+    <td class="tg-nrix">1843</td>
+    <td class="tg-cly1">Suzhou (Jiangsu)</td>
+    <td class="tg-nrix"> </td>
+    <td class="tg-cly1">Scholar-Official</td>
+    <td class="tg-cly1"> </td>
+    <td class="tg-cly1"> </td>
+    <td class="tg-cly1">Scholar-Official</td>
+    <td class="tg-cly1">Transportation,&nbsp;&nbsp;&nbsp;commerce &amp; industry, public welfare</td>
+  </tr>
+  <tr>
+    <td class="tg-nrix">35</td>
+    <td class="tg-nrix">2</td>
+    <td class="tg-cly1">尤志邁</td>
+    <td class="tg-cly1">You Zhimai</td>
+    <td class="tg-nrix">M</td>
+    <td class="tg-nrix">1887</td>
+    <td class="tg-cly1">Suzhou (Jiangsu)</td>
+    <td class="tg-nrix">1909-1913</td>
+    <td class="tg-cly1">Agriculture</td>
+    <td class="tg-cly1">Private</td>
+    <td class="tg-cly1">Suzhou (Jiangsu)</td>
+    <td class="tg-cly1">Entrepreneur</td>
+    <td class="tg-cly1">Agrilcuture, food&nbsp;&nbsp;&nbsp;industry</td>
+  </tr>
+  <tr>
+    <td class="tg-nrix">77</td>
+    <td class="tg-nrix">1</td>
+    <td class="tg-cly1">李伯蓮</td>
+    <td class="tg-cly1">Li Bolian</td>
+    <td class="tg-nrix">M</td>
+    <td class="tg-nrix">1869</td>
+    <td class="tg-cly1">Suzhou (Jiangsu)</td>
+    <td class="tg-nrix"> </td>
+    <td class="tg-cly1"> </td>
+    <td class="tg-cly1"> </td>
+    <td class="tg-cly1"> </td>
+    <td class="tg-cly1"> </td>
+    <td class="tg-cly1"> </td>
+  </tr>
+  <tr>
+    <td class="tg-nrix">77</td>
+    <td class="tg-nrix">2</td>
+    <td class="tg-cly1">李虞貞 (楊豹靈夫人)</td>
+    <td class="tg-cly1">Li Yuzhen (Mrs. Yang&nbsp;&nbsp;&nbsp;Baoling)</td>
+    <td class="tg-nrix">F</td>
+    <td class="tg-nrix">1890</td>
+    <td class="tg-cly1">Suzhou (Jiangsu)</td>
+    <td class="tg-nrix">1908-1911</td>
+    <td class="tg-cly1">Liberal arts</td>
+    <td class="tg-cly1">Private</td>
+    <td class="tg-cly1"> </td>
+    <td class="tg-cly1"> </td>
+    <td class="tg-cly1"> </td>
+  </tr>
+  <tr>
+    <td class="tg-nrix">77</td>
+    <td class="tg-nrix">2</td>
+    <td class="tg-cly1">楊豹靈</td>
+    <td class="tg-cly1">Yang Baoling</td>
+    <td class="tg-nrix">M</td>
+    <td class="tg-nrix">1887</td>
+    <td class="tg-cly1">Suzhou (Jiangsu)</td>
+    <td class="tg-nrix">1907-1911</td>
+    <td class="tg-cly1">Civil Engineering</td>
+    <td class="tg-cly1">Private</td>
+    <td class="tg-cly1">Nanjing</td>
+    <td class="tg-cly1"> </td>
+    <td class="tg-cly1"> </td>
+  </tr>
+  <tr>
+    <td class="tg-nrix">131</td>
+    <td class="tg-nrix">1</td>
+    <td class="tg-cly1">鄒嘉來</td>
+    <td class="tg-cly1">Zou Jialai</td>
+    <td class="tg-nrix">M</td>
+    <td class="tg-nrix">1853</td>
+    <td class="tg-cly1">Wuxian (Jiangsu)</td>
+    <td class="tg-nrix"> </td>
+    <td class="tg-cly1">Scholar-Official</td>
+    <td class="tg-cly1"> </td>
+    <td class="tg-cly1"> </td>
+    <td class="tg-cly1">Scholar-Official</td>
+    <td class="tg-cly1"> </td>
+  </tr>
+  <tr>
+    <td class="tg-nrix">131</td>
+    <td class="tg-nrix">2</td>
+    <td class="tg-cly1">鄒應藼</td>
+    <td class="tg-cly1">Zou Yingxuan</td>
+    <td class="tg-nrix">M</td>
+    <td class="tg-nrix">1884</td>
+    <td class="tg-cly1">Suzhou (Jiangsu)</td>
+    <td class="tg-nrix">1908-1915</td>
+    <td class="tg-cly1">Agriculture-Forestry</td>
+    <td class="tg-cly1">Government</td>
+    <td class="tg-cly1">Suzhou (Jiangsu)</td>
+    <td class="tg-cly1"> </td>
+    <td class="tg-cly1"> </td>
+  </tr>
+</tbody></table>
+
+# Table 3 
+
+Table 3 – Selected list of uncles and nephews mentioned in the *Who’s Who of American Returned Students*  (1917). The selected individuals are those for whom we were able to gather sufficient biographical information. The table indicates the family cluster to which each individual belongs (identified through formal network analysis), their names in Chinese with pinyin transliteration, the generation they represent (1 for uncles, 2 or 3 for nephews), their year of birth, and gender. The table also compares their place of birth, education in America and prior education in China, occupation, and place of work or residence in 1917.
+
+<style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0;}
+.tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+  overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+  font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg .tg-cly1{text-align:left;vertical-align:middle}
+.tg .tg-w7t0{background-color:#E8E8E8;font-weight:bold;text-align:center;vertical-align:middle}
+.tg .tg-baqh{text-align:center;vertical-align:top}
+.tg .tg-nrix{text-align:center;vertical-align:middle}
+.tg .tg-7zrl{text-align:left;vertical-align:bottom}
+.tg .tg-8d8j{text-align:center;vertical-align:bottom}
+</style>
+<table class="tg"><thead>
+  <tr>
+    <th class="tg-w7t0">Family No.</th>
+    <th class="tg-w7t0">Generation</th>
+    <th class="tg-w7t0">Name (Chinese)</th>
+    <th class="tg-w7t0">Name (Pinyin)</th>
+    <th class="tg-w7t0">Gender</th>
+    <th class="tg-w7t0">Year of birth</th>
+    <th class="tg-w7t0">Place of birth</th>
+    <th class="tg-w7t0">Studies in the&nbsp;&nbsp;&nbsp;US</th>
+    <th class="tg-w7t0">Colleges&nbsp;&nbsp;&nbsp;attended</th>
+    <th class="tg-w7t0">Discipline/&nbsp;&nbsp;&nbsp;Specialization</th>
+    <th class="tg-w7t0">Funding</th>
+    <th class="tg-w7t0">Place of work&nbsp;&nbsp;&nbsp;or residence (1917)</th>
+  </tr></thead>
+<tbody>
+  <tr>
+    <td class="tg-nrix">123</td>
+    <td class="tg-nrix">1</td>
+    <td class="tg-7zrl">費起鶴</td>
+    <td class="tg-7zrl">Fei&nbsp;&nbsp;&nbsp;Qihe</td>
+    <td class="tg-8d8j">M</td>
+    <td class="tg-8d8j">1879</td>
+    <td class="tg-nrix" rowspan="2">Same&nbsp;&nbsp;&nbsp;(Tongxian, Zhili)</td>
+    <td class="tg-nrix" rowspan="2">Different&nbsp;&nbsp;&nbsp;timing (1901-1907; 1909-1914)</td>
+    <td class="tg-cly1">Different&nbsp;&nbsp;&nbsp;in China</td>
+    <td class="tg-nrix" rowspan="2">Education</td>
+    <td class="tg-nrix">Private</td>
+    <td class="tg-nrix" rowspan="2">Same&nbsp;&nbsp;&nbsp;(Beijing)</td>
+  </tr>
+  <tr>
+    <td class="tg-nrix">123</td>
+    <td class="tg-nrix">2</td>
+    <td class="tg-7zrl">費興仁</td>
+    <td class="tg-7zrl">Fei&nbsp;&nbsp;&nbsp;Xingren</td>
+    <td class="tg-8d8j">M</td>
+    <td class="tg-8d8j">1886</td>
+    <td class="tg-cly1">Same&nbsp;&nbsp;&nbsp;in America (Oberlin, Yale)</td>
+    <td class="tg-nrix">Partial</td>
+  </tr>
+  <tr>
+    <td class="tg-nrix">50</td>
+    <td class="tg-nrix">1</td>
+    <td class="tg-7zrl">施肇曾</td>
+    <td class="tg-7zrl">Shi&nbsp;&nbsp;&nbsp;Zhaoceng</td>
+    <td class="tg-8d8j">M</td>
+    <td class="tg-8d8j">1866</td>
+    <td class="tg-nrix" rowspan="2">Different&nbsp;&nbsp;&nbsp;provinces (Zhejiang, Jiangsu)</td>
+    <td class="tg-baqh" rowspan="2">The&nbsp;&nbsp;&nbsp;uncle did not study in the US but he attended the same college as his nephew&nbsp;&nbsp;&nbsp;in China (St. John's)</td>
+    <td class="tg-cly1" rowspan="2">Same&nbsp;&nbsp;&nbsp;in China (St. John's)</td>
+    <td class="tg-nrix">Railway</td>
+    <td class="tg-nrix"> </td>
+    <td class="tg-nrix" rowspan="2">NA/Shanghai</td>
+  </tr>
+  <tr>
+    <td class="tg-nrix">50</td>
+    <td class="tg-nrix">2</td>
+    <td class="tg-7zrl">施調元</td>
+    <td class="tg-7zrl">Shi&nbsp;&nbsp;&nbsp;Diaoyuan</td>
+    <td class="tg-8d8j">M</td>
+    <td class="tg-8d8j">1888</td>
+    <td class="tg-nrix">Textile&nbsp;&nbsp;&nbsp;industry</td>
+    <td class="tg-nrix">Private</td>
+  </tr>
+  <tr>
+    <td class="tg-nrix">17</td>
+    <td class="tg-nrix">1</td>
+    <td class="tg-7zrl">歐陽庚</td>
+    <td class="tg-7zrl">Ouyang&nbsp;&nbsp;&nbsp;Geng</td>
+    <td class="tg-8d8j">M</td>
+    <td class="tg-8d8j">1858</td>
+    <td class="tg-nrix" rowspan="2">Same&nbsp;&nbsp;&nbsp;provinces, different localities (Xiangshan, Guangzhou)</td>
+    <td class="tg-nrix" rowspan="2">Different&nbsp;&nbsp;&nbsp;timing (1872-1881; 1903-1912)</td>
+    <td class="tg-cly1" rowspan="2">Different&nbsp;&nbsp;&nbsp;(Yale, California)</td>
+    <td class="tg-nrix">Engineering</td>
+    <td class="tg-nrix">Government</td>
+    <td class="tg-nrix" rowspan="2">Abroad/Beijing</td>
+  </tr>
+  <tr>
+    <td class="tg-nrix">17</td>
+    <td class="tg-nrix">2</td>
+    <td class="tg-7zrl">歐陽月</td>
+    <td class="tg-7zrl">Ouyang&nbsp;&nbsp;&nbsp;Yue</td>
+    <td class="tg-8d8j">M</td>
+    <td class="tg-8d8j">1885</td>
+    <td class="tg-nrix">Commerce</td>
+    <td class="tg-nrix">Partial</td>
+  </tr>
+  <tr>
+    <td class="tg-nrix">60</td>
+    <td class="tg-nrix">1</td>
+    <td class="tg-7zrl">李恩富</td>
+    <td class="tg-7zrl">Li&nbsp;&nbsp;&nbsp;Enfu</td>
+    <td class="tg-8d8j">M</td>
+    <td class="tg-8d8j">1861</td>
+    <td class="tg-nrix" rowspan="2">Same&nbsp;&nbsp;&nbsp;provinces, same locality (Xiangshan, Guangzhou)</td>
+    <td class="tg-nrix" rowspan="2">Different&nbsp;&nbsp;&nbsp;timing (1872-1881/1884; 1899-1913)</td>
+    <td class="tg-cly1" rowspan="2">Different&nbsp;&nbsp;&nbsp;(Yale, Tennessee)</td>
+    <td class="tg-nrix">Naval&nbsp;&nbsp;&nbsp;engineering</td>
+    <td class="tg-nrix">Government</td>
+    <td class="tg-nrix" rowspan="2">NA/Xiangshan</td>
+  </tr>
+  <tr>
+    <td class="tg-nrix">60</td>
+    <td class="tg-nrix">2</td>
+    <td class="tg-7zrl">李奉藻</td>
+    <td class="tg-7zrl">Li&nbsp;&nbsp;&nbsp;Fengzao</td>
+    <td class="tg-8d8j">M</td>
+    <td class="tg-8d8j">1884</td>
+    <td class="tg-nrix">Medicine</td>
+    <td class="tg-nrix">Private</td>
+  </tr>
+  <tr>
+    <td class="tg-nrix">31</td>
+    <td class="tg-nrix">1</td>
+    <td class="tg-7zrl">孫多森 </td>
+    <td class="tg-7zrl">Sun&nbsp;&nbsp;&nbsp;Duosen </td>
+    <td class="tg-8d8j">M</td>
+    <td class="tg-8d8j">1867</td>
+    <td class="tg-nrix" rowspan="3">Same&nbsp;&nbsp;&nbsp;(Shouxian, Anhui)</td>
+    <td class="tg-nrix" rowspan="3">Partial&nbsp;&nbsp;&nbsp;overlap (1899-1909; 1903-1912)</td>
+    <td class="tg-cly1" rowspan="3">Different&nbsp;&nbsp;&nbsp;(Cornell; MIT, Brown)</td>
+    <td class="tg-nrix"> </td>
+    <td class="tg-nrix"> </td>
+    <td class="tg-nrix" rowspan="3">Same&nbsp;&nbsp;&nbsp;(Shanghai)</td>
+  </tr>
+  <tr>
+    <td class="tg-nrix">31</td>
+    <td class="tg-nrix">1</td>
+    <td class="tg-7zrl">孫多鈺</td>
+    <td class="tg-7zrl">Sun&nbsp;&nbsp;&nbsp;Duoyu</td>
+    <td class="tg-8d8j">M</td>
+    <td class="tg-8d8j">1882</td>
+    <td class="tg-nrix">Civil&nbsp;&nbsp;&nbsp;Engineering</td>
+    <td class="tg-nrix">Private</td>
+  </tr>
+  <tr>
+    <td class="tg-nrix">31</td>
+    <td class="tg-nrix">2</td>
+    <td class="tg-7zrl">孫元方</td>
+    <td class="tg-7zrl">Sun&nbsp;&nbsp;&nbsp;Yuanfang</td>
+    <td class="tg-8d8j">M</td>
+    <td class="tg-8d8j">1883</td>
+    <td class="tg-nrix">Mining-Banking</td>
+    <td class="tg-nrix">Private</td>
+  </tr>
+</tbody></table>
+
+
+
+# Table 4 
+
+Selected list of siblings mentioned in the *Who’s Who of American Returned Students* (1917). The table indicates the family cluster to which each individual belongs (identified through formal network analysis), their names in Chinese with pinyin transliteration, their year of birth, and their date and place of marriage. It also compares their place of birth, education in America and prior education in China, occupation, and place of work or residence in 1917.
+
+<style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0;}
+.tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+  overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+  font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg .tg-cly1{text-align:left;vertical-align:middle}
+.tg .tg-w7t0{background-color:#E8E8E8;font-weight:bold;text-align:center;vertical-align:middle}
+.tg .tg-nrix{text-align:center;vertical-align:middle}
+.tg .tg-7zrl{text-align:left;vertical-align:bottom}
+.tg .tg-8d8j{text-align:center;vertical-align:bottom}
+</style>
+<table class="tg"><thead>
+  <tr>
+    <th class="tg-w7t0">Family No.</th>
+    <th class="tg-w7t0">Generation</th>
+    <th class="tg-w7t0">Name (Chinese)</th>
+    <th class="tg-w7t0">Name (Pinyin)</th>
+    <th class="tg-w7t0">Gender</th>
+    <th class="tg-w7t0">Year of birth</th>
+    <th class="tg-w7t0">Place of birth</th>
+    <th class="tg-w7t0">Studies in  U.S.</th>
+    <th class="tg-w7t0">Universities </th>
+    <th class="tg-w7t0">Discipline</th>
+    <th class="tg-w7t0">Funding</th>
+    <th class="tg-w7t0">Workplace&nbsp;&nbsp;&nbsp;(1917)</th>
+  </tr></thead>
+<tbody>
+  <tr>
+    <td class="tg-nrix">15</td>
+    <td class="tg-nrix">2</td>
+    <td class="tg-cly1">卞壽孫</td>
+    <td class="tg-cly1">Bian&nbsp;&nbsp;&nbsp;Shousun</td>
+    <td class="tg-nrix">M</td>
+    <td class="tg-nrix">1881</td>
+    <td class="tg-cly1" rowspan="2">Different&nbsp;&nbsp;&nbsp;(Wuchang, Hubei; Yangzhou, Jiangsu)</td>
+    <td class="tg-cly1" rowspan="2">No&nbsp;&nbsp;&nbsp;overlap (1902-1916, 1913-1915)</td>
+    <td class="tg-nrix">Different&nbsp;&nbsp;&nbsp;in China (Aurora, St. John's) </td>
+    <td class="tg-nrix" rowspan="2">Economics&nbsp;&nbsp;&nbsp;(both)</td>
+    <td class="tg-nrix" rowspan="2">Partial&nbsp;&nbsp;&nbsp;(both)</td>
+    <td class="tg-nrix" rowspan="2">Yangzhou/Beijing</td>
+  </tr>
+  <tr>
+    <td class="tg-nrix">15</td>
+    <td class="tg-nrix">2</td>
+    <td class="tg-cly1">卞福孫</td>
+    <td class="tg-cly1">Bian&nbsp;&nbsp;&nbsp;Fusun</td>
+    <td class="tg-nrix">M</td>
+    <td class="tg-nrix">1886</td>
+    <td class="tg-nrix">Same&nbsp;&nbsp;&nbsp;in America (Brown)</td>
+  </tr>
+  <tr>
+    <td class="tg-nrix">54</td>
+    <td class="tg-nrix">1</td>
+    <td class="tg-cly1">曹芳芸</td>
+    <td class="tg-cly1">Cao&nbsp;&nbsp;&nbsp;Fangyun</td>
+    <td class="tg-nrix">F</td>
+    <td class="tg-nrix">1871</td>
+    <td class="tg-cly1" rowspan="2">Same&nbsp;&nbsp;&nbsp;province (Jiangsu), different towns (Suzhou, Nanxiang)</td>
+    <td class="tg-cly1" rowspan="2">Partial&nbsp;&nbsp;&nbsp;overlap (1897-1911, 1907-?)</td>
+    <td class="tg-nrix" rowspan="2">Different&nbsp;&nbsp;&nbsp;in China and US</td>
+    <td class="tg-nrix">Education</td>
+    <td class="tg-nrix">Private</td>
+    <td class="tg-nrix" rowspan="2">Shanghai&nbsp;&nbsp;&nbsp;(same)</td>
+  </tr>
+  <tr>
+    <td class="tg-nrix">54</td>
+    <td class="tg-nrix">2</td>
+    <td class="tg-cly1">曹雲祥</td>
+    <td class="tg-cly1">Cao&nbsp;&nbsp;&nbsp;Yunxiang</td>
+    <td class="tg-nrix">M</td>
+    <td class="tg-nrix">1881</td>
+    <td class="tg-nrix">Liberal&nbsp;&nbsp;&nbsp;arts</td>
+    <td class="tg-nrix">Government</td>
+  </tr>
+  <tr>
+    <td class="tg-nrix">142</td>
+    <td class="tg-nrix">2</td>
+    <td class="tg-cly1">陳同壽</td>
+    <td class="tg-cly1">Chen&nbsp;&nbsp;&nbsp;Tongshou</td>
+    <td class="tg-nrix">M</td>
+    <td class="tg-nrix">1881</td>
+    <td class="tg-cly1" rowspan="2">Same&nbsp;&nbsp;&nbsp;(Suzhou)</td>
+    <td class="tg-cly1" rowspan="2">No&nbsp;&nbsp;&nbsp;overlap (1905-1911, 1911-1916)</td>
+    <td class="tg-nrix">Same&nbsp;&nbsp;&nbsp;in China (Nanyang)</td>
+    <td class="tg-nrix">Liberal&nbsp;&nbsp;&nbsp;arts</td>
+    <td class="tg-nrix" rowspan="2">Government&nbsp;&nbsp;&nbsp;(both)</td>
+    <td class="tg-nrix" rowspan="2">Beijing/Shanghai</td>
+  </tr>
+  <tr>
+    <td class="tg-nrix">142</td>
+    <td class="tg-nrix">2</td>
+    <td class="tg-cly1">陳明壽</td>
+    <td class="tg-cly1">Chen&nbsp;&nbsp;&nbsp;Mingshou</td>
+    <td class="tg-nrix">M</td>
+    <td class="tg-nrix">1891</td>
+    <td class="tg-nrix">Different&nbsp;&nbsp;&nbsp;(California, Illinois; Columbia, MIT)</td>
+    <td class="tg-nrix">Mechanical&nbsp;&nbsp;&nbsp;engineering</td>
+  </tr>
+  <tr>
+    <td class="tg-nrix">62</td>
+    <td class="tg-nrix">2</td>
+    <td class="tg-cly1">李植楡</td>
+    <td class="tg-cly1">Li&nbsp;&nbsp;&nbsp;Zhiyu</td>
+    <td class="tg-nrix">M</td>
+    <td class="tg-nrix">1888</td>
+    <td class="tg-cly1" rowspan="2">Different&nbsp;&nbsp;&nbsp;(Shanghai, Jiangsu ; Ningpo, Zhejiang)</td>
+    <td class="tg-cly1" rowspan="2">Partial&nbsp;&nbsp;&nbsp;overlap (1910-1915, 1913-1914)</td>
+    <td class="tg-nrix">Same&nbsp;&nbsp;&nbsp;in China (Anglo-Chinese College) </td>
+    <td class="tg-nrix">Economics</td>
+    <td class="tg-nrix" rowspan="2">Private&nbsp;&nbsp;&nbsp;(both)</td>
+    <td class="tg-nrix" rowspan="2">Shanghai&nbsp;&nbsp;&nbsp;(same)</td>
+  </tr>
+  <tr>
+    <td class="tg-nrix">62</td>
+    <td class="tg-nrix">2</td>
+    <td class="tg-cly1">李植藩</td>
+    <td class="tg-cly1">Li&nbsp;&nbsp;&nbsp;Zhifan</td>
+    <td class="tg-nrix">M</td>
+    <td class="tg-nrix">1889</td>
+    <td class="tg-nrix">Same&nbsp;&nbsp;&nbsp;in America (Chicago)</td>
+    <td class="tg-nrix">Electrical&nbsp;&nbsp;&nbsp;engineering</td>
+  </tr>
+  <tr>
+    <td class="tg-nrix">45</td>
+    <td class="tg-nrix">2</td>
+    <td class="tg-cly1">徐志誠</td>
+    <td class="tg-cly1">Xu&nbsp;&nbsp;&nbsp;Zhicheng</td>
+    <td class="tg-nrix">M</td>
+    <td class="tg-nrix">1888</td>
+    <td class="tg-cly1" rowspan="2">Same&nbsp;&nbsp;&nbsp;(Shanghai)</td>
+    <td class="tg-cly1" rowspan="2">Overlap&nbsp;&nbsp;&nbsp;(1910-1914/1916)</td>
+    <td class="tg-nrix">Same&nbsp;&nbsp;&nbsp;in China (St. John's)</td>
+    <td class="tg-nrix">Sociology</td>
+    <td class="tg-nrix" rowspan="2">Government&nbsp;&nbsp;&nbsp;(both)</td>
+    <td class="tg-nrix" rowspan="2">Shanghai/&nbsp;&nbsp;&nbsp;Hangzhou</td>
+  </tr>
+  <tr>
+    <td class="tg-nrix">45</td>
+    <td class="tg-nrix">2</td>
+    <td class="tg-cly1">徐志薌</td>
+    <td class="tg-cly1">Xu&nbsp;&nbsp;&nbsp;Zhixiang</td>
+    <td class="tg-nrix">M</td>
+    <td class="tg-nrix">1892</td>
+    <td class="tg-nrix">Same&nbsp;&nbsp;&nbsp;in America (Harvard)</td>
+    <td class="tg-nrix">Mechanical&nbsp;&nbsp;&nbsp;Engineering</td>
+  </tr>
+  <tr>
+    <td class="tg-nrix">50</td>
+    <td class="tg-nrix">1</td>
+    <td class="tg-7zrl">施肇基</td>
+    <td class="tg-7zrl">Shi Zhaoji</td>
+    <td class="tg-nrix">M</td>
+    <td class="tg-nrix">1876</td>
+    <td class="tg-cly1" rowspan="2">Different (Jiangsu,&nbsp;&nbsp;&nbsp;Zhejiang)</td>
+    <td class="tg-cly1" rowspan="2">Partial overlap (1893&nbsp;&nbsp;&nbsp;/1897-1902/1905)</td>
+    <td class="tg-nrix">Same&nbsp;&nbsp;&nbsp;in China (St. John's)</td>
+    <td class="tg-8d8j">Liberal arts</td>
+    <td class="tg-nrix" rowspan="2">Private&nbsp;&nbsp;&nbsp;(both)</td>
+    <td class="tg-nrix" rowspan="2">Tianjin (same)</td>
+  </tr>
+  <tr>
+    <td class="tg-nrix">50</td>
+    <td class="tg-nrix">1</td>
+    <td class="tg-7zrl">施肇祥</td>
+    <td class="tg-7zrl">Shi Zhaoxiang</td>
+    <td class="tg-nrix">M</td>
+    <td class="tg-nrix">1879</td>
+    <td class="tg-nrix">Same&nbsp;&nbsp;&nbsp;in America (Cornell)</td>
+    <td class="tg-nrix">Mechanical&nbsp;&nbsp;&nbsp;Engineering</td>
+  </tr>
+  <tr>
+    <td class="tg-nrix">50</td>
+    <td class="tg-nrix">2</td>
+    <td class="tg-7zrl">施贊元</td>
+    <td class="tg-7zrl">Shi Zanyuan</td>
+    <td class="tg-nrix">M</td>
+    <td class="tg-nrix">1888</td>
+    <td class="tg-cly1" rowspan="2">Same&nbsp;&nbsp;&nbsp;province (Jiangsu), different towns (Suzhou, Shanghai)</td>
+    <td class="tg-cly1" rowspan="2">Partial overlap&nbsp;&nbsp;&nbsp;(1904/1906-1914/1916)</td>
+    <td class="tg-nrix">Same&nbsp;&nbsp;&nbsp;in China (St. John's)</td>
+    <td class="tg-8d8j">Medicine</td>
+    <td class="tg-8d8j">Partial</td>
+    <td class="tg-nrix" rowspan="2">Tianjin/Beijing</td>
+  </tr>
+  <tr>
+    <td class="tg-nrix">50</td>
+    <td class="tg-nrix">2</td>
+    <td class="tg-7zrl">施厚元</td>
+    <td class="tg-7zrl">Shi Houyuan</td>
+    <td class="tg-nrix">M</td>
+    <td class="tg-nrix">1889</td>
+    <td class="tg-nrix">Different in America&nbsp;&nbsp;&nbsp;(Washington, Pennsylvania)</td>
+    <td class="tg-8d8j">Liberal arts</td>
+    <td class="tg-8d8j">Private</td>
+  </tr>
+</tbody></table>
+
+# Table 5 
+
+List of spouses mentioned in the *Who’s Who of American Returned Students* (1917). All married women are listed under their husband’s names. The table indicates the family cluster to which each individual belongs (identified through formal network analysis), their names (specifically, husbands' names) in Chinese with pinyin transliteration, and their year of birth. It also compares their place of birth, education in America and prior education in China, occupation, and place of work or residence in 1917.
+
+<style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0;}
+.tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+  overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+  font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg .tg-cly1{text-align:left;vertical-align:middle}
+.tg .tg-w7t0{background-color:#E8E8E8;font-weight:bold;text-align:center;vertical-align:middle}
+.tg .tg-oruy{background-color:#E8E8E8;font-weight:bold;text-align:left;vertical-align:middle}
+.tg .tg-nrix{text-align:center;vertical-align:middle}
+</style>
+<table class="tg"><thead>
+  <tr>
+    <th class="tg-w7t0">Family No.</th>
+    <th class="tg-oruy">Husband's name&nbsp;&nbsp;&nbsp;(Chinese)</th>
+    <th class="tg-w7t0">Name (Pinyin)</th>
+    <th class="tg-oruy">Place of birth</th>
+    <th class="tg-oruy">Studies in U.S.</th>
+    <th class="tg-oruy">Colleges&nbsp;&nbsp;&nbsp;attended</th>
+    <th class="tg-oruy">Marriage</th>
+    <th class="tg-oruy">Workplace&nbsp;&nbsp;&nbsp;(1917)</th>
+  </tr></thead>
+<tbody>
+  <tr>
+    <td class="tg-nrix">123</td>
+    <td class="tg-cly1">費興仁</td>
+    <td class="tg-cly1">Fei Xingren</td>
+    <td class="tg-cly1">Different&nbsp;&nbsp;&nbsp;provinces (Zhili, Shanghai)</td>
+    <td class="tg-cly1">Partial&nbsp;&nbsp;&nbsp;overlap (1907/1909-1914)</td>
+    <td class="tg-cly1">Same&nbsp;&nbsp;&nbsp;(Oberlin)</td>
+    <td class="tg-cly1">After&nbsp;&nbsp;&nbsp;return (1914)</td>
+    <td class="tg-cly1">Beijing/NA</td>
+  </tr>
+  <tr>
+    <td class="tg-nrix">169</td>
+    <td class="tg-cly1">韓安</td>
+    <td class="tg-cly1">Han An</td>
+    <td class="tg-cly1">Different&nbsp;&nbsp;&nbsp;provinces (Anhui, Jiangxi)</td>
+    <td class="tg-cly1">Partial&nbsp;&nbsp;&nbsp;overlap (1907/01/08-1912)</td>
+    <td class="tg-cly1">Different&nbsp;&nbsp;&nbsp;(Cornell, Michigan, Wisconsin; Columbia, Wells)</td>
+    <td class="tg-cly1">After&nbsp;&nbsp;&nbsp;return (1914)</td>
+    <td class="tg-cly1">Beijing/Nanjing</td>
+  </tr>
+  <tr>
+    <td class="tg-nrix">170</td>
+    <td class="tg-cly1">黃榮良</td>
+    <td class="tg-cly1">Huang Rongliang</td>
+    <td class="tg-cly1">Anhui&nbsp;&nbsp;&nbsp;(Wuwei)/NA</td>
+    <td class="tg-cly1">Perfect&nbsp;&nbsp;&nbsp;overlap (1900-1906) (same date of departure)</td>
+    <td class="tg-cly1">Same&nbsp;&nbsp;&nbsp;(Baker)</td>
+    <td class="tg-cly1">Before&nbsp;&nbsp;&nbsp;leaving or immediately after arriving in the US (1900)</td>
+    <td class="tg-cly1">Same&nbsp;&nbsp;&nbsp;(Beijing) </td>
+  </tr>
+  <tr>
+    <td class="tg-nrix">72</td>
+    <td class="tg-cly1">梅華銓</td>
+    <td class="tg-cly1">Mei Huaquan</td>
+    <td class="tg-cly1">Different&nbsp;&nbsp;&nbsp;countries (Taishan, Hongkong)</td>
+    <td class="tg-cly1">Partial&nbsp;&nbsp;&nbsp;overlap (1911-1915)</td>
+    <td class="tg-cly1">Same&nbsp;&nbsp;&nbsp;(Columbia)</td>
+    <td class="tg-cly1">After&nbsp;&nbsp;&nbsp;return (1915)</td>
+    <td class="tg-cly1">Taishan/Shanghai</td>
+  </tr>
+  <tr>
+    <td class="tg-nrix">17</td>
+    <td class="tg-cly1">歐陽祺</td>
+    <td class="tg-cly1">Ouyang Qi</td>
+    <td class="tg-cly1">Different&nbsp;&nbsp;&nbsp;countries (Xiangshan, Los Angeles)</td>
+    <td class="tg-cly1">Partial&nbsp;&nbsp;&nbsp;overlap (1882-1915)</td>
+    <td class="tg-cly1">Different&nbsp;&nbsp;&nbsp;(NYU, California; Pacific, Arizona)</td>
+    <td class="tg-cly1">Before&nbsp;&nbsp;&nbsp;return (1914)</td>
+    <td class="tg-cly1">Same&nbsp;&nbsp;&nbsp;(Beijing) </td>
+  </tr>
+  <tr>
+    <td class="tg-nrix">77</td>
+    <td class="tg-cly1">楊豹靈</td>
+    <td class="tg-cly1">Yang Baoling</td>
+    <td class="tg-cly1">Same&nbsp;&nbsp;&nbsp;locality (Suzhou)</td>
+    <td class="tg-cly1">Partial&nbsp;&nbsp;&nbsp;overlap (1907/1908-1910/1911)</td>
+    <td class="tg-cly1">Different&nbsp;&nbsp;&nbsp;(Cornell, Purdue; La George)</td>
+    <td class="tg-cly1">After&nbsp;&nbsp;&nbsp;return (1914)</td>
+    <td class="tg-cly1">Suzhou/Nanjing</td>
+  </tr>
+  <tr>
+    <td class="tg-nrix">171</td>
+    <td class="tg-cly1">張福良</td>
+    <td class="tg-cly1">Zhang Fuliang</td>
+    <td class="tg-cly1">Different&nbsp;&nbsp;&nbsp;countries (Shanghai, New York)</td>
+    <td class="tg-cly1">Partial&nbsp;&nbsp;&nbsp;overlap (both returned in September 1915)</td>
+    <td class="tg-cly1">Different&nbsp;&nbsp;&nbsp;(Yale, Hunter)</td>
+    <td class="tg-cly1">After&nbsp;&nbsp;&nbsp;return (1915)</td>
+    <td class="tg-cly1">Changsha/NA</td>
+  </tr>
+  <tr>
+    <td class="tg-nrix">172</td>
+    <td class="tg-cly1">張履鼇</td>
+    <td class="tg-cly1">Zhang Lüao</td>
+    <td class="tg-cly1">Same&nbsp;&nbsp;&nbsp;province (Jiangsu), different localities (Nanjing, Suzhou)</td>
+    <td class="tg-cly1">Partial&nbsp;&nbsp;&nbsp;overlap (1906/1907-1911)</td>
+    <td class="tg-cly1">Different&nbsp;&nbsp;&nbsp;(Yale, Virginia; Randolph Macon)</td>
+    <td class="tg-cly1">After&nbsp;&nbsp;&nbsp;return (1913)</td>
+    <td class="tg-cly1">Same&nbsp;&nbsp;&nbsp;(Hankou)</td>
+  </tr>
+</tbody></table>
