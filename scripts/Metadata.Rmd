@@ -1,0 +1,148 @@
+---
+title: "Who's Who of American-Returned Students: Metadata Analysis"
+author: "Cécile Armand"
+date: "2024-03-24"
+output: html_document
+---
+
+```{r setup, include=FALSE, message = FALSE, warning = FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(histtext)
+library(tidyverse)
+library(quanteda)
+library(strex)
+library(hrbrthemes)
+```
+
+Load packages 
+
+```{r}
+library(histtext)
+library(tidyverse)
+library(quanteda)
+library(strex)
+library(hrbrthemes)
+```
+<br>
+Retrieve names of corpus and fields 
+```{r}
+histtext::list_filter_fields("imh-zh")
+book_imh <- histtext::list_possible_filters("imh-zh", "book")
+```
+<br>
+Retrieve all entries in the Tsinghua directory
+```{r}
+search_imh_zh <- histtext::search_documents_ex('*', corpus = "imh-zh", filter_query = list(book = "游美同學錄"))
+search_imh_en <- histtext::search_documents_ex('*', corpus = "imh-en", filter_query = list(book = "游美同學錄"))
+```
+<br>
+Convert row names into ID
+```{r}
+search_imh_zh <- tibble::rowid_to_column(search_imh_zh, "ID")
+search_imh_en <- tibble::rowid_to_column(search_imh_en, "ID")
+```
+<br>
+Retrieve full text 
+```{r}
+imh17_zh_docs <- get_documents(search_imh_zh, corpus = "imh-zh", batch_size = 10, verbose = FALSE)
+imh17_eng_docs <- get_documents(search_imh_en, corpus = "imh-en", batch_size = 10, verbose = FALSE)
+```
+<br>
+Convert row names into ID
+```{r}
+imh17_zh_docs <- tibble::rowid_to_column(imh17_zh_docs, "ID")
+imh17_eng_docs <- tibble::rowid_to_column(imh17_eng_docs, "ID")
+```
+<br>
+Compute length of biographies 
+```{r}
+imh17_zh_docs <- imh17_zh_docs %>% select(DocId, Text) %>% mutate(nchar_zh = nchar(Text))
+imh17_eng_docs <- imh17_eng_docs %>% select(DocId, Text) %>% mutate(token_eng = ntoken(Text), char_eng = nchar(Text))
+```
+<br>
+Extract page number 
+```{r}
+imh17_zh_docs <- imh17_zh_docs %>% mutate(page_zh = str_extract(Text, "<p>\\s*(.*?)\\s*</p>")) %>% 
+  mutate(page_zh = str_remove_all(page_zh,"<p>")) %>%
+  mutate(page_zh = str_remove_all(page_zh,"</p>"))
+
+imh17_eng_docs <- imh17_eng_docs %>% mutate(page_eng = str_extract(Text, "<p>\\s*(.*?)\\s*</p>")) %>% 
+  mutate(page_eng = str_remove_all(page_eng,"<p>")) %>%
+  mutate(page_eng = str_remove_all(page_eng,"</p>"))
+```
+<br>
+Join two tables
+```{r}
+imh17_biling_metadata <- inner_join(imh17_zh_docs, imh17_eng_docs, by = "DocId")
+imh17_biling_metadata$Text.x <- NULL
+imh17_biling_metadata$Text.y <- NULL
+```
+<br>
+Import and select student attributes 
+```{r}
+main <- read.csv("~/youmei-new/main.csv")
+students_attributes <- main %>% select(DocId, gender, age_in_1917)
+
+```
+<br> 
+Join attributes with metadata
+```{r}
+imh_17_doc_attributes <- inner_join(imh17_biling_metadata, students_attributes)
+
+```
+<br> 
+Visualize correlation between length of text and age 
+```{r}
+ggplot(imh_17_doc_attributes, aes(x=age_in_1917, y=nchar_zh)) +
+  geom_jitter() +
+  geom_smooth(method=lm , color="red", fill="#69b3a2", se=TRUE) +
+  theme_ipsum() + 
+  labs(title = "Age and length of biographies (Chinese)",
+       x = "Age", 
+       y = "Number of sinograms",
+       caption = "遊美同學錄 (1917)") 
+
+
+ggplot(imh_17_doc_attributes, aes(x=age_in_1917, y=token_eng)) +
+  geom_jitter() +
+  geom_smooth(method=lm , color="red", fill="#69b3a2", se=TRUE) +
+  theme_ipsum() + 
+  labs(title = "Age and length of biographies (English)",
+       x = "Age", 
+       y = "Number of words",
+       caption = "Who's Who of American Returned Students (1917)") 
+```
+<br>
+Gender and length 
+```{r}
+ggplot(imh_17_doc_attributes, aes(x=age_in_1917, y=nchar_zh, color = gender)) +
+  geom_jitter() +
+  geom_smooth(method=lm , color="red", fill="#69b3a2", se=TRUE) +
+  theme_ipsum() + 
+  labs(title = "Length of biographies (Chinese)",
+       x = "Age", 
+       y = "Number of sinograms",
+       color = "Gender",
+       caption = "遊美同學錄 (1917)") 
+
+ggplot(imh_17_doc_attributes, aes(x=age_in_1917, y=token_eng, color = gender)) +
+  geom_jitter() +
+  geom_smooth(method=lm , color="red", fill="#69b3a2", se=TRUE) +
+  theme_ipsum() + 
+  labs(title = "Length of biographies (English)",
+       x = "Age", 
+       y = "Number of words",
+       color = "Gender",
+       caption = "Who's Who of American Returned Students (1917)") 
+```
+<br>
+Analyze correlation between length of text and age (linear regression)
+```{r}
+mod1 <- lm(nchar_zh~age_in_1917,data=imh_17_doc_attributes)
+summary(mod1)
+
+mod2 <- lm(token_eng~age_in_1917,data=imh_17_doc_attributes)
+summary(mod2)
+```
+<br>
+In both languages, the correlation between length and age is statistically significant (p-value >0.05). The older the individual, the longer his/her biographical record. English biographies increase in length by one word for each additional year of age, whereas Chinese biographies increase in length by 1.35 characters for each additional year of age. 

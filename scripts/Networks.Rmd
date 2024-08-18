@@ -1,0 +1,191 @@
+---
+title: "Network Analysis of the Who's Who of American Returned Students (1917)"
+author: "Cécile Armand"
+affiliation: Aix-Marseille University
+date: "`r lubridate::today()`"
+tags: [who's who directory, biography, bilingual, histtext]  
+abstract: |
+  This document introduces various network analyses conducted on the *Who's Who of American returned students* (Tsing Hua, 1917), including kinship networks and affiliation networks.     
+  
+  <style>
+    body {
+    text-align: justify}
+  </style>
+    
+output: 
+  html_document:
+    toc: true
+    toc_float: 
+      collapsed: false
+      smooth_scroll: false
+    toc_depth: 3
+    number_sections: false
+    code_folding: show # hide
+    fig_caption: true
+    df_print: paged
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(readr)
+library(tidyverse)
+library(igraph)
+library(Places)
+
+```
+
+# Kinship Networks
+
+The first step is to load the edge list (representing kinship ties) and the node list (containing students' and relatives' attributes). For a detailed description of the [kinship data](https://gitlab.com/enpchina/bookdown/youmei/Statistics.html#Kinship_ties) and the [method for extracting](https://gitlab.com/enpchina/bookdown/youmei/01_DataExtraction.html) it from the directory, please refer to the relevant documentation. 
+```{r message = FALSE, warning=FALSE}
+
+# load packages
+
+library(readr)
+library(tidyverse)
+library(igraph)
+
+# load kinship ties (edge list)
+
+library(readr)
+kinship <- read_delim("data/kinship.csv", 
+    delim = ";", escape_double = FALSE, trim_ws = TRUE)
+
+# load kinship node list (to distinguish biography from relative)
+
+kinship_nodes <- read_csv("data/kinship_nodes.csv")
+head(kinship_nodes)
+
+```
+## Build the Network
+```{r message = FALSE, warning=FALSE}
+
+# create network 
+
+g <- graph_from_data_frame(d=kinship, directed = TRUE, vertices=(kinship_nodes))
+g
+
+# components(g)
+
+```
+<br>
+The kinship network contains 376 nodes and 216 ties, representing 172 family components, with sizes ranging from 2 to 6 members in the case of Shi Zhaoji’s (施肇基) family. 
+
+## Visualize the Network
+
+In the next step, we visualize the kinship network.We use the color and shape of nodes to differentiate between the students who are the subject of a biography (red squares) and the relatives mentioned in their biographies (blue circles). The color of ties represent the different types of relations: 
+
+  * Grey ties represent father-son relations
+  * Yellow ties represent uncle-nephew relations
+  * Green ties represent siblings 
+  * Blue ties represent spouse
+
+```{r message = FALSE, warning=FALSE}
+
+# Index nodes shape on nodes type 
+V(g)[kinship_nodes$Type == "ego"]$shape <- "square"
+V(g)[kinship_nodes$Type == "relative"]$shape <- "circle"
+V(g)[kinship_nodes$Type == "ego"]$color <- "red"
+V(g)[kinship_nodes$Type == "relative"]$color <- "light blue"
+
+# Index edge color on relation type 
+E(g)[kinship$RelationMain == "Father"]$color <- "grey"
+E(g)[kinship$RelationMain == "Uncle"]$color <- "gold"
+E(g)[kinship$RelationMain == "Brother"]$color <- "yellowgreen"
+E(g)[kinship$RelationMain == "Spouse"]$color <- "light blue"
+
+# plot with igraph 
+plot.igraph(g, vertex.size = 3, 
+            vertex.label.color = "black", 
+            vertex.label.cex = 0.3, 
+            edge.width=0.5,
+            edge.arrow.size=0, 
+            edge.curved=0.1, 
+            main="Kinship Network of Early Liumei")
+
+```
+<br>
+To improve legibility, we will remove dyads and isolated nodes by selecting the largest components (size > 2): 
+```{r message = FALSE, warning=FALSE}
+# Get components
+cl <- components(g)
+
+# Extract membership data 
+
+family_components <- data.frame(cl$membership) %>% 
+  rownames_to_column("name") %>%
+  rename (comp_no = cl.membership) %>% 
+  group_by(comp_no) %>% add_tally() %>%
+  rename(size = n) %>% 
+  relocate(name, .after = size) 
+
+# join with node attributes 
+
+family_components_attributes <- inner_join(family_components, kinship_nodes)
+
+```
+<br>
+Remove isolated nodes
+```{r message = FALSE, warning=FALSE}
+
+family_filtered <- lapply(seq_along(cl$csize)[cl$csize > 1], function(x) 
+  V(g)$name[cl$membership %in% x])
+
+subv <- unlist(family_filtered)
+kin1 <- as.data.frame(subv) # convert into dataframe
+
+g1 <- induced.subgraph(graph=g,vids=subv)
+
+# g1 has 371 nodes and 213 ties 
+
+# plot reduced graphs
+
+# index nodes shape/color on nodes type 
+
+
+plot.igraph(g1, vertex.size = 3, 
+            vertex.label.color = "black", 
+            vertex.label.cex = 0.3, 
+            edge.width=2,
+            edge.arrow.size=0, 
+            edge.curved=0, 
+            main="Kinship Network of Early Liumei (no isolates)")
+
+
+```
+<br>
+
+```{r message = FALSE, warning=FALSE}
+# remove dyads 
+
+family_filtered2 <- lapply(seq_along(cl$csize)[cl$csize > 2], function(x) 
+  V(g)$name[cl$membership %in% x])
+
+subv2 <- unlist(family_filtered2)
+kin2 <- as.data.frame(subv2) # convert into dataframe
+write.csv(kin2, "kin2.csv")
+
+g2 <- induced.subgraph(graph=g,vids=subv2)
+
+# g2 has 83 nodes and 64 ties 
+
+
+plot.igraph(g2, vertex.size = 5, 
+            vertex.label.color = "black", 
+            vertex.label.cex = 0.5, 
+            edge.width=2.5,
+            edge.arrow.size=0, 
+            edge.curved=0, 
+            main="Kinship Network of Early Liuei (cluster > 2)")
+
+
+```
+
+# Affiliation networks
+
+## Education
+## Employment
+## Associative life
+

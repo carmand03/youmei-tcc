@@ -1,0 +1,342 @@
+---
+title: "Data extraction from bilingual biographies (Chinese-English)"
+subtitle: "Based on the Who's Who of American returned students (1917)" 
+author: "Cécile Armand"
+affiliation: Aix-Marseille University
+date: "`r lubridate::today()`"
+tags: [who's who directory, biography, bilingual, histtext]  
+abstract: |
+  This document explains how to use HistText and more generic packages to retrieve and clean the relevant historical information from bilingual biographies, taking the *Who's Who of American returned students* (1917) as a case study.    
+  
+  <style>
+    body {
+    text-align: justify}
+  </style>
+    
+output: 
+  html_document:
+    toc: true
+    toc_float: 
+      collapsed: false
+      smooth_scroll: false
+    toc_depth: 2
+    number_sections: false
+    code_folding: show # hide
+    fig_caption: true
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(histtext)
+library(tidyverse)
+library(quanteda)
+library(strex)
+library(knitr)
+library(kableExtra)
+```
+
+# Text preparation
+
+The *Who's Who of American Returned Students* (1917) is part of the "imh collection" of who's who directories generously shared by the Institute of Modern History, Academia Sinica, Taipei. The plain texts of the biographies are stored on a SolR server and can be mined using the [HistText R package](https://bookdown.enpchina.eu/rpackage/HistTextRManual.html).
+
+Load the required packages:
+```{r}
+library(histtext)
+library(tidyverse)
+```
+<br>
+To retrieve the full text, we need to find the title of the book and the name of the target fields: 
+```{r}
+histtext::list_filter_fields("imh-zh")
+histtext::list_possible_filters("imh-zh", "book") 
+```
+<br>
+The book we are interested in is the one titled 游美同學錄 (Youmei tongxuelu). It contains 401 individual entries (biographies). We can now retrieve all biographies, in Chinese and English: 
+```{r}
+search_imh_zh <- histtext::search_documents_ex('*', corpus = "imh-zh", filter_query = list(book = "游美同學錄"))
+search_imh_en <- histtext::search_documents_ex('*', corpus = "imh-en", filter_query = list(book = "游美同學錄"))
+```
+<br>
+Convert row names into ID 
+```{r}
+search_imh_zh <- tibble::rowid_to_column(search_imh_zh, "ID")
+search_imh_en <- tibble::rowid_to_column(search_imh_en, "ID")
+
+search_imh_zh
+search_imh_en
+```
+<br>
+Retrieve full text 
+```{r}
+imh17_zh_docs <- get_documents(search_imh_zh, corpus = "imh-zh", batch_size = 10, verbose = FALSE)
+imh17_eng_docs <- get_documents(search_imh_en, corpus = "imh-en", batch_size = 10, verbose = FALSE)
+```
+<br>
+Convert row names into ID again
+```{r}
+imh17_zh_docs <- tibble::rowid_to_column(imh17_zh_docs, "ID")
+imh17_eng_docs <- tibble::rowid_to_column(imh17_eng_docs, "ID")
+```
+<br> 
+Measure length of biographies, based on the number of characters in Chinese, number of words (tokens) in English: 
+```{r}
+library(quanteda)
+imh17_zh_docs <- imh17_zh_docs %>% mutate(length = nchar(Text))
+imh17_eng_docs <- imh17_zh_docs %>% mutate(length = ntoken(Text))
+
+imh17_zh_docs
+imh17_eng_docs
+```
+<br>
+Save datasets as csv files
+```{r}
+write.csv(imh17_zh_docs, "imh17_zh_fulltext.csv")
+write.csv(imh17_eng_docs, "imh17_eng_fulltext.csv")
+```
+
+# Information extraction (Chinese)
+
+First remove extra white space 
+```{r}
+imh17_zh_clean <- imh17_zh_docs %>% mutate(text_clean = str_squish(Text))
+imh17_zh_clean <- imh17_zh_clean %>% mutate(text_clean = str_replace_all(text_clean, " ", ""))
+```
+
+## Family data
+
+### Father
+Extract father's name
+```{r}
+family <- imh17_zh_clean %>% mutate(father_name = str_extract(text_clean, "父\\s*(.*?)\\s*。")) 
+```
+<br>
+Extract father's occupation using the structure of the narrative (anything before the current address)
+```{r}
+family <- family %>% mutate(father_occupation = str_extract(text_clean, "父\\s*(.*?)\\s*本籍住址|本籍通信處|永久通信處|永久住址|家中住址")) %>% 
+  mutate(father_occupation = str_remove_all(father_occupation,"本籍住址")) %>%
+  mutate(father_occupation = str_remove_all(father_occupation,"本籍通信處")) %>% 
+  mutate(father_occupation = str_remove_all(father_occupation,"永久通信處")) %>% 
+  mutate(father_occupation = str_remove_all(father_occupation,"永久住址")) %>% 
+  mutate(father_occupation = str_remove_all(father_occupation,"家中住址")) %>% 
+  mutate(father_occupation = str_remove_all(father_occupation, father_name))
+```
+<br>
+Remove useless information from father's name/occupation
+```{r}
+family <- family %>% 
+  mutate(father_name = str_remove_all(father_name,"。")) %>%
+  mutate(father_name = str_remove_all(father_name,"父")) %>% 
+  mutate(father_occupation = str_remove_all(father_occupation,"。")) %>% 
+  mutate(father_occupation = str_remove_all(father_occupation,"已婚"))
+```
+
+### Uncle
+
+Extract uncle's name and use the number of character to detect anomalies (names with less or more than 2 characters should be discarded)
+```{r}
+family <- family %>% mutate(uncle_name = str_extract(text_clean, "叔\\s*(.*?)\\s*。")) %>% 
+  mutate(uncle_name = str_remove_all(uncle_name,"。")) %>%
+  mutate(uncle_name = str_remove_all(uncle_name,"叔"))  %>% 
+  mutate(uncle_nchar = nchar(uncle_name))
+```
+
+### Siblings
+
+Elder brother (兄)
+```{r}
+family <- family %>% mutate(xiong_name = str_extract(text_clean, "兄\\s*(.*?)\\s*。")) 
+family <- family %>% mutate(xiong_name = str_remove_all(xiong_name,"。")) %>% # remove punctuation
+  mutate(xiong_name = str_remove_all(xiong_name,"兄")) %>% 
+  mutate(xiong_nchar = nchar(xiong_name)) # count characters to filter out strings with more than 4 characters
+```
+
+Younger brother (弟)
+```{r}
+family <- family %>% mutate(di_name = str_extract(text_clean, "弟\\s*(.*?)\\s*。")) 
+family <- family %>% mutate(di_name = str_remove_all(di_name,"。")) %>% # remove punctuation
+  mutate(di_name = str_remove_all(di_name,"弟")) %>% 
+  mutate(di_nchar = nchar(di_name))  # count characters to filter out strings with more than 4 characters
+```
+
+
+### Marital status
+
+We rely on pattern matching to retrieve information on their marital status (已婚 = married, 未婚 = unmarried): 
+```{r}
+married <- c("已婚", "未婚")
+married_vec <- paste(married, sep = "", collapse = "|")
+family <- family %>% mutate(married = str_extract(text_clean, married_vec)) 
+```
+
+### Children
+
+We also rely on pattern matching to extract information on the number of children. After a close examination of the data, we found that the maximum number of sons or daughters was 9. On this basis we create a vector of possible cases (ranging from 1 to 9 sons or daughters). We used the characters "子" and "女" as anchor for sons and daughters, as shown below: 
+```{r}
+sons <- c("子一", "子二", "子三", "子四", "子五", "子六", "子七", "子八", "子九")
+son_vec <- paste(sons, sep = "", collapse = "|")
+daugther <- c("女一", "女二", "女三", "女四", "女五", "女六", "女七", "女八", "女九")
+daugther_vec <- paste(daugther, sep = "", collapse = "|")
+family <- family %>% mutate(sons = str_extract(text_clean, son_vec)) %>% 
+  mutate(sons = str_remove_all(sons,"子"))
+family <- family %>% mutate(daugthers = str_extract(text_clean, daugther_vec)) %>% 
+  mutate(daugthers = str_remove_all(daugthers,"女"))
+```
+<br>
+Inspect last output with all family information:  
+```{r}
+head(family)
+```
+
+## Education
+
+### Source of funding
+
+To retrieve information related to the students' source of funding, we again relied on pattern matching. We first closely read a sample of biographies to identify all possible types of funding. Then we create a vector listing the four possibles cases: 
+
+  * "官費遊美" (guanfei youmei): government sponsored student
+  * "公費遊美" (gongfei youmei): other public funding (other than government)
+  * "後得半官費" (houdeban guanfei): partial government scholarship
+  * "自費遊美" (zifei youmei): self-funded student
+
+```{r}
+
+funding <- c("官費遊美", "公費遊美", "半官費遊美", "自費遊美")
+funding_vec <- paste(funding, sep = "", collapse = "|")
+family_funding <- family %>% mutate(funding = str_extract(text_clean, funding_vec)) %>% 
+  mutate(funding = str_remove_all(funding,"遊美")) 
+
+```
+
+### Year of return
+
+To retrieve then year when the students returned to China, we used the "search_concordance" function included in the histtext package: 
+```{r}
+search_imh_zh_conc <- histtext::search_concordance_ex('"回國" | "囘國"', 
+                                                      corpus = "imh-zh", context_size = 15, 
+                                                      filter_query = list(book = "游美同學錄"))
+
+```
+<br>
+We found the pattern appears once in 366 biographies, twice in 6 of them (the students have been abroad and returned twice), whereas 35 biographies do not contain the pattern (either because the student have not returned, or because another expression was used): 
+```{r}
+search_imh_zh_conc %>% group_by(DocId) %>% count(sort = TRUE)
+```
+<br>
+Find out who is missing: 
+```{r}
+setdiff(family$DocId, search_imh_zh_conc$DocId)
+```
+<br>
+Remove white spaces from "before" and "After" 
+```{r}
+
+imh_zh_conc <- search_imh_zh_conc %>% mutate(before_clean = str_replace_all(Before, " ", "")) %>% 
+  mutate(after_clean = str_replace_all(After, " ", ""))
+```
+<br>
+Clean the field "Before" 
+```{r}
+imh_zh_conc <- imh_zh_conc %>% mutate(return_date = str_sub(before_clean, - 7, - 1)) %>% 
+    mutate(return_date_clean = str_replace_all(return_date, "年。", "年")) %>% 
+    mutate(return_date_clean = str_remove(return_date_clean,".*。")) %>% 
+    mutate(return_date_clean = str_replace_all(return_date_clean, "</p>", "")) %>% 
+    mutate(return_date_clean = str_replace_all(return_date_clean, "p>", "")) %>%
+    mutate(return_date_clean = str_replace_all(return_date_clean, "/", "")) %>%
+      relocate(return_date_clean, .before = Matched)
+```
+<br>
+Extract date patterns for further cleaning. We use a vectorized list of temporal referentials to be found in the text:  
+
+  * "光緖": Guangxu emperor's reign (1875-1908)
+  * "宣統": Xuantong (Pu Yi)'s reign (1909-1911)
+  * "民國": Republican calendar (1912-)
+  * "是年": this year
+  
+```{r}
+zh_date <- c("民國", "宣統", "光緖", "是年")
+zh_date_vec <- paste(zh_date, sep = "", collapse = "|")
+imh_zh_conc <- imh_zh_conc %>% mutate(date_zh = str_extract(return_date_clean, zh_date_vec)) %>%
+  relocate(date_zh, .before = return_date_clean)
+```
+<br> 
+Clean the field "After"
+```{r}
+imh_zh_conc <- imh_zh_conc %>% mutate(after_return_clean = str_replace_all(after_clean, "國 。", "")) %>%
+  mutate(after_return_clean = str_remove(after_return_clean,".。 任*")) %>%
+  mutate(after_return_clean = str_replace_all(after_return_clean,"。 ", "")) %>% 
+  mutate(after_return_clean = str_replace_all(after_return_clean, " ", "")) %>% 
+  mutate(after_return_clean = str_replace_all(after_return_clean,"。", "")) %>% 
+  mutate(after_return_clean = str_replace_all(after_return_clean,"<", "")) %>% 
+  mutate(after_return_clean = str_replace_all(after_return_clean,"p>", "")) %>%
+  relocate(after_return_clean, .after = Matched)
+```
+<br>
+Extract date patterns for further cleaning
+```{r}
+imh_zh_conc <- imh_zh_conc %>% mutate(after_date_zh = str_extract(after_return_clean, zh_date_vec))  %>%
+  relocate(after_date_zh, .after = after_return_clean)  %>%
+  mutate(post_return = str_sub(after_return_clean, 1, 1)) %>% 
+  relocate(post_return, .after = after_date_zh) 
+```
+<br>
+Select variables for joining with family and funding data
+```{r}
+
+conc_zh_to_join <- imh_zh_conc %>% select(DocId, date_zh, return_date_clean, Matched, after_return_clean, after_date_zh) %>% 
+  rename(return_date = return_date_clean, post_return = after_return_clean)
+
+imh_zh_conc_join <- full_join(family_funding, conc_zh_to_join, by = "DocId")  
+
+imh_zh_conc_join
+
+```
+
+## Places
+
+### Address
+Extract and clean current address (in 1917)
+```{r}
+
+library(strex)
+
+address <- histtext::search_concordance_ex('"本籍住址" | "本籍通信處"|"永久通信處"|"永久住址"|"家中住址"', 
+                                              corpus = "imh-zh", context_size = 30, 
+                                              filter_query = list(book = "游美同學錄"))
+
+address_clean <- address %>% select(DocId, Matched, After)
+
+address_clean <- address_clean %>% mutate(address = str_before_nth(After, "。", 2)) %>%
+  mutate(address = str_replace_all(address,"。", ""))  %>% 
+  rename(address_to_clean = After) %>% 
+  relocate(address_to_clean, .after = address) %>% 
+  mutate(address_to_clean = str_remove_all(address_to_clean,"。")) 
+
+imh_zh_conc_join <- full_join(imh_zh_conc_join, address_clean, by = "DocId")
+
+```
+### Ancestry (原籍)
+
+```{r}
+
+ancestry <- histtext::search_concordance_ex('"原籍"', 
+                                                   corpus = "imh-zh", context_size = 30, 
+                                                   filter_query = list(book = "游美同學錄"))
+
+ancestry_clean <- ancestry %>% select(DocId, After)
+
+ancestry_clean <- ancestry_clean %>% mutate(ancestry = str_before_nth(After, "。", 1)) %>% select(DocId, ancestry)
+
+imh_zh_conc_join <- full_join(imh_zh_conc_join, ancestry_clean, by = "DocId")
+```
+
+
+## Save data
+
+```{r}
+
+write.csv(imh_zh_conc_join, "imh_zh_fulltext_to_clean.csv")
+
+```
+
+# Information extraction (English)

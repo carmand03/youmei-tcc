@@ -1,0 +1,1429 @@
+---
+title: "Statistical Analysis of the Who's Who of American Returned Students (1917)"
+author: "Cécile Armand"
+affiliation: Aix-Marseille University
+date: "`r lubridate::today()`"
+tags: [who's who directory, biography, bilingual, histtext]  
+abstract: |
+  This document introduces the data from the *Who's Who of American returned students* (Tsing Hua, 1917) and provides basic descriptive statistics on the population as well as more complex multivariate analyses.     
+  
+  <style>
+    body {
+    text-align: justify}
+  </style>
+    
+output: 
+  html_document:
+    toc: true
+    toc_float: 
+      collapsed: false
+      smooth_scroll: false
+    toc_depth: 3
+    number_sections: false
+    code_folding: show # hide
+    fig_caption: true
+    df_print: paged
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(readr)
+library(tidyverse)
+library(hrbrthemes)
+library(viridis)
+library(networkD3)
+
+```
+
+# Description 
+
+This initial aims to introduce the main dataset containing attribute data on the students (one row for each student).
+
+```{r message = FALSE, warning=FALSE}
+
+library(readr)
+main <- read_delim("data/main.csv", delim = ";", 
+    escape_double = FALSE, trim_ws = TRUE)
+
+head(main)
+
+```
+<br> 
+The main dataset includes 401 individuals (rows) and 34 columns (variables) which contains specific information on the students:
+
+<style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0;}
+.tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+  overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+  font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg .tg-lboi{border-color:inherit;text-align:left;vertical-align:middle}
+.tg .tg-melc{background-color:#E7E6E6;border-color:inherit;font-weight:bold;text-align:left;vertical-align:bottom}
+.tg .tg-za14{border-color:inherit;text-align:left;vertical-align:bottom}
+</style>
+<table class="tg"><thead>
+  <tr>
+    <th class="tg-melc">Type</th>
+    <th class="tg-melc">Variables</th>
+    <th class="tg-melc">Description</th>
+  </tr></thead>
+<tbody>
+  <tr>
+    <td class="tg-lboi" rowspan="12">Identification</td>
+    <td class="tg-za14">DocId</td>
+    <td class="tg-za14">Unique identifier of the biography in the imh collection</td>
+  </tr>
+  <tr>
+    <td class="tg-za14">name_source</td>
+    <td class="tg-za14">Name of the person, as given in the original source</td>
+  </tr>
+  <tr>
+    <td class="tg-za14">FullName_zh</td>
+    <td class="tg-za14">Full name of the person, in Chinese</td>
+  </tr>
+  <tr>
+    <td class="tg-za14">FullName_py</td>
+    <td class="tg-za14">Full name of the person, in pinyin transliteration</td>
+  </tr>
+  <tr>
+    <td class="tg-za14">FullName_wg</td>
+    <td class="tg-za14">Full name of the person, in Wade-Giles transliteration</td>
+  </tr>
+  <tr>
+    <td class="tg-za14">gender</td>
+    <td class="tg-za14">Gender (Male or Female)</td>
+  </tr>
+  <tr>
+    <td class="tg-za14">birth_year</td>
+    <td class="tg-za14">Year of birth</td>
+  </tr>
+  <tr>
+    <td class="tg-za14">age_in_1917</td>
+    <td class="tg-za14">Age in 1917 (date of publication)</td>
+  </tr>
+  <tr>
+    <td class="tg-za14">Birth_Province_zh</td>
+    <td class="tg-za14">Province of birth, in Chinese</td>
+  </tr>
+  <tr>
+    <td class="tg-za14">Birth_Province_eng_standard</td>
+    <td class="tg-za14">Province of birth, in English</td>
+  </tr>
+  <tr>
+    <td class="tg-za14">Birth_location_zh</td>
+    <td class="tg-za14">Birthplace (city, town, or village), in Chinese</td>
+  </tr>
+  <tr>
+    <td class="tg-za14">Birth_Location_eng_standard</td>
+    <td class="tg-za14">Birthplace (city, town, or village), in English</td>
+  </tr>
+  <tr>
+    <td class="tg-lboi" rowspan="7">Family</td>
+    <td class="tg-za14">ancestry_province</td>
+    <td class="tg-za14">Province of ancestry (jiguan 籍貫), in Chinese</td>
+  </tr>
+  <tr>
+    <td class="tg-za14">ancestry_locality</td>
+    <td class="tg-za14">Locality of ancestry, in Chinese</td>
+  </tr>
+  <tr>
+    <td class="tg-za14">married</td>
+    <td class="tg-za14">Marital status (yihun 已婚, married; weihun 未婚, unmarried) </td>
+  </tr>
+  <tr>
+    <td class="tg-za14">married_year</td>
+    <td class="tg-za14">Year of marriage</td>
+  </tr>
+  <tr>
+    <td class="tg-za14">sons</td>
+    <td class="tg-za14">Number of sons in 1917</td>
+  </tr>
+  <tr>
+    <td class="tg-za14">daugthers</td>
+    <td class="tg-za14">Number of daughters in 1917</td>
+  </tr>
+  <tr>
+    <td class="tg-za14">total_children</td>
+    <td class="tg-za14">Total number of children in 1917</td>
+  </tr>
+  <tr>
+    <td class="tg-lboi" rowspan="14">Education</td>
+    <td class="tg-za14">FundingMain</td>
+    <td class="tg-za14">Source of funding (normalized)</td>
+  </tr>
+  <tr>
+    <td class="tg-za14">Funding</td>
+    <td class="tg-za14">Source of funding (from English biography)</td>
+  </tr>
+  <tr>
+    <td class="tg-za14">FundingZh</td>
+    <td class="tg-za14">Source of funding (from Chinese biography)</td>
+  </tr>
+  <tr>
+    <td class="tg-za14">Number_visit</td>
+    <td class="tg-za14">Number of times the person visited the United States</td>
+  </tr>
+  <tr>
+    <td class="tg-za14">estimated_arrived_year</td>
+    <td class="tg-za14">Estimated year of arrival in the USA</td>
+  </tr>
+  <tr>
+    <td class="tg-za14">period</td>
+    <td class="tg-za14">Period of study in the USA (periodization 1, based on the First Remission of the Boxer Indemnity: pre-Boxer (1872-1908), post-Boxer (1909-1917)</td>
+  </tr>
+  <tr>
+    <td class="tg-za14">period2</td>
+    <td class="tg-za14">Period of study in the USA (periodization 2, based on the abolition of the imperial examinations: before (1872-1905), after (1906-1917)</td>
+  </tr>
+  <tr>
+    <td class="tg-za14">arrived_month</td>
+    <td class="tg-za14">Month of arrival in the USA</td>
+  </tr>
+  <tr>
+    <td class="tg-za14">estimated_returned_year</td>
+    <td class="tg-za14">Estimated year of return</td>
+  </tr>
+  <tr>
+    <td class="tg-za14">returned_month</td>
+    <td class="tg-za14">Month of return</td>
+  </tr>
+  <tr>
+    <td class="tg-za14">duration</td>
+    <td class="tg-za14">Duration of stay in the USA</td>
+  </tr>
+  <tr>
+    <td class="tg-za14">field_of_study</td>
+    <td class="tg-za14">Field of study (lower level): a synthetic variable that collapses all the disciplines studied. For   a detailed list of individual disciplines studied by the individual, see the   specific datasets ("education" and "degrees")</td>
+  </tr>
+  <tr>
+    <td class="tg-za14">field_group</td>
+    <td class="tg-za14">Field of study (upper level): based on the typology designed for the Modern China Biographical   Database (MCBD)</td>
+  </tr>
+  <tr>
+    <td class="tg-za14">Highest</td>
+    <td class="tg-za14">Highest degree obtained (for a detailed list of degrees obtained by the person, refer to the   specific dataset ("education", "discipline",   "degree")</td>
+  </tr>
+  <tr>
+    <td class="tg-lboi" rowspan="2">Metadata</td>
+    <td class="tg-za14">source_name</td>
+    <td class="tg-za14">Source (title)</td>
+  </tr>
+  <tr>
+    <td class="tg-za14">source_page</td>
+    <td class="tg-za14">Page number in source</td>
+  </tr>
+</tbody></table>
+
+# Basic statistics
+
+
+## Gender
+
+<br>
+How many men and women? 
+```{r message = FALSE, warning=FALSE}
+
+library(dplyr)
+
+main %>% group_by(gender) %>% count()
+
+```
+
+## Timing 
+
+### Year of Birth 
+<br>
+When were they born? 
+```{r message = FALSE, warning=FALSE}
+
+library(ggplot2)
+library(hrbrthemes)
+library(viridis)
+
+main %>% drop_na(birth_year) %>% 
+  ggplot( aes(x=birth_year)) +
+  geom_histogram( binwidth=1, fill="#69b3a2", color="#e9ecef", alpha=0.9) +
+  ggtitle("Bin size = 1") +
+  theme_ipsum() +
+  theme(
+    plot.title = element_text(size=15)
+  ) +
+  labs(title = "Early Liumei's Year of Birth",
+       x = "Year",
+       y = "Frequency", 
+       caption = "Source: 遊美同學錄 (1917)")
+
+
+```
+
+
+### Year of Arrival
+<br>
+When did they arrive in America? 
+```{r message = FALSE, warning=FALSE}
+
+main %>% drop_na(estimated_arrived_year) %>% 
+  ggplot( aes(x=estimated_arrived_year)) +
+  geom_histogram( binwidth=1, fill="#69b3a2", color="#e9ecef", alpha=0.9) +
+  ggtitle("Bin size = 1") +
+  theme_ipsum() +
+  theme(
+    plot.title = element_text(size=15)
+  ) +
+  labs(title = "Early Liumei's Year of Arrival",
+       x = "Year",
+       y = "Frequency", 
+       caption = "Source: 遊美同學錄 (1917)")
+
+```
+
+### Year of Return 
+<br>
+When did they return to China? 
+```{r message = FALSE, warning=FALSE}
+
+main %>% drop_na(estimated_returned_year) %>% 
+  ggplot( aes(x=estimated_returned_year)) +
+  geom_histogram( binwidth=1, fill="#69b3a2", color="#e9ecef", alpha=0.9) +
+  ggtitle("Bin size = 1") +
+  theme_ipsum() +
+  theme(
+    plot.title = element_text(size=15)
+  ) +
+  labs(title = "Early Liumei's Year of Return",
+       x = "Year",
+       y = "Frequency", 
+       caption = "Source: 遊美同學錄 (1917)")
+
+```
+
+### Diachronic Comparison
+<br>
+Compare year of birth, arrival, and return:  
+```{r message = FALSE, warning=FALSE}
+
+# Reshape data for comparison 
+
+library(tidyr)
+years <- gather(main, key = "Event", value = "Year", birth_year, estimated_arrived_year, estimated_returned_year) %>% drop_na(Year) %>% mutate(Year = as.numeric(Year))
+
+# Create plot
+ggplot(years, aes(x = Year , fill = Event)) +
+  geom_histogram(position = "identity", alpha = 0.8) +
+  labs(title = "Three Steps in Early Liumei's Trajectories",
+       subtitle = "Birth, Arrival, and Return", 
+       x = "Year",
+       y = "Frequency", 
+       caption = "Source: 遊美同學錄 (1917)") +
+  scale_fill_manual(values = c("birth_year" = "light green", "estimated_arrived_year" = "steelblue", "estimated_returned_year" = "red"), 
+                    label = c("Birth", "Arrival", "Return")) +
+  theme_minimal() + theme(legend.position = "bottom")
+
+
+
+```
+
+
+
+## Birth Place
+
+<br>
+Where were they born? 
+
+### Province
+
+```{r message = FALSE, warning=FALSE}
+
+main %>% group_by(Birth_Province_zh, Birth_Province_eng_standard) %>% 
+  count(sort = TRUE) %>% 
+  mutate(percent = round(n/401*100, 2))
+
+main %>% 
+  drop_na(Birth_Province_zh) %>% 
+  group_by(Birth_Province_zh) %>%
+  count()  %>%
+  ggplot(aes(reorder(Birth_Province_zh, n), n)) +
+  geom_col() +
+  coord_flip() + 
+  labs(title = "Early Liumei's Province of Birth",
+       x = "Province", 
+       y = "Number of students",
+       caption = "Source: 遊美同學錄 (1917)")
+```
+
+
+### Locality
+
+```{r message = FALSE, warning=FALSE}
+
+main %>% group_by(Birth_location_zh, Birth_Location_eng_standard) %>% 
+  count(sort = TRUE) %>% 
+  mutate(percent = round(n/401*100, 2))
+
+main %>% 
+  drop_na(Birth_location_zh) %>% 
+  group_by(Birth_location_zh) %>%
+  count() %>%
+  filter(n>2) %>%
+  ggplot(aes(reorder(Birth_location_zh, n), n)) +
+  geom_col() +
+  coord_flip() + 
+  labs(title = "Early Liumei's Place of Birth",
+       subtitle = "Places > 2 births",
+       x = "Locality", 
+       y = "Number of students",
+       caption = "Source: 遊美同學錄 (1917)")
+```
+
+### Mapping 
+<br>
+The following maps show the distribution of birth places: 
+<br>
+![Distribution of births by province](media/births_province_labels.png)
+![Distribution of births by city and province](media/births_province_cities_no_labels.png)
+<br>
+The maps were made with [QGIS](https://www.qgis.org/) using spatial data from the [Modern China Geospatial Database (MCGD)](https://analytics.huma-num.fr/enpchina/MCGD_interface/). 
+
+## Funding 
+
+How did they fund their studies? Did it depend their geographical and family background?  
+
+### Sources of Funding
+```{r message = FALSE, warning=FALSE}
+
+main %>% group_by(FundingMain) %>% 
+  count(sort = TRUE) %>% 
+  mutate(percent = round(n/401*100, 2)) 
+
+```
+<br>
+
+### Funding and Birthplace
+
+```{r message = FALSE, warning=FALSE}
+
+# Count number of births and funding sources in each province
+prov_count <- main %>% group_by(Birth_Province_zh) %>% count(sort = TRUE) %>% mutate(percent = n/401*100)  %>% rename(nprov = n)
+funding_prov <- main %>% group_by(FundingMain, Birth_Province_zh) %>% count(sort = TRUE) %>% rename(nfund = n)
+
+# Join funding with province count 
+funding_prov <- left_join(funding_prov, prov_count)
+funding_prov$percent <- NULL
+
+funding_prov <- funding_prov %>% mutate(percent_prov = round(nfund/nprov*100, 2)) 
+
+# What provinces benefited most from government scholarship? 
+funding_prov %>% filter(FundingMain == "Government support") %>% filter(percent_prov >50)
+
+# What provinces relied mostly on private funding? 
+funding_prov %>% filter(FundingMain == "Private support") %>% filter(percent_prov >50) %>% arrange(desc(percent_prov))
+
+
+```
+<br>
+![Share of Public Funding By Province](media/PublicFunding_per_province.png)
+<br>
+The map was made with [QGIS](https://www.qgis.org/) using spatial data from the [Modern China Geospatial Database (MCGD)](https://analytics.huma-num.fr/enpchina/MCGD_interface/). 
+
+# Family Background
+
+
+## Kinship ties
+
+For this analysis, we need to incorporate kinship data. The "kinship" dataset displayed below lists all the relatives mentioned in the 401 biographies. The dataset provides information on the names of the relatives and the type of relation with the student.There are 5 types of relations: Father, Uncle, Sibling (elder brother 兄, younger brother 弟), and spouse: 
+
+```{r message = FALSE, warning=FALSE}
+
+library(readr)
+kinship <- read_delim("data/kinship.csv", 
+    delim = ";", escape_double = FALSE, trim_ws = TRUE)
+
+kinship
+
+```
+<br>
+The dataset contains 216 rows representing 216 kinship ties, meaning that the same student may have several rows if several relatives are mentioned in his biography. On the opposite, students who did not mention any parents in their biography do not appear in this dataset. 192 biographies mention at least one relative.
+```{r message = FALSE, warning=FALSE}
+
+
+# 192 distinct biographies 
+kinship %>% distinct(ego) %>% count()
+
+# 118 parents, including 100 fathers (97 unique names), 18 uncles (17 unique)
+kinship %>% filter(RelationMain == "Father") %>% distinct(relative) %>% count()
+kinship %>% filter(RelationMain == "Uncle") %>% distinct(relative) %>% count()
+
+# 81 distinct siblings
+kinship %>% filter(RelationMain == "Sibling") %>% distinct(relative) %>% count()
+kinship %>% filter(RelationMain == "Sibling") %>% 
+  distinct(relative, Relation2) %>% 
+  group_by(Relation2) %>% count() # 55 兄, 26 弟
+
+# 16 spouses (8 couples)
+kinship %>% filter(RelationMain == "Spouse") %>% distinct(relative) %>% count()
+
+
+```
+<br>
+The 216 ties refer to 118 unique parents, including 97 fathers (100 father-son relations) and 17 uncles. Additionally, there are 80 siblings, including 55 elder brothers, and 26 younger brothers (pairs). The population also contains 16 spouses representing 8 couples. 
+
+Among the relatives mentioned in the students' biography, fathers and uncles are the most relevant from the analysis of social-economic backgrounds. In the following steps, therefore, we will focus on fathers and uncles.  
+
+## Parents' Occupations
+
+We load the pre-formated dataset that  incorporates information on both funding and family background: 
+
+```{r message = FALSE, warning=FALSE}
+
+library(readr)
+kin_funding <- read_delim("data/kin_funding.csv", 
+    delim = ";", escape_double = FALSE, trim_ws = TRUE)
+
+kin_funding
+
+```
+<br>
+The dataset contains the following information:  
+
+  * Unique identifier of the biography (DocId)  
+  * name of the student (ego)
+  * source of funding (FundingMain, Funding, FundingZh)
+  * on the relative(s) mentioned in the student's biography.: name (relative), type of relation (RelationMain, Relation2), and occupation (occup_cat, occupation1, occupation2) 
+
+The dataset includes 118 rows (ties) and 11 variables. One row represents one kinship tie, meaning that the same student may have several rows if several relatives are mentioned in his biography. For example, Li Fengzao 李奉藻 (imh-11-61) mentioned not only his father Li Zanchen (李贊辰) but also his uncle Li Enfu (李恩富). On the opposite, students who did not mention any parents in their biography do not appear in this dataset. 
+
+First, it is sound to explore the relatives and their occupation before analyzing the correlation with students source of funding: 
+
+```{r message = FALSE, warning=FALSE}
+
+# relations
+kin_funding %>% distinct(ego, relative, RelationMain) %>%
+  group_by(RelationMain) %>% 
+  count(sort = TRUE) %>% mutate(percent = n / 113*100)
+
+# occupations
+kin_funding %>% distinct(relative, occup_cat) %>% 
+  group_by(occup_cat) %>% count(sort = TRUE) %>% mutate(percent = n / 113*100)
+
+
+```
+<br> 
+There are 100 father-son and 18 uncle-nephew relationships in the dataset. Among the 113 unique relatives mentioned, 23% are engaged in business, over 13% are officials, nearly 8% are involved in intellectual activities (such as scholars or teachers), and 5.3% in other professions (such as physicians, religious figures, or rentiers). The occupation is unknown in 50% of cases.   
+
+## Occupation and Funding
+
+To examine the correlation between family background and source of funding, this study employs correspondence analysis (CA). Correspondence Analysis (CA) is statistical method that examines the relationships between categories within two variables, in this specific case, the source of funding and parents’ occupations. By analyzing the data presented in a contingency table, CA generates insights into the associations between these variables. 
+
+```{r message = FALSE, warning=FALSE}
+
+# select the two variables
+
+occup_fund <- kin_funding %>% select(occup_cat, FundingMain)  
+
+# create contingency table
+
+occup_fund$Funding <- occup_fund$FundingMain %>% replace_na('Unknown')
+occup_fund$occupation_cat <- occup_fund$occup_cat %>% replace_na('Unknown')
+
+occup_fund_table <-
+  occup_fund %>% 
+  group_by(occup_cat, FundingMain) %>% 
+  tally() %>% 
+  spread(key = occup_cat, value = n) 
+
+# replace NA with 0
+occup_fund_table <- mutate_all(occup_fund_table, ~replace(., is.na(.), 0))
+
+# read first column as row names 
+
+occup_fund_table <- column_to_rownames(occup_fund_table, var = "FundingMain") 
+
+occup_fund_table
+
+
+```
+<br>
+
+The findings are typically visualized in a two-dimensional graphical form known as a biplot, as depicted in the figure below, called biplot. A biplot from correspondence analysis displays both rows (e.g., students' sources of funding) and columns (e.g., parents' occupations) as points in a two-dimensional space, where the proximity of points indicates the strength and nature of their relationship. Since correspondence analysis deals with frequency data, there are no negative values, and points close to each other suggest a strong association, while the axes represent the dimensions of variation, helping to interpret the main sources of variation in the data. For this study, we rely on [FactoMineR](http://factominer.free.fr/) and related packages: 
+
+```{r message = FALSE, warning=FALSE}
+
+# Correspondance analysis
+
+library(FactoMineR)
+library(Factoshiny)
+library(factoextra)
+
+res.ca1<-CA(occup_fund_table,graph=FALSE)
+
+plot.CA(res.ca1, title="Source of funding and parents' occupation",
+        cex=0.8,cex.main=1.3,cex.axis=1.2,
+        caption= "Source: 遊美同學錄, 1917")
+
+```
+
+<br> 
+The biplot shows the correlation between the source of funding (blue dots) and parents' occupation (red dots). It captures 90.87% of information. When a particular type of funding is close to a particular occupation, it means that the two are strongly correlated. It is noteworthy that government scholarships mainly benefited students from intellectual backgrounds, likely because they were better prepared to pass the examinations. In contrast, students from business families primarily relied on their own funds, as their economic capital generally spared them the burden of taking competitive exams. Sons of officials relied equally on private and public funding, reflecting the diversity of income situations among late Qing officials, and represented the largest proportion of partial funding. 
+
+# Education
+
+The educational trajectories of early *liuMei* raise the following questions:
+
+  1. Which disciplines did they choose to specialize in? What degrees did they obtain? Is there a relationship between the level of qualification and the field of study? Additionally, is there a connection between their field of specialization and their parents' occupation?
+  2. What schools did they attend before going to the United States, and which universities did they study at in the United States?
+  3. Did their trajectories help establish privileged connections between Chinese and American universities?
+  
+## Academic Curricula
+
+### Field of Study
+
+What did they study in the United States? What was their field of specialization? The following dataset contains the list of all disciplines studied by all students, with two levels of granularity: minor (lower level) and major (upper level)
+```{r message = FALSE, warning=FALSE}
+
+# load the complete list of disciplines 
+
+library(readr)
+disciplines_all_clean <- read_csv("data_old/disciplines_all_clean.csv")
+
+# count distribution (major)
+
+disciplines_all_clean %>% distinct(DocId, major) %>% 
+  group_by(major) %>% count(sort = TRUE) %>% 
+  mutate(percent = round(n/410*100, 2))
+
+# count distribution (minor)
+
+disciplines_all_clean %>% distinct(DocId, major, minor) %>% 
+  group_by(major, minor) %>% count(sort = TRUE) %>% 
+  mutate(percent = round(n/420*100, 2))
+
+```
+<br> 
+At the broader level, social sciences ranked first (nearly one third of individual curricula), followed by engineering (30%) and the humanities (13%). Other groups represent less than 10% each, by order of importance: biological sciences (9.5%), health sciences (6%), physical sciences (4.6%), and military sciences (2.2%). 
+<br>
+At a finer level, however, civil engineering is most chosen discipline (40 curricula, 9.5%), followed by liberal artd (9.3%), economics (nearly 8%), commerce, and law (nearly 6% each). Agriculture, education, and political sciences (20 curricula, 5.2 % each) followed closely. All other disciplines, led by medicine and mining, amounted for less than 5% each. 
+
+#### Fields Over Time
+
+How did educational choices evolve over time? 
+```{r message = FALSE, warning=FALSE}
+
+# join list of disciplines with period of studies 
+
+periods <- main %>% select(DocId, period, period2)
+discipline_period <- left_join(disciplines_all_clean, periods)
+
+# Step 1: Count the distribution of disciplines by period
+discipline_count <- discipline_period %>%
+  group_by(period, major) %>%
+  summarise(count = n()) %>%
+  ungroup()
+
+# Step 2: Calculate the percentage each discipline represents during each period
+distribution_by_period <- discipline_count %>%
+  group_by(period) %>%
+  mutate(period_total = sum(count),
+         period_percentage = (count / period_total) * 100) %>%
+  ungroup()
+
+# Step 3: Calculate the percentage each discipline represents within the discipline across all periods
+discipline_total <- discipline_count %>%
+  group_by(major) %>%
+  mutate(discipline_total = sum(count)) %>%
+  ungroup()
+
+discipline_distribution <- distribution_by_period %>%
+  left_join(discipline_total, by = c("period", "major", "count")) %>%
+  mutate(discipline_percentage = (count / discipline_total) * 100)
+
+head(discipline_distribution)
+
+```
+<br>
+The table shows the importance of each discipline within each period, as well as the importance of each period within each discipline. Specifically, the "period_percentage" column indicates that the three leading disciplines during the period 1872-1908 (prior to the First Remission of the Boxer Indemnity) were, by order of importance, Social Sciences, Engineering, and the Humanities. During the second period (post-Boxer), Engineering was the most favored choice, before Social Sciences, and Biological Sciences. Within each discipline, the last column (discipline_percentage) reveals that the Humanities and Social Sciences were more popular during the first period, whereas military sciences were more represented after the Boxer remission. 
+
+
+```{r message = FALSE, warning=FALSE}
+
+discipline_period %>% 
+  drop_na(major) %>% 
+  filter(!major == "NA") %>% 
+  filter(!period == "NA")%>% 
+  group_by(period, major) %>%
+  count()  %>%
+  ggplot(aes(reorder(major, n), n)) +
+  geom_col() +
+  coord_flip() + 
+  facet_wrap(vars(period), nrow= 2) +
+  labs(title = "Early Liumei's Field of Study",
+       subtitle = "Field of Study By Period",
+       x = "Field of Study (major)", 
+       y = "Number of curricula",
+       caption = "Source: 遊美同學錄 (1917)")
+
+```
+<br>
+
+```{r message = FALSE, warning=FALSE}
+
+discipline_period %>% 
+  drop_na(minor) %>% 
+  filter(!minor == "NA") %>% 
+  filter(!period == "NA")%>% 
+  group_by(period, minor) %>%
+  count()  %>%
+  filter(n>2) %>%
+  ggplot(aes(reorder(minor, n), n)) +
+  geom_col() +
+  coord_flip() + 
+  facet_wrap(vars(period), scale = "free_x", nrow= 2) +
+  theme(axis.text.x = element_text(size = 10))+
+  labs(title = "Early Liumei's Field of Study",
+       subtitle = "Field of Study By Period",
+       x = "Field of Study (minor)" , 
+       y = "Number of curricula",
+       caption = "Source: 遊美同學錄 (1917)") 
+```
+<br>
+At a lower level, we observe that law was the most chosen discipline during the initial period, followed by civil engineering and liberal arts. After the Remission of the Boxer Indemnity, education and economics became the most preferred disciplines.  
+
+#### Field and Funding
+
+Was the students' choice of academic discipline affected by their source of funding? As with the previous analysis of funding and parents' occupation, we will use correspondence analysis to examine the correlation between the source of funding and the field of study.
+
+```{r message = FALSE, warning=FALSE}
+
+# join field and funding 
+
+funding <- main %>% select(DocId, FundingMain)
+discipline_funding <- left_join(disciplines_all_clean, funding)
+
+# select the two variables
+
+discipline_funding <- discipline_funding %>% select(major, FundingMain)  
+
+# create contingency table
+
+discipline_funding$FundingMain <- discipline_funding$FundingMain %>% replace_na('Unknown')
+discipline_funding$major <- discipline_funding$major %>% replace_na('Unknown')
+
+discipline_funding_table <-
+  discipline_funding %>% 
+  group_by(major, FundingMain) %>% 
+  tally() %>% 
+  spread(key = major, value = n) 
+
+# replace NA with 0
+discipline_funding_table <- mutate_all(discipline_funding_table, ~replace(., is.na(.), 0))
+
+# read first column as row names 
+
+discipline_funding_table <- column_to_rownames(discipline_funding_table, var = "FundingMain") 
+
+# Correspondance analysis
+
+library(FactoMineR)
+library(Factoshiny)
+library(factoextra)
+
+res.ca2<-CA(discipline_funding_table,graph=FALSE)
+
+plot.CA(res.ca2, title="Source of funding and field of study",
+        cex=0.8,cex.main=1.3,cex.axis=1.2,
+        caption= "Source: 遊美同學錄, 1917")
+
+
+```
+
+<br>
+The biplot clearly separates self-funded students on the right, who more frequently engaged in the humanities and health sciences, from government-sponsored students on the left, who more often specialized in engineering and biological sciences.
+
+### Influence of Parents' Occupation
+
+Were the students' choice of discipline influenced by their parents' occupation? We use two methods to examine the correlation between the parents' occupation and the field of study: (1) correspondence analysis (2) sankey diagram 
+
+```{r message = FALSE, warning=FALSE}
+
+# join field and parents 
+
+parent_occup <- kin_funding %>% select(DocId, occup_cat)
+parent_field <- left_join(disciplines_all_clean, parent_occup)
+parent_field1 <- parent_field %>% select(occup_cat, major) 
+parent_field2 <- parent_field %>% select(occup_cat, minor) 
+
+```
+<br>
+Correspondence Analysis on Major 
+
+```{r message = FALSE, warning=FALSE}
+parent_field_ca <- parent_field1 %>% select(major, occup_cat) %>% drop_na(occup_cat, major)
+
+# create contingency table
+
+parent_field_table <-
+  parent_field_ca %>% 
+  group_by(occup_cat, major) %>% 
+  tally() %>% 
+  spread(key = major, value = n) 
+
+
+# read first column as row names 
+
+parent_field_table <- column_to_rownames(parent_field_table, var = "occup_cat") 
+
+# replace NA with 0
+parent_field_table <- mutate_all(parent_field_table, ~replace(., is.na(.), 0))
+
+
+res.ca3<-CA(parent_field_table,graph=FALSE)
+
+plot.CA(res.ca3, title="Parents' Occupation and Field of Study",
+        cex=0.8,cex.main=1.3,cex.axis=1.2,
+        caption= "Source: 遊美同學錄, 1917")
+
+```
+<br>
+
+Sankey Chart on Minor 
+
+```{r message = FALSE, warning=FALSE}
+
+parent_field2 <- parent_field %>% select(occup_cat, minor) %>% drop_na(occup_cat)
+
+parent_field2 <- parent_field2 %>% 
+  select(occup_cat, minor) %>% 
+  rename(source = occup_cat, target = minor)
+
+# remove NA and compute weight 
+link3 <- parent_field2 %>%
+  group_by(source, target) %>% 
+  count() %>% 
+  rename(value = "n") %>% filter(value >1)
+
+
+# Create node list from edge list ; the node list contains every entity involved in the flow
+node3 <- data.frame(
+  name=c(as.character(link3$source), 
+         as.character(link3$target)) %>% unique()
+)
+
+# create unique id for each connection
+link3$IDsource <- match(link3$source, node3$name)-1 
+link3$IDtarget <- match(link3$target, node3$name)-1
+
+
+# Make the Network
+
+library(networkD3)
+p1 <- sankeyNetwork(Links = link3, Nodes = node3,
+                    Source = "IDsource", Target = "IDtarget",
+                    Value = "value", NodeID = "name", 
+                    fontSize = 12, fontFamily = "Arial", 
+                    nodeWidth = 30, 
+                    sinksRight=FALSE)
+p1
+
+
+```
+
+
+
+### Degrees
+
+What degrees did they obtain? 
+
+```{r message = FALSE, warning=FALSE}
+
+library(readr)
+degrees_all <- read_csv("data/degrees_all.csv")
+
+degrees_all %>% distinct(DocId, Highest) %>% 
+  group_by(Highest) %>% count(sort = TRUE)
+
+```
+
+
+<br>
+Did their level of qualification depend on the field of study? 
+
+```{r message = FALSE, warning=FALSE}
+
+# join degrees with fields
+
+degree_field <- left_join(disciplines_all_clean, degrees_all)
+
+# select variables 
+
+degree_field <- degree_field %>% select(major, Highest) %>% drop_na(Highest, major)
+
+# create contingency table
+
+degree_field_table <-
+  degree_field %>% 
+  group_by(Highest, major) %>% 
+  tally() %>% 
+  spread(key = major, value = n) 
+
+
+# read first column as row names 
+
+degree_field_table <- column_to_rownames(degree_field_table, var = "Highest") 
+
+# replace NA with 0
+degree_field_table <- mutate_all(degree_field_table, ~replace(., is.na(.), 0))
+
+
+res.ca6<-CA(degree_field_table,graph=FALSE)
+
+plot.CA(res.ca6, title="Field of Study and Highest Degree",
+        cex=0.8,cex.main=1.3,cex.axis=1.2,
+        caption= "Source: 遊美同學錄, 1917")
+
+```
+
+
+## Universities
+### Universities in China
+
+```{r message = FALSE, warning=FALSE}
+
+# load data on pre-us education 
+
+prepa <- read_delim("data/pre_us_edu.csv", 
+                         delim = ";", escape_double = FALSE, trim_ws = TRUE)
+
+prepa %>% distinct(DocId, Institution) %>% group_by(Institution) %>% count(sort = TRUE)
+
+
+
+```
+
+### American Universities
+
+```{r message = FALSE, warning=FALSE}
+
+# load data on us education 
+
+edu_us <- read_csv("data/edu_us.csv", col_types = cols(...1 = col_skip()))
+
+edu_us %>% rename(Institution = Organization) %>% distinct(DocId, Institution) %>% 
+  group_by(Institution) %>% count(sort = TRUE)
+
+
+
+```
+
+### Transpacific Connections
+
+```{r message = FALSE, warning=FALSE}
+
+# filter relevant data 
+
+prepa <- read_delim("data/pre_us_edu.csv", 
+                         delim = ";", escape_double = FALSE, trim_ws = TRUE)
+
+prepa <- prepa %>% distinct(DocId, Institution) %>% rename(source = Institution)
+
+# select relevant data
+
+edu_us_tojoin <- edu_us %>% distinct(DocId, Organization) %>% rename(target = Organization)
+
+#  join chinese and us universities
+
+flow <- left_join(prepa, edu_us_tojoin)
+
+# remove DocId column
+
+flow$DocId <- NULL
+
+
+# compute weight 
+
+link <- flow %>%
+  group_by(source, target) %>% 
+  count() %>% 
+  rename(value = "n")
+
+# save
+
+write.csv(link, "~/youmei-new/data/flow_china_us.csv")
+
+link2 <- link %>% filter(value >2)
+
+
+
+# Create node list from edge list ; the node list contains every entity involved in the flow
+node <- data.frame(
+  name=c(as.character(link2$source), 
+         as.character(link2$target)) %>% unique()
+)
+
+# create unique id for each connection
+link2$IDsource <- match(link2$source, node$name)-1 
+link2$IDtarget <- match(link2$target, node$name)-1
+
+
+# Make the Networks
+p2 <- sankeyNetwork(Links = link2, Nodes = node,
+                    Source = "IDsource", Target = "IDtarget",
+                    Value = "value", NodeID = "name", fontSize = 12, fontFamily = "Arial", nodeWidth = 30,
+                    sinksRight=FALSE)
+p2
+
+```
+
+  
+# Employment
+
+In which sector were they employed after their return? Did their employment align with their training?
+
+## Sector
+
+```{r message = FALSE, warning=FALSE}
+
+# load career data
+
+library(readr)
+career_post <- read_csv("data/career_post.csv")
+
+career_post %>% group_by(DocId) %>% count(sort = TRUE)
+
+```
+<br>
+
+The "career" dataset contains 1096 unique positions held by 358 returnees, ranging from 1 to 17 positions each. The dataset provides information on nature and level of position (occupation, level, position), the timing (year of position taking, life phase and sequence order in the person's career), the employing institution and the sector of employment (category, code), the geographical location of employment (city, province, country, area). 
+
+```{r message = FALSE, warning=FALSE}
+
+career_post %>% distinct(DocId, category_final) %>% 
+  group_by(category_final) %>% count(sort = TRUE) %>% mutate(percent = round(n/706*100, 2))
+
+```
+
+## Employers
+
+```{r message = FALSE, warning=FALSE}
+
+career_post %>% distinct(DocId, Institution) %>% 
+  group_by(Institution) %>% count(sort = TRUE) %>% mutate(percent = round(n/943*100, 2))
+
+```
+
+## Matching Training and Employment
+
+```{r message = FALSE, warning=FALSE}
+
+# Atomize field of study
+
+library(tidyr)
+
+field_all <- main %>% select(DocId, field_group) %>% separate_rows(field_group, sep = "-")
+
+# recode fields 
+
+field_all <- field_all %>% mutate(field_main = fct_collapse(field_group, 
+                                                          "Engineering Sciences" = c("Engineering", "Civil Engineering"), 
+                                                          "Physical Sciences" = "Physical", 
+                                                          "Biological Sciences" = "Biological", 
+                                                          "Earth Sciences" = "Earth", 
+                                                          "Health Sciences" = "Health", 
+                                                          "Social Sciences" = "Economics", 
+                                                          "Military Sciences" = "Military"))
+
+
+# join with funding 
+
+funding <- main %>% select(DocId, FundingMain)
+
+field_all <- left_join(field_all, funding)
+
+field_all <- field_all %>% distinct(DocId, FundingMain, field_main)
+
+# join with sector of employment
+
+sector_all <- career_post %>% distinct(DocId, category_final)
+
+field_sector_all <- left_join(field_all, sector_all)
+
+field_sector_all <- field_sector_all %>% rename(training = field_main, job = category_final)
+
+```
+
+<br>
+Like for analyzing the correlation between parents' occupation and source of funding, we will employ Correspondence Analysis to examine the correlation between training and employment: 
+```{r message = FALSE, warning=FALSE}
+
+field_sector_CA <- field_sector_all %>% select(training, job)
+field_sector_CA <- field_sector_CA %>% mutate_all(as.character)
+
+# create contingency table
+
+field_sector_CA$training <- field_sector_CA$training %>% replace_na('Unknown')
+field_sector_CA$job <- field_sector_CA$job %>% replace_na('Unknown')
+
+field_sector_table <-
+  field_sector_CA %>% 
+  group_by(job, training) %>% 
+  tally() %>% 
+  spread(key = training, value = n) 
+
+# replace NA with 0
+field_sector_table <- mutate_all(field_sector_table, ~replace(., is.na(.), 0))
+
+# read first column as row names 
+
+field_sector_table <- column_to_rownames(field_sector_table, var = "job") 
+
+# Correspondance analysis
+
+library(FactoMineR)
+library(Factoshiny)
+
+res.ca <- CA(field_sector_table, graph = FALSE)
+
+plot.CA(res.ca, title="Training and Employment" , 
+        cex=0.9,cex.main=1.3,cex.axis=1.2, 
+        caption= "Source: 遊美同學錄, 1917")
+
+```
+<br>
+
+Alternatively, we can visualize the relation as a Sankey chart:
+```{r message = FALSE, warning=FALSE}
+
+
+field_sector_sankey <- field_sector_CA %>% 
+  rename(source = training, target = job)
+
+# remove NA and compute weight 
+link3 <- field_sector_sankey %>%
+  group_by(source, target) %>% 
+  count() %>% 
+  rename(value = "n") %>% filter(value >1)
+
+
+# Create node list from edge list ; the node list contains every entity involved in the flow
+node3 <- data.frame(
+  name=c(as.character(link3$source), 
+         as.character(link3$target)) %>% unique()
+)
+
+# create unique id for each connection
+link3$IDsource <- match(link3$source, node3$name)-1 
+link3$IDtarget <- match(link3$target, node3$name)-1
+
+
+# Make the Networks
+p3 <- sankeyNetwork(Links = link3, Nodes = node3,
+                    Source = "IDsource", Target = "IDtarget",
+                    Value = "value", NodeID = "name", fontSize = 12, 
+                    sinksRight=FALSE)
+p3
+
+```
+
+## Level of Qualification by Sector
+
+Did their level of qualification vary depending on the sector of employment?
+
+```{r message = FALSE, warning=FALSE}
+
+# join degrees with sectors
+
+degree_sector <- left_join(sector_all, degrees_all)
+
+# select variables 
+
+degree_sector <- degree_sector %>% distinct(Highest, category_final) %>% drop_na(category_final, Highest) %>% filter(!Highest =="Juren") %>% filter(!Highest =="Jinshi")
+
+# create contingency table
+
+degree_sector_table <-
+  degree_sector %>% 
+  group_by(Highest, category_final) %>% 
+  tally() %>% 
+  spread(key = Highest, value = n) 
+
+
+# read first column as row names 
+
+degree_sector_table <- column_to_rownames(degree_sector_table, var = "category_final") 
+
+# replace NA with 0
+degree_sector_table <- mutate_all(degree_sector_table, ~replace(., is.na(.), 0))
+
+
+res.ca7<-CA(degree_sector_table,graph=FALSE)
+
+plot.CA(res.ca7, title="Level of Qualification and Sector of Employment",
+        cex=0.8,cex.main=1.3,cex.axis=1.2,
+        caption= "Source: 遊美同學錄, 1917")
+```
+
+
+## Funding and Employment
+
+Did their source of funding influence their sector of employment? 
+
+```{r message = FALSE, warning=FALSE}
+
+# join funding with sector 
+
+funding_sector <- left_join(funding, sector_all)
+
+funding_sector_ca <- funding_sector %>% select(FundingMain, category_final) %>% drop_na(FundingMain, category_final)
+
+# create contingency table
+
+funding_sector_table <-
+  funding_sector_ca %>% 
+  group_by(category_final, FundingMain) %>% 
+  tally() %>% 
+  spread(key = FundingMain, value = n) 
+
+
+# read first column as row names 
+
+funding_sector_table <- column_to_rownames(funding_sector_table, var = "category_final") 
+
+# replace NA with 0
+funding_sector_table <- mutate_all(funding_sector_table, ~replace(., is.na(.), 0))
+
+
+res.ca4<-CA(funding_sector_table,graph=FALSE)
+
+plot.CA(res.ca4, title="Source of Funding and Sector of Employment",
+        cex=0.8,cex.main=1.3,cex.axis=1.2,
+        caption= "Source: 遊美同學錄, 1917")
+
+```
+
+
+## Parents' Occupation and Students' Employment
+
+How was their parents' occupation related to their sector of employment? 
+
+```{r message = FALSE, warning=FALSE}
+
+# join parents occupation with students' sector of employment 
+
+parent_sector <- left_join(parent_occup, sector_all)
+parent_sector <- parent_sector %>% select(occup_cat, category_final) %>% drop_na(occup_cat, category_final)
+
+# create contingency table
+
+parent_sector_table <-
+  parent_sector %>% 
+  group_by(occup_cat, category_final) %>% 
+  tally() %>% 
+  spread(key = category_final, value = n) 
+
+
+# read first column as row names 
+
+parent_sector_table <- column_to_rownames(parent_sector_table, var = "occup_cat") 
+
+# replace NA with 0
+parent_sector_table <- mutate_all(parent_sector_table, ~replace(., is.na(.), 0))
+
+
+res.ca5<-CA(parent_sector_table,graph=FALSE)
+
+plot.CA(res.ca5, title="Parents' Occupation and Sector of Employment",
+        cex=0.8,cex.main=1.3,cex.axis=1.2,
+        caption= "Source: 遊美同學錄, 1917")
+
+```
+<br>
+Alternatively, we can visualize the relation as a Sankey chart:
+```{r message = FALSE, warning=FALSE}
+
+
+parent_sector_sankey <- parent_sector %>% 
+  rename(source = occup_cat, target = category_final)
+
+# remove NA and compute weight 
+link4 <- parent_sector_sankey %>%
+  group_by(source, target) %>% 
+  count() %>% 
+  rename(value = "n") %>% filter(value >1)
+
+
+# Create node list from edge list ; the node list contains every entity involved in the flow
+node4 <- data.frame(
+  name=c(as.character(link4$source), 
+         as.character(link4$target)) %>% unique()
+)
+
+# create unique id for each connection
+link4$IDsource <- match(link4$source, node4$name)-1 
+link4$IDtarget <- match(link4$target, node4$name)-1
+
+
+# Make the Networks
+p4 <- sankeyNetwork(Links = link4, Nodes = node4,
+                    Source = "IDsource", Target = "IDtarget",
+                    Value = "value", NodeID = "name", fontSize = 12, 
+                    sinksRight=FALSE)
+p4
+
+```
+
+
+
+## Workplace
+
+Where did they work after graduation? 
+
+### Province
+```{r message = FALSE, warning=FALSE}
+# load workplace data 
+
+library(readr)
+workplace <- read_delim("data/workplace.csv", 
+    delim = ";", escape_double = FALSE, trim_ws = TRUE)
+
+head(workplace)
+
+```
+```{r message = FALSE, warning=FALSE}
+
+workplace %>% group_by(province_py_std, work_province) %>% 
+  count(sort = TRUE) %>% 
+  mutate(percent = round(n/401*100, 2))
+
+workplace %>% 
+  drop_na(work_province) %>% 
+  group_by(work_province) %>%
+  count()  %>%
+  filter(n>2) %>%
+  ggplot(aes(reorder(work_province, n), n)) +
+  geom_col() +
+  coord_flip() + 
+  labs(title = "Early Liumei's Workplace in 1917",
+       subtitle = "Provinces employing more than 2 returnees",
+       x = "Province", 
+       y = "Number of returnees",
+       caption = "Source: 遊美同學錄 (1917)")
+
+```
+
+### Locality
+
+```{r message = FALSE, warning=FALSE}
+
+workplace %>% group_by(city_py, work_city) %>% 
+  count(sort = TRUE) %>% 
+  mutate(percent = round(n/401*100, 2))
+
+workplace %>% 
+  drop_na(work_city) %>% 
+  group_by(work_city) %>%
+  count()  %>%
+  filter(n>2) %>%
+  ggplot(aes(reorder(work_city, n), n)) +
+  geom_col() +
+  coord_flip() + 
+  labs(title = "Early Liumei's Workplace in 1917",
+       subtitle = "Cities employing more than 2 returnees",
+       x = "City", 
+       y = "Number of returnees",
+       caption = "Source: 遊美同學錄 (1917)")
+
+```
+
+### Mapping
+
+The following maps show the distribution of workplaces in 1917. Like the maps above, these were created using QGIS and MCGD data.
+
+![Distribution of jobs by province](media/jobs_provinces_labels.png)
+![Distribution of jobs by city and province](media/jobs_province_cities_no_labels.png)
+
+<br> 
+The comparative mapping of birthplace and workplace among the early cohorts of *liuMei* reveals a notable brain gain for the late Qing and Beiyang governments. This analysis highlights a substantial transfer of human and intellectual resources from southeastern to northern China, as well as a shift from private to public sectors. The disproportionate concentration of returned students in the Jiangsu area, particularly in Nanjing and Shanghai, did not manifest until the establishment of the Nationalist government in Nanjing in 1927.
+
+
+### Mobility
+
+Did they return to work in their native place? 
+
+```{r message = FALSE, warning=FALSE}
+
+# join birthplace and workplace
+
+sankey_birth <- main %>% select(DocId, Birth_Province_zh)
+sankey_work <- workplace %>% select(DocId, work_province)
+sankey_birth_work <- inner_join(sankey_birth, sankey_work, by = "DocId")
+
+sankey_birth_work <- sankey_birth_work %>% 
+  select(Birth_Province_zh, work_province) %>% 
+  rename(source = Birth_Province_zh, target = work_province)
+
+head(sankey_birth_work)
+
+```
+<br>
+
+```{r message = FALSE, warning=FALSE}
+
+
+# remove NA and compute weight 
+link_bw <- sankey_birth_work %>%
+  group_by(source, target) %>% 
+  count() %>% 
+  rename(value = "n")
+
+
+link_bw_count <- link_bw %>% group_by(source) %>% mutate(total_birth = sum(value))
+link_bw_count <- link_bw_count %>% mutate(percent= value/total_birth*100)
+
+# find identical places 
+
+link_bw_count <- link_bw_count %>%
+  mutate(Identical = ifelse(source == target, TRUE, FALSE))
+
+
+head(link_bw_count)
+
+```
+<br>
+```{r message = FALSE, warning=FALSE}
+
+# filter most important flows 
+
+link5 <- link_bw %>% filter(value>1)
+
+# visualize flows as a Sankey chart as a Sankey chart 
+
+# Create node list from edge list ; the node list contains every entity involved in the flow
+node5 <- data.frame(
+  name=c(as.character(link5$source), 
+         as.character(link5$target)) %>% unique()
+)
+
+# create unique id for each connection
+link5$IDsource <- match(link5$source, node5$name)-1 
+link5$IDtarget <- match(link5$target, node5$name)-1
+
+# Create the Network
+
+library(networkD3)
+p5 <- sankeyNetwork(Links = link5, Nodes = node5,
+                   Source = "IDsource", Target = "IDtarget",
+                   Value = "value", NodeID = "name", 
+                   fontSize = 14, fontFamily = "Arial", nodeWidth = 30, 
+                   sinksRight=FALSE)
+p5
+
+# save the widget
+library(htmlwidgets)
+# saveWidget(p5, file=paste0( getwd(), "/birthwork_prov.html"))
+
+
+```
+
+<br>
+The self-loops indicate that a significant number of early *liuMei* returned to work in their native provinces, particularly those from Hebei (17, 74%), Jiangsu (77, 56%), and Guangdong (37, 36%). However, there was also significant brain drain in favor of Hebei from certain provinces, especially Zhejiang (59%), Guangdong (27.5%), and peripheral provinces like Gansu. Conversely, while 22% of Jiangsu natives were working in Hebei in 1917, 26% of Hebei natives were employed in Jiangsu. Additionally, China benefited from American-born Chinese who exemplified the "American exodus" studied by Charlotte Brooks (Brooks, 2019), with 43% (6) employed in Hebei, 21% (3) in Guangdong, and 14% (2) in Jiangsu.
+
+

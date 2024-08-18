@@ -1,0 +1,144 @@
+---
+title: "Data Mining the Who's Who of American Returned Students (1917)"
+subtitle: "Introduction" 
+author: "Cécile Armand"
+affiliation: Aix-Marseille University
+date: "`r lubridate::today()`"
+tags: [who's who directory, biography, bilingual, histtext]  
+abstract: |
+  This document describes the methodology used for extracting and analyzing data from the *Who's Who of American returned students* (Tsing Hua, 1917).     
+  
+  <style>
+    body {
+    text-align: justify}
+  </style>
+    
+output: 
+  html_document:
+    toc: true
+    toc_float: 
+      collapsed: false
+      smooth_scroll: false
+    toc_depth: 2
+    number_sections: false
+    code_folding: show # hide
+    fig_caption: true
+    df_print: paged
+csl: tcc_citation.csl
+bibliography: tcc.bib
+nocite: |
+  @*
+link-citations: true    
+    
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Motivation 
+
+This document describes the methodology used for extracting and analyzing data from the *Who's Who of American returned students* [Youmei tongxue lu 遊美同學錄] published by Tsing Hua College in 1917 [@tsing_hua_college_whos_1917]. The purpose is two fold (1) conduct a prosopography of the first generations of US educated Chinese (2) use this study as a test case to design a workflow for the automated extraction and multidimensional analysis of complex historical information from similar sources.   
+
+# Primary Source 
+
+The *Who's Who of American returned students* contains the biographies of 401 Chinese individuals who studied in the United States between 1850 and 1917. It was compiled through the initiative of the Tsinghua College Returned Students’ Information Bureau (Liumei xuesheng tongxun chu 留美學生通訊處) established in 1915. However, it is not limited to Tsinghua students, since most of the students biographed had returned by the time Tsinghua College was established in 1909. The directory was constructed by sending questionnaires directly to the students, with the assistance of students' clubs [@wu_mi__wu_1995], 153–55). 
+
+Although the rationale for selecting the biographies remains opaque, this book nonetheless represents the most complete information available on the first generations of Chinese students in America. Each biography provides information about the students’ social and geographical background, educational curricula, subsequent professional careers, as well as their family members and sources of funding — information which is generally omitted from most biographical sources. The biographies are presented in both Chinese and English to cater to two distinct groups of readers—Chinese and American—with a dual objective in mind: first, to provide a valuable reference work for the public seeking the services of Western-educated Chinese, and second, to foster mutual understanding among the returned students themselves.This directory represents a milestone in the history of returned students in China since it represents the first attempt to construct the American-returned students (*liumei xuesheng* 留美學生, or *liumei* 留美) as a distinct, highly self-conscious social group, united by their shared educational experience in the US. 
+
+Several digital avatars of this directory are accessible online, including on [Wikisource](https://zh.m.wikisource.org/wiki/File:Who%27s_who_of_American_returned_students_%3D_(You_Mei_tong_xue_lu_-_min_gou_liu_nian)_(IA_whoswhoofamerica00qing).pdf) and [Internet Archive](https://archive.org/details/whoswhoofamerica00qing). This research relies on the version provided by the [Institute of Modern History (IMH)](https://mhdb.mh.sinica.edu.tw/mhpeople/bookview.php?bookno=33#b33) at the Academia Sinica in Taipei, which is available for data mining with [HistText](https://bookdown.enpchina.eu/HistText_Book/) [@blouin_histtext_2023].
+
+# Research Purposes 
+
+The study has 3 main directions:   
+
+  1. Analyze the social characteristics of the population to build a collective portrait of late Qing-early Republican American returned students 
+  2. Uncover hidden connections among biographies based on shared affiliations or family ties 
+  3. Reconstruct career paths to examine social mobility and multigenerationnal patterns of study abroad 
+  
+Part of this comprehensive research is published in *Twentieth-Century China* under the title "Reshaping the Chinese Ladder of Success in the Era of Globalization: Family Strategies and Social Mobility of Early American-educated Chinese (1850-1917)" as part of the special issue titled "Rethinking the Study Abroad Movement in Modern China (1850-1950s)" [@armand_reshaping_2024]. 
+
+# Outline 
+
+Given the scope of this research, this documentation comprises several parts based on the type of analysis and method used: 
+
+  1. Data extraction and curation (2 scripts, one for each language)
+  2. Collective portrait using multivariate and other statistical analyses 
+  3. Family ties and background using network analysis (igraph) and correspondence analysis (CA) (FactominR)
+  4. Affiliation networks using formal networks analysis (igraph)
+  5. Career patterns using sequence analysis (TraminR)
+	
+# Data Extraction 
+
+Three main families of tools were used to extract the data, depending on their nature, as outlined below : 
+
+  1. **Supervised methods** such as regular expressions (Regex) or concordance/Keyword in Context (KWIC) were employed for date of arrival and return, source of funding, relatives’ names and occupation, Chinese degrees, special scholarships. 
+  2. **Unsupervised methods**, specifically Named Entity Recognition (NER) were employed to extract affiliation data (name of organizations)
+  3. **Mixed Methods** including Question & Answering (Q&A) were employed to extract date and place of birth, complete educational curricula  (including relations between degree, discipline, university, and date of graduation) and career data (position name, employer name, date of position taking/ending). The list of questions and the resulting raw outputs are attached for reference in the GitHub repository.
+  
+<br>
+
+<style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0;}
+.tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+  overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+  font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg .tg-br4e{background-color:#F5EFEA;text-align:left;vertical-align:bottom}
+.tg .tg-31q7{background-color:#CF786A;text-align:center;vertical-align:bottom}
+.tg .tg-wcu0{background-color:#F5EFEA;text-align:left;vertical-align:middle}
+.tg .tg-ctp2{background-color:#E9D6BD;text-align:left;vertical-align:bottom}
+</style>
+<table class="tg"><thead>
+  <tr>
+    <th class="tg-31q7" colspan="2">&nbsp;&nbsp;&nbsp;<br><span style="font-weight:bold;color:black">FAMILY&nbsp;&nbsp;&nbsp;OF TOOLS</span>&nbsp;&nbsp;&nbsp;</th>
+    <th class="tg-31q7">&nbsp;&nbsp;&nbsp;<br><span style="font-weight:bold;color:black">INFORMATION&nbsp;&nbsp;&nbsp;RETRIEVED</span>&nbsp;&nbsp;&nbsp;</th>
+  </tr></thead>
+<tbody>
+  <tr>
+    <td class="tg-wcu0" colspan="2">&nbsp;&nbsp;&nbsp;<br> <span style="font-weight:bold;color:black">Question &amp; Answering (Q&amp;A)</span>&nbsp;&nbsp;&nbsp;</td>
+    <td class="tg-wcu0">   <br><span style="color:black">Persons' names, date and place of birth </span><br>   <br><span style="color:black">Educational curricula, professional career</span></td>
+  </tr>
+  <tr>
+    <td class="tg-wcu0" rowspan="3">&nbsp;&nbsp;&nbsp;<br> <span style="font-weight:bold;color:black">Rule-based</span>&nbsp;&nbsp;&nbsp;</td>
+    <td class="tg-ctp2">&nbsp;&nbsp;&nbsp;<br><span style="color:black">Concordance/KWIC</span>&nbsp;&nbsp;&nbsp;</td>
+    <td class="tg-wcu0" rowspan="3">   <br><span style="color:black">Gender, marital status, descendance, relatives' names &amp; occupations</span><br>   <br><span style="color:black">Date of Arrival and Return in America</span><br>   <br><span style="color:black">Source of Funding, Preparation in China</span><br>   <br><span style="color:black">Academic Degrees &amp; Disciplines</span><br>   <br><span style="color:black">Address in 1917</span>   </td>
+  </tr>
+  <tr>
+    <td class="tg-br4e">   <br><span style="color:black">Pattern Matching</span>   </td>
+  </tr>
+  <tr>
+    <td class="tg-ctp2">&nbsp;&nbsp;&nbsp;<br><span style="color:black">Regex</span>&nbsp;&nbsp;&nbsp;</td>
+  </tr>
+  <tr>
+    <td class="tg-wcu0" rowspan="4">   <br><span style="font-weight:bold;color:black">Named Entity</span> <span style="font-weight:bold;color:black">Recognition (NER)</span>   </td>
+    <td class="tg-br4e">&nbsp;&nbsp;&nbsp;<br><span style="color:black">Persons</span>&nbsp;&nbsp;&nbsp;</td>
+    <td class="tg-wcu0" rowspan="4">   <br><span style="color:black">Educational Institutions (Schools, Universities)</span><br>   <br><span style="color:black">Employing Institutions (Government, Universities, Companies...)</span><br>   <br><span style="color:black">Clubs and Associations</span>   </td>
+  </tr>
+  <tr>
+    <td class="tg-ctp2">&nbsp;&nbsp;&nbsp;<br><span style="color:black">Organizations</span>&nbsp;&nbsp;&nbsp;</td>
+  </tr>
+  <tr>
+    <td class="tg-br4e">&nbsp;&nbsp;&nbsp;<br><span style="color:black">Locations</span>&nbsp;&nbsp;&nbsp;</td>
+  </tr>
+  <tr>
+    <td class="tg-ctp2">&nbsp;&nbsp;&nbsp;<br><span style="color:black">Dates</span>&nbsp;&nbsp;&nbsp;</td>
+  </tr>
+</tbody></table>
+
+<br>
+For further information on data extraction, please refer to the dedicated [documentation](https://gitlab.com/enpchina/bookdown/youmei/01_DataExtraction.html). 
+
+# Datasets 
+
+Given its richness and the complexity of information it contains, the data drawn from this source is subdivided into several datasets encompassing its different aspects:
+
+  * main (attribute data, one row for each  individual) 
+  * kinship (relational data, one individual may have multiple rows)
+  * education (retrieved with Q&A)
+  * career (positions) data (retrieved with Q&A) 
+  * Supplementary data: affiliations (retrieved with NER), degrees/disciplines, scholarship, early jobs/internships, metadata (e.g., length of biographies).
+  
+
+# References
+
