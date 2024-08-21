@@ -38,7 +38,7 @@ library(Places)
 
 # Kinship Networks
 
-The first step is to load the edge list (representing kinship ties) and the node list (containing students' and relatives' attributes). For a detailed description of the [kinship data](https://gitlab.com/enpchina/bookdown/youmei/Statistics.html#Kinship_ties) and the [method for extracting](https://gitlab.com/enpchina/bookdown/youmei/01_DataExtraction.html) it from the directory, please refer to the relevant documentation. 
+The first step is to load the edge list (representing kinship ties) and the node list (containing students' and relatives' attributes). For a detailed description of the [kinship data](https://bookdown.enpchina.eu/youmei/Statistics.html#Kinship_ties) and the [method for extracting](https://bookdown.enpchina.eu/youmei/01_DataExtraction.html) it from the directory, please refer to the relevant documentation. 
 ```{r message = FALSE, warning=FALSE}
 
 # load packages
@@ -183,9 +183,147 @@ plot.igraph(g2, vertex.size = 5,
 
 ```
 
-# Affiliation networks
+# Affiliation Networks
+
+## All Affiliations
+
+We upload the affiliation data retrieved using Named Entities Recognition (NER), as described in the [Data Extraction Script](https://bookdown.enpchina.eu/youmei/01_DataExtraction.html).
+```{r message = FALSE, warning=FALSE}
+
+# load packages
+
+library(readr)
+library(tidyverse)
+
+# load data
+
+library(readr)
+affiliation_eng <- read_csv("data/affiliation_eng.csv")
+
+
+head(affiliation_eng)
+
+```
+
+<br>
+The dataset contains a total of 3,431 affiliations retrieved from the 401 English biographies. For each affiliation, the table provides the following information: 
+
+  * DocId: unique identifier of the biography in the "imh" collection  
+  * name : the name of the person 
+  * Organization: the name of the organization he/she was affiliated to  
+  * Position: the timing of the affiliation in the person's life, according to the following typology: PRE = before going to the U.S., US = during his/her studies in the U.S., POST = after his/her return to China), and 
+  * the nature of the organization, with two levels of granularity (category, category_main).
+  
+There is a total of 1,305 unique organizations, with frequency ranging from 1 to 96 (in the case of St John's University). The educational sector represents the largest number (536, 40%), followed by associations (254, 19.5%), and media (newspapers, journals) (108, 8%). The largest number of affiliations refer to their period of studies in the US (1460, 42%) (mostly educational institutions, 810, 55%), followed by their post-return career (1154, 33.6%), their life prior to going to the US (803), and other (non-dated) affiliations. 
+
+```{r message = FALSE, warning=FALSE}
+
+# distribution of affiliations
+
+affiliation_eng %>% group_by(Organization) %>% count(sort = TRUE) # distribution by organization 
+affiliation_eng %>% distinct(category_main, Organization) %>% group_by(category_main) %>% count(sort = TRUE) # distribution by category
+affiliation_eng %>% group_by(Position) %>% count(sort = TRUE) # distribution by life period 
+
+
+```
+
+### Create the Network
+
+To build the network, we need to create the edge list (list of links between students and organizations) and the node list (category of node, persons or organizations): 
+```{r message = FALSE, warning=FALSE}
+
+# create the edge list 
+
+affiliation_edge <- affiliation_eng %>% 
+  mutate(DocName = paste(DocId, name, sep = "_")) %>% # we create a synthetic variable compiling the doc Id with the name, in case of homonyms (wife/husbands)
+  select(DocName, Organization, Position)
+
+# create the node list
+
+person_node <- affiliation_edge %>% 
+  distinct(DocName) %>% 
+  mutate(Type = "Person") %>% 
+  mutate(Type2 = "Person") %>% 
+  rename(Name = DocName)
+
+org_node <- affiliation_eng %>% 
+  distinct(Organization, category_main) %>% 
+  mutate(Type = "Organization") %>% 
+  rename(Name = Organization, 
+         Type2 = category_main) %>% 
+  select(Name, Type, Type2)
+
+affiliation_node <- bind_rows(person_node, org_node)
+
+```
+<br> 
+Next, we create the bipartite network with igraph: 
+
+```{r message = FALSE, warning=FALSE}
+
+library(igraph)
+
+# Creating a network from the edge list
+Net <- graph_from_data_frame(affiliation_edge, directed = FALSE)
+## Transformation into a 2-mode network
+V(Net)$type <- bipartite_mapping(Net)$type
+# Projection
+projNet <- bipartite_projection(Net, multiplicity = TRUE)
+Net1 <- projNet$proj1  # Network of persons
+Net2 <- projNet$proj2  # Network of organizations
+```
+
+### Visualize the Networks
+
+```{r message = FALSE, warning=FALSE}
+
+# assign color to type of node
+V(Net)$shape <- ifelse(V(Net)$Type == "Person", "square","circle")
+V(Net)$color <- ifelse(V(Net)$Type == "Person", "tomato","blue")
+
+plot(Net, vertex.size = 3, 
+     vertex.color = V(Net)$color, 
+      vertex.shape = V(Net)$shape ,
+     vertex.label.color = "black", 
+     vertex.label.cex = 0.3, 
+     main="Early Liumei Affiliation Network")
+
+```
+
+```{r message = FALSE, warning=FALSE}
+# remove labels and make size proportionate to degree
+
+layout <- layout_nicely(Net)
+  
+plot(Net, vertex.size = degree(Net)*0.15, 
+     vertex.color = V(Net)$color, 
+      vertex.shape = V(Net)$shape ,
+     vertex.label = NA, 
+     layout = layout, 
+     main="Early Liumei Affiliation Network")
+```
+
+
+<br>
+Plot projections 
+```{r message = FALSE, warning=FALSE}
+
+plot(Net1, vertex.size = 3, 
+     vertex.color = "orange", 
+     vertex.label.color = "black", 
+     vertex.label.cex = 0.3, 
+     main="Network of persons linked by organizations")
+
+
+plot(Net2, vertex.size = 3, 
+     vertex.color = "steel blue", 
+     vertex.label.color = "black", 
+     vertex.label.cex = 0.3, 
+     main="Network of organizations linked by persons")
+
+```
+
 
 ## Education
 ## Employment
 ## Associative life
-
