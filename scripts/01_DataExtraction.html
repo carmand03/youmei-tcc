@@ -3499,6 +3499,288 @@ imh_eng_join_to_clean &lt;- full_join(imh_eng_join_to_clean, prepared_eng, by = 
 imh_eng_join_to_clean &lt;- full_join(imh_eng_join_to_clean, address_eng, by = &quot;DocId&quot;)</code></pre>
 </div>
 </div>
+<div id="named-entity-recognition-chinese" class="section level1">
+<h1>Named Entity Recognition (Chinese)</h1>
+<p>For Named Entity Recognition (NER), we rely on the <a href="https://bookdown.enpchina.eu/HistText_Book/named-entity-recognition-ner.html#named-entity-extraction">ner_on_corpus</a>
+function included in the histtext R package.</p>
+<div id="extraction" class="section level2">
+<h2>Extraction</h2>
+<pre class="r"><code># load packages
+
+library(histtext)
+library(tidyverse)
+
+
+search_imh_zh &lt;- histtext::search_documents_ex(&#39;*&#39;, corpus = &quot;imh-zh&quot;, filter_query = list(book = &quot;游美同學錄&quot;))
+
+# extract named entities 
+
+ner_imh17_zh &lt;- ner_on_corpus(search_imh_zh, corpus = &quot;imh-zh&quot;, only_precomputed = TRUE)</code></pre>
+<pre><code>## 1/401
+## 11/401
+## 21/401
+## 31/401
+## 41/401
+## 51/401
+## 61/401
+## 71/401
+## 81/401
+## 91/401
+## 101/401
+## 111/401
+## 121/401
+## 131/401
+## 141/401
+## 151/401
+## 161/401
+## 171/401
+## 181/401
+## 191/401
+## 201/401
+## 211/401
+## 221/401
+## 231/401
+## 241/401
+## 251/401
+## 261/401
+## 271/401
+## 281/401
+## 291/401
+## 301/401
+## 311/401
+## 321/401
+## 331/401
+## 341/401
+## 351/401
+## 361/401
+## 371/401
+## 381/401
+## 391/401
+## 401/401</code></pre>
+<pre class="r"><code>head(ner_imh17_zh)</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["DocId"],"name":[1],"type":["chr"],"align":["left"]},{"label":["Type"],"name":[2],"type":["chr"],"align":["left"]},{"label":["Text"],"name":[3],"type":["chr"],"align":["left"]},{"label":["Start"],"name":[4],"type":["int"],"align":["right"]},{"label":["End"],"name":[5],"type":["int"],"align":["right"]},{"label":["Confidence"],"name":[6],"type":["dbl"],"align":["right"]}],"data":[{"1":"imh-11-0","2":"CARDINAL","3":"1","4":"3","5":"4","6":"-1"},{"1":"imh-11-0","2":"PERSON","3":"崇吉","4":"9","5":"11","6":"-1"},{"1":"imh-11-0","2":"PERSON","3":"字艗仙","4":"12","5":"15","6":"-1"},{"1":"imh-11-0","2":"DATE","3":"五十七歲","4":"17","5":"21","6":"-1"},{"1":"imh-11-0","2":"GPE","3":"浙江定海","4":"24","5":"28","6":"-1"},{"1":"imh-11-0","2":"GPE","3":"上海","4":"36","5":"38","6":"-1"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<pre class="r"><code># count entities types
+
+ner_zh_count &lt;- ner_imh17_zh %&gt;% group_by(Type) %&gt;% count(sort = TRUE)
+
+ner_zh_count</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["Type"],"name":[1],"type":["chr"],"align":["left"]},{"label":["n"],"name":[2],"type":["int"],"align":["right"]}],"data":[{"1":"ORG","2":"3273"},{"1":"DATE","2":"2680"},{"1":"GPE","2":"1826"},{"1":"PERSON","2":"1330"},{"1":"CARDINAL","2":"578"},{"1":"FAC","2":"305"},{"1":"ORDINAL","2":"198"},{"1":"LOC","2":"140"},{"1":"LANGUAGE","2":"83"},{"1":"NORP","2":"57"},{"1":"WORK_OF_ART","2":"24"},{"1":"EVENT","2":"20"},{"1":"PRODUCT","2":"5"},{"1":"LAW","2":"2"},{"1":"QUANTITY","2":"2"},{"1":"MONEY","2":"1"},{"1":"TIME","2":"1"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<pre class="r"><code># focus on organizations
+
+ner_imh17_zh_org &lt;- ner_imh17_zh %&gt;% filter(Type == &quot;ORG&quot;)
+
+head(ner_imh17_zh_org)</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["DocId"],"name":[1],"type":["chr"],"align":["left"]},{"label":["Type"],"name":[2],"type":["chr"],"align":["left"]},{"label":["Text"],"name":[3],"type":["chr"],"align":["left"]},{"label":["Start"],"name":[4],"type":["int"],"align":["right"]},{"label":["End"],"name":[5],"type":["int"],"align":["right"]},{"label":["Confidence"],"name":[6],"type":["dbl"],"align":["right"]}],"data":[{"1":"imh-11-0","2":"ORG","3":"上海出洋局","4":"59","5":"64","6":"-1"},{"1":"imh-11-0","2":"ORG","3":"入麻省某高等學","4":"77","5":"84","6":"-1"},{"1":"imh-11-1","2":"ORG","3":"上海聖約翰大學","4":"50","5":"57","6":"-1"},{"1":"imh-11-1","2":"ORG","3":"上海同仁醫院","4":"74","5":"80","6":"-1"},{"1":"imh-11-1","2":"ORG","3":"非洲特蘭斯瓦爾某醫院","4":"91","5":"101","6":"-1"},{"1":"imh-11-1","2":"ORG","3":"薛文尼大學","4":"121","5":"126","6":"-1"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+<div id="curation" class="section level2">
+<h2>Curation</h2>
+<pre class="r"><code># remove white spaces
+
+ner_imh17_zh_org &lt;- ner_imh17_zh_org %&gt;% 
+  mutate(Text_clean = str_replace(Text,&quot; &quot;,&quot;&quot;))  %&gt;%  
+  relocate(Text_clean, .after = Text) 
+
+# remove Chinese punctuation
+
+ner_imh17_zh_org &lt;- ner_imh17_zh_org %&gt;%  
+  mutate(Text_clean = str_replace_all(Text_clean, &quot;。&quot;, &quot;&quot;))
+
+# remove non sinograms 
+
+ner_imh17_zh_org &lt;- ner_imh17_zh_org %&gt;%  
+  mutate(Text_clean = str_replace_all(Text_clean, &quot;&lt;p&gt;&quot;, &quot;&quot;))  %&gt;%
+  mutate(Text_clean = str_replace_all(Text_clean, &quot;&lt;&quot;, &quot;&quot;))  %&gt;%
+  mutate(Text_clean = str_replace_all(Text_clean, &quot;[:digit:]&quot;, &quot;&quot;))  
+
+# substract first characters to identify verbs of action
+
+ner_imh17_zh_org &lt;- ner_imh17_zh_org  %&gt;%
+  mutate(pref1 = str_sub(Text_clean, 1, 1))  %&gt;%
+  mutate(pref2 = str_sub(Text_clean, 1, 2)) %&gt;%
+  relocate(pref1, .before =  Text_clean) %&gt;%
+  relocate(pref2, .after =  pref1) 
+
+pref1 &lt;- ner_imh17_zh_org %&gt;% group_by(pref1) %&gt;% count()
+pref2 &lt;- ner_imh17_zh_org %&gt;% group_by(pref2) %&gt;% count()
+
+# remove verbs (任|入|伊|於|爲|充) 
+
+ner_imh17_zh_org &lt;- ner_imh17_zh_org %&gt;%  
+  mutate(Text_clean = str_replace_all(Text_clean, &quot;任|入|伊|於|爲|充&quot;, &quot;&quot;)) 
+
+# count length
+
+ner_imh17_zh_org &lt;-  ner_imh17_zh_org %&gt;% mutate(length = nchar(Text_clean)) 
+
+# substract last characters to classify organizations
+
+
+ner_imh17_zh_org &lt;- ner_imh17_zh_org  %&gt;% 
+  mutate(Text_clean = str_remove_all(Text_clean, &quot;長$&quot;)) %&gt;%
+  mutate(suff1 = str_sub(Text_clean, - 1, - 1)) %&gt;% 
+  mutate(suff2 = str_sub(Text_clean, - 2, - 1)) %&gt;% 
+  relocate(suff1, .after = Text_clean) %&gt;%  
+  relocate(suff2, .after = suff1) 
+
+# export list of organization for further cleaning in Excel (not run)
+# write.csv(ner_imh17_zh_org, &quot;ner_imh17_zh_org.csv&quot;)
+
+# export suffixes/prefixes to annotate and create ontologies of organizations and positions (not run)
+
+suff1 &lt;- ner_imh17_zh_org %&gt;% group_by(suff1) %&gt;% count()
+suff2 &lt;- ner_imh17_zh_org %&gt;% group_by(suff2) %&gt;% count() 
+
+# write.csv(suff1, &quot;ner_suff1.csv&quot;)
+# write.csv(suff2, &quot;ner_suff2.csv&quot;)
+# write.csv(pref1, &quot;ner_pref1.csv&quot;)
+# write.csv(pref2, &quot;ner_pref2.csv&quot;)</code></pre>
+</div>
+</div>
+<div id="named-entity-recognition-english" class="section level1">
+<h1>Named Entity Recognition (English)</h1>
+<p>For Named Entity Recognition (NER), we rely on the <a href="https://bookdown.enpchina.eu/HistText_Book/named-entity-recognition-ner.html#named-entity-extraction">ner_on_corpus</a>
+function included in the histtext R package.</p>
+<div id="extraction-1" class="section level2">
+<h2>Extraction</h2>
+<pre class="r"><code># load packages
+
+library(histtext)
+library(tidyverse)
+
+
+search_imh_en &lt;- histtext::search_documents_ex(&#39;*&#39;, corpus = &quot;imh-en&quot;, filter_query = list(book = &quot;游美同學錄&quot;))
+
+# extract named entities 
+
+ner_imh17_en &lt;- ner_on_corpus(search_imh_en, corpus = &quot;imh-en&quot;, only_precomputed = TRUE)</code></pre>
+<pre><code>## 1/401
+## 11/401
+## 21/401
+## 31/401
+## 41/401
+## 51/401
+## 61/401
+## 71/401
+## 81/401
+## 91/401
+## 101/401
+## 111/401
+## 121/401
+## 131/401
+## 141/401
+## 151/401
+## 161/401
+## 171/401
+## 181/401
+## 191/401
+## 201/401
+## 211/401
+## 221/401
+## 231/401
+## 241/401
+## 251/401
+## 261/401
+## 271/401
+## 281/401
+## 291/401
+## 301/401
+## 311/401
+## 321/401
+## 331/401
+## 341/401
+## 351/401
+## 361/401
+## 371/401
+## 381/401
+## 391/401
+## 401/401</code></pre>
+<pre class="r"><code>head(ner_imh17_en)</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["DocId"],"name":[1],"type":["chr"],"align":["left"]},{"label":["Type"],"name":[2],"type":["chr"],"align":["left"]},{"label":["Text"],"name":[3],"type":["chr"],"align":["left"]},{"label":["Start"],"name":[4],"type":["int"],"align":["right"]},{"label":["End"],"name":[5],"type":["int"],"align":["right"]},{"label":["Confidence"],"name":[6],"type":["dbl"],"align":["right"]}],"data":[{"1":"imh-11-0","2":"PERSON","3":"Ting,","4":"0","5":"5","6":"0.68"},{"1":"imh-11-0","2":"GPE","3":"I-Hsien.-","4":"6","5":"15","6":"0.91"},{"1":"imh-11-0","2":"GPE","3":"Tinghai, Chekiang,","4":"24","5":"42","6":"0.96"},{"1":"imh-11-0","2":"DATE","3":"1860.","4":"43","5":"48","6":"0.98"},{"1":"imh-11-0","2":"DATE","3":"1882.","4":"58","5":"63","6":"1.00"},{"1":"imh-11-0","2":"ORG","3":"Educational Mission School,","4":"75","5":"102","6":"0.99"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<pre class="r"><code># count entities types
+
+ner_en_count &lt;- ner_imh17_en %&gt;% group_by(Type) %&gt;% count(sort = TRUE)
+
+ner_en_count</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["Type"],"name":[1],"type":["chr"],"align":["left"]},{"label":["n"],"name":[2],"type":["int"],"align":["right"]}],"data":[{"1":"DATE","2":"5354"},{"1":"ORG","2":"3506"},{"1":"GPE","2":"2819"},{"1":"PERSON","2":"714"},{"1":"WORK_OF_ART","2":"173"},{"1":"ORDINAL","2":"86"},{"1":"LANGUAGE","2":"62"},{"1":"NORP","2":"41"},{"1":"EVENT","2":"36"},{"1":"FAC","2":"22"},{"1":"LOC","2":"15"},{"1":"CARDINAL","2":"14"},{"1":"QUANTITY","2":"3"},{"1":"LAW","2":"2"},{"1":"PRODUCT","2":"2"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<pre class="r"><code># focus on organizations
+
+ner_imh17_en_org &lt;- ner_imh17_en %&gt;% filter(Type == &quot;ORG&quot;)
+
+head(ner_imh17_en_org)</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["DocId"],"name":[1],"type":["chr"],"align":["left"]},{"label":["Type"],"name":[2],"type":["chr"],"align":["left"]},{"label":["Text"],"name":[3],"type":["chr"],"align":["left"]},{"label":["Start"],"name":[4],"type":["int"],"align":["right"]},{"label":["End"],"name":[5],"type":["int"],"align":["right"]},{"label":["Confidence"],"name":[6],"type":["dbl"],"align":["right"]}],"data":[{"1":"imh-11-0","2":"ORG","3":"Educational Mission School,","4":"75","5":"102","6":"0.99"},{"1":"imh-11-0","2":"ORG","3":"Holyoke High School,","4":"198","5":"218","6":"0.98"},{"1":"imh-11-0","2":"ORG","3":"Harvard University,","4":"246","5":"265","6":"1.00"},{"1":"imh-11-0","2":"ORG","3":"Shanghai Local Press,","4":"374","5":"395","6":"1.00"},{"1":"imh-11-0","2":"ORG","3":"Customs Office,","4":"409","5":"424","6":"1.00"},{"1":"imh-11-0","2":"ORG","3":"Customs Office,","4":"495","5":"510","6":"0.99"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+<div id="curation-1" class="section level2">
+<h2>Curation</h2>
+<pre class="r"><code>imh17_eng_org &lt;- ner_imh17_en_org  %&gt;%
+  mutate(Text_clean = str_replace(Text,&quot;Anglo- Chinese College&quot;,&quot;Anglo-Chinese College&quot;))  %&gt;%  
+  relocate(Text_clean, .after = Text) %&gt;% 
+  mutate(Text_clean = str_replace(Text_clean,&quot;Nanchang- Kiukiang&quot;,&quot;Nanchang-Kiukiang&quot;)) %&gt;%
+  mutate(Text_clean = str_replace(Text_clean,&quot;Nanking- Hunan&quot;,&quot;Nanking-Hunan&quot;)) %&gt;%
+  mutate(Text_clean = str_replace(Text_clean,&quot;Peking- Kalgan&quot;,&quot;Peking-Kalgan&quot;)) %&gt;%
+  mutate(Text_clean = str_replace(Text_clean,&quot;Shanghai- Nanking&quot;,&quot;Shanghai-Nanking&quot;)) %&gt;%
+  mutate(Text_clean = str_replace(Text_clean,&quot;Shanghai- Hangchow&quot;,&quot;Shanghai-Hangchow&quot;))%&gt;%
+  mutate(Text_clean = str_replace(Text_clean,&quot;- &quot;,&quot;&quot;))  %&gt;%  
+  mutate(Text_clean = str_replace(Text_clean,&quot;Co\\.&quot;,&quot;Company&quot;)) %&gt;% 
+  mutate(Text_clean = str_replace(Text_clean,&quot;20th&quot;,&quot;Twentieth&quot;)) %&gt;%
+  mutate(Text_clean = str_replace_all(Text_clean, &quot;&lt;p&gt;&quot;, &quot;&quot;))  %&gt;%
+  mutate(Text_clean = str_replace_all(Text_clean, &quot;&lt;/p&gt;&quot;, &quot;&quot;))  %&gt;%
+  mutate(Text_clean = str_replace_all(Text_clean, &quot;[:digit:]&quot;, &quot;&quot;))  %&gt;% 
+  mutate(Text_clean = str_replace(Text_clean,&quot;The-Hua&quot;,&quot;Teh-Hua&quot;)) %&gt;% 
+  mutate(Text_clean = str_replace(Text_clean,&quot;Inn,&quot;,&quot;Lincoln&#39;s Inn&quot;))   %&gt;%
+  mutate(Text_clean = str_replace(Text_clean,&quot;Yale,&quot;,&quot;Yale University&quot;))  %&gt;%
+  mutate(Text_clean = str_replace(Text_clean,&quot;Yale\\.&quot;,&quot;Yale University&quot;))%&gt;% 
+  mutate(Text_clean = str_replace(Text_clean, &quot;^the &quot;, &quot;&quot;)) %&gt;% 
+  mutate(Text_clean = str_replace(Text_clean, &quot;^The &quot;, &quot;&quot;)) %&gt;% 
+  mutate(Text_clean = str_replace(Text_clean,&quot;and Accounts;&quot;,&quot;Railway Finance and Accounts&quot;)) %&gt;%
+  mutate(Text_clean = str_replace(Text_clean,&quot;Fuh-Tan&quot;,&quot;Fu Tan&quot;)) %&gt;%
+  mutate(Text_clean = str_replace(Text_clean,&quot;Futan&quot;,&quot;Fu Tan&quot;))  %&gt;%
+  mutate(Text_clean = str_replace(Text_clean,&quot;Universities&quot;,&quot;University&quot;)) %&gt;%
+  mutate(Text_clean = str_replace(Text_clean,&quot;Railways&quot;,&quot;Railway&quot;)) %&gt;%
+  mutate(Text_clean = str_replace(Text_clean,&quot;&amp; Company&quot;,&quot;&amp; Company&quot;)) %&gt;%
+  mutate(Text_clean = str_replace(Text_clean,&quot;M.I.T\\.&quot;,&quot;Massachusetts Institute of Technology&quot;)) %&gt;%
+  mutate(Text_clean = str_remove_all(Text_clean, &quot;[\\p{P}\\p{S}&amp;&amp;[^-&amp;&#39;.]]&quot;))%&gt;%
+  mutate(Text_clean = str_replace(Text_clean, &quot;\\.$&quot;, &quot;&quot;)) %&gt;% 
+  mutate(Text_clean = str_replace(Text_clean,&quot;Massachussetts&quot;,&quot;Massachusetts&quot;)) %&gt;%
+  mutate(Text_clean = str_replace(Text_clean,&quot;Massachusatts&quot;,&quot;Massachusetts&quot;)) %&gt;%
+  mutate(Text_clean = str_replace(Text_clean,&quot;Simga&quot;,&quot;Sigma&quot;)) 
+
+
+# remove NA 
+
+imh17_eng_org_no_na &lt;- imh17_eng_org %&gt;% filter(!is.na(Text_clean))
+
+# count length 
+
+imh17_eng_org_no_na &lt;-  imh17_eng_org_no_na %&gt;% mutate(length = nchar(Text_clean)) 
+
+# export results for further cleaning in Excel (not run)
+# write.csv(imh17_eng_org_no_na, &quot;imh17_eng_org.csv&quot;)</code></pre>
+</div>
+</div>
 
 
 
