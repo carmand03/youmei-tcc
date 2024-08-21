@@ -614,4 +614,191 @@ imh_eng_join_to_clean <- full_join(imh_eng_join_to_clean, prepared_eng, by = "Do
 imh_eng_join_to_clean <- full_join(imh_eng_join_to_clean, address_eng, by = "DocId")
 ```
 
+# Named Entity Recognition (Chinese)
+
+For Named Entity Recognition (NER), we rely on the  [ner_on_corpus](https://bookdown.enpchina.eu/HistText_Book/named-entity-recognition-ner.html#named-entity-extraction) function included in the histtext R package. 
+
+## Extraction
+```{r}
+# load packages
+
+library(histtext)
+library(tidyverse)
+
+
+search_imh_zh <- histtext::search_documents_ex('*', corpus = "imh-zh", filter_query = list(book = "游美同學錄"))
+
+# extract named entities 
+
+ner_imh17_zh <- ner_on_corpus(search_imh_zh, corpus = "imh-zh", only_precomputed = TRUE)
+
+head(ner_imh17_zh)
+
+# count entities types
+
+ner_zh_count <- ner_imh17_zh %>% group_by(Type) %>% count(sort = TRUE)
+
+ner_zh_count
+
+# focus on organizations
+
+ner_imh17_zh_org <- ner_imh17_zh %>% filter(Type == "ORG")
+
+head(ner_imh17_zh_org)
+
+```
+## Curation
+
+```{r}
+# remove white spaces
+
+ner_imh17_zh_org <- ner_imh17_zh_org %>% 
+  mutate(Text_clean = str_replace(Text," ",""))  %>%  
+  relocate(Text_clean, .after = Text) 
+
+# remove Chinese punctuation
+
+ner_imh17_zh_org <- ner_imh17_zh_org %>%  
+  mutate(Text_clean = str_replace_all(Text_clean, "。", ""))
+
+# remove non sinograms 
+
+ner_imh17_zh_org <- ner_imh17_zh_org %>%  
+  mutate(Text_clean = str_replace_all(Text_clean, "<p>", ""))  %>%
+  mutate(Text_clean = str_replace_all(Text_clean, "<", ""))  %>%
+  mutate(Text_clean = str_replace_all(Text_clean, "[:digit:]", ""))  
+
+# substract first characters to identify verbs of action
+
+ner_imh17_zh_org <- ner_imh17_zh_org  %>%
+  mutate(pref1 = str_sub(Text_clean, 1, 1))  %>%
+  mutate(pref2 = str_sub(Text_clean, 1, 2)) %>%
+  relocate(pref1, .before =  Text_clean) %>%
+  relocate(pref2, .after =  pref1) 
+
+pref1 <- ner_imh17_zh_org %>% group_by(pref1) %>% count()
+pref2 <- ner_imh17_zh_org %>% group_by(pref2) %>% count()
+
+# remove verbs (任|入|伊|於|爲|充) 
+
+ner_imh17_zh_org <- ner_imh17_zh_org %>%  
+  mutate(Text_clean = str_replace_all(Text_clean, "任|入|伊|於|爲|充", "")) 
+
+# count length
+
+ner_imh17_zh_org <-  ner_imh17_zh_org %>% mutate(length = nchar(Text_clean)) 
+
+# substract last characters to classify organizations
+
+
+ner_imh17_zh_org <- ner_imh17_zh_org  %>% 
+  mutate(Text_clean = str_remove_all(Text_clean, "長$")) %>%
+  mutate(suff1 = str_sub(Text_clean, - 1, - 1)) %>% 
+  mutate(suff2 = str_sub(Text_clean, - 2, - 1)) %>% 
+  relocate(suff1, .after = Text_clean) %>%  
+  relocate(suff2, .after = suff1) 
+
+# export list of organization for further cleaning in Excel (not run)
+# write.csv(ner_imh17_zh_org, "ner_imh17_zh_org.csv")
+
+# export suffixes/prefixes to annotate and create ontologies of organizations and positions (not run)
+
+suff1 <- ner_imh17_zh_org %>% group_by(suff1) %>% count()
+suff2 <- ner_imh17_zh_org %>% group_by(suff2) %>% count() 
+
+# write.csv(suff1, "ner_suff1.csv")
+# write.csv(suff2, "ner_suff2.csv")
+# write.csv(pref1, "ner_pref1.csv")
+# write.csv(pref2, "ner_pref2.csv")
+
+```
+
+
+# Named Entity Recognition (English)
+
+For Named Entity Recognition (NER), we rely on the  [ner_on_corpus](https://bookdown.enpchina.eu/HistText_Book/named-entity-recognition-ner.html#named-entity-extraction) function included in the histtext R package. 
+
+## Extraction
+```{r}
+
+# load packages
+
+library(histtext)
+library(tidyverse)
+
+
+search_imh_en <- histtext::search_documents_ex('*', corpus = "imh-en", filter_query = list(book = "游美同學錄"))
+
+# extract named entities 
+
+ner_imh17_en <- ner_on_corpus(search_imh_en, corpus = "imh-en", only_precomputed = TRUE)
+
+head(ner_imh17_en)
+
+# count entities types
+
+ner_en_count <- ner_imh17_en %>% group_by(Type) %>% count(sort = TRUE)
+
+ner_en_count
+
+# focus on organizations
+
+ner_imh17_en_org <- ner_imh17_en %>% filter(Type == "ORG")
+
+head(ner_imh17_en_org)
+
+```
+
+## Curation
+
+```{r}
+
+imh17_eng_org <- ner_imh17_en_org  %>%
+  mutate(Text_clean = str_replace(Text,"Anglo- Chinese College","Anglo-Chinese College"))  %>%  
+  relocate(Text_clean, .after = Text) %>% 
+  mutate(Text_clean = str_replace(Text_clean,"Nanchang- Kiukiang","Nanchang-Kiukiang")) %>%
+  mutate(Text_clean = str_replace(Text_clean,"Nanking- Hunan","Nanking-Hunan")) %>%
+  mutate(Text_clean = str_replace(Text_clean,"Peking- Kalgan","Peking-Kalgan")) %>%
+  mutate(Text_clean = str_replace(Text_clean,"Shanghai- Nanking","Shanghai-Nanking")) %>%
+  mutate(Text_clean = str_replace(Text_clean,"Shanghai- Hangchow","Shanghai-Hangchow"))%>%
+  mutate(Text_clean = str_replace(Text_clean,"- ",""))  %>%  
+  mutate(Text_clean = str_replace(Text_clean,"Co\\.","Company")) %>% 
+  mutate(Text_clean = str_replace(Text_clean,"20th","Twentieth")) %>%
+  mutate(Text_clean = str_replace_all(Text_clean, "<p>", ""))  %>%
+  mutate(Text_clean = str_replace_all(Text_clean, "</p>", ""))  %>%
+  mutate(Text_clean = str_replace_all(Text_clean, "[:digit:]", ""))  %>% 
+  mutate(Text_clean = str_replace(Text_clean,"The-Hua","Teh-Hua")) %>% 
+  mutate(Text_clean = str_replace(Text_clean,"Inn,","Lincoln's Inn"))   %>%
+  mutate(Text_clean = str_replace(Text_clean,"Yale,","Yale University"))  %>%
+  mutate(Text_clean = str_replace(Text_clean,"Yale\\.","Yale University"))%>% 
+  mutate(Text_clean = str_replace(Text_clean, "^the ", "")) %>% 
+  mutate(Text_clean = str_replace(Text_clean, "^The ", "")) %>% 
+  mutate(Text_clean = str_replace(Text_clean,"and Accounts;","Railway Finance and Accounts")) %>%
+  mutate(Text_clean = str_replace(Text_clean,"Fuh-Tan","Fu Tan")) %>%
+  mutate(Text_clean = str_replace(Text_clean,"Futan","Fu Tan"))  %>%
+  mutate(Text_clean = str_replace(Text_clean,"Universities","University")) %>%
+  mutate(Text_clean = str_replace(Text_clean,"Railways","Railway")) %>%
+  mutate(Text_clean = str_replace(Text_clean,"& Company","& Company")) %>%
+  mutate(Text_clean = str_replace(Text_clean,"M.I.T\\.","Massachusetts Institute of Technology")) %>%
+  mutate(Text_clean = str_remove_all(Text_clean, "[\\p{P}\\p{S}&&[^-&'.]]"))%>%
+  mutate(Text_clean = str_replace(Text_clean, "\\.$", "")) %>% 
+  mutate(Text_clean = str_replace(Text_clean,"Massachussetts","Massachusetts")) %>%
+  mutate(Text_clean = str_replace(Text_clean,"Massachusatts","Massachusetts")) %>%
+  mutate(Text_clean = str_replace(Text_clean,"Simga","Sigma")) 
+
+
+# remove NA 
+
+imh17_eng_org_no_na <- imh17_eng_org %>% filter(!is.na(Text_clean))
+
+# count length 
+
+imh17_eng_org_no_na <-  imh17_eng_org_no_na %>% mutate(length = nchar(Text_clean)) 
+
+# export results for further cleaning in Excel (not run)
+# write.csv(imh17_eng_org_no_na, "imh17_eng_org.csv")
+
+
+```
+
 
