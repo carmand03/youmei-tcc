@@ -340,3 +340,278 @@ write.csv(imh_zh_conc_join, "imh_zh_fulltext_to_clean.csv")
 ```
 
 # Information extraction (English)
+
+This section explains how we used concordance and regular expressions to retrieve information on the date of arrival and return, the type of funding, the preparation received before going to the United States, marital status, and the address in 1917. This method is based on a close reading of biographies to identify the most common terms used as triggers to retrieve the relevant information.
+
+## Arrival 
+
+To retrieve the year when the person arrived in America, we used the ["search_concordance"](https://bookdown.enpchina.eu/HistText_Book/query-functions.html#basic-concordance) function included in the "histtext" R package: 
+```{r}
+
+library(histtext)
+library(tidyverse)
+
+# search concordance 
+imh_eng_arrived <- histtext::search_concordance_ex('"arrived in america"| "revisited america"', 
+                                                      corpus = "imh-en", context_size = 50, 
+                                                      filter_query = list(book = "游美同學錄"))
+
+head(imh_eng_arrived)
+
+# remove everything after year  
+arrived_eng <- imh_eng_arrived %>% mutate(after_clean = str_remove(After, "[^0-9]+$")) 
+arrived_eng <- arrived_eng %>% mutate(arrived_year = str_extract_numbers(After)) %>% # extract year
+  mutate(arrived_year = as.character(arrived_year)) # convert list into string 
+
+arrived_eng <- arrived_eng %>% mutate(arrived_year = as.character(arrived_year)) # note five issues due to page metadata, to correct manually 
+
+# use extracted year to extract month 
+arrived_eng <- arrived_eng %>% mutate(arrived_month = str_remove_all(after_clean, arrived_year)) %>% 
+  mutate(arrived_month = str_replace_all(arrived_month, "[[:punct:]]", "")) %>% # remove punctuation
+  mutate(arrived_month = str_trim(arrived_month)) %>% # remove white space
+  mutate(arrived_month = str_to_title(arrived_month)) # uppercase month
+
+# discard useless variables before joining
+
+arrived_eng <- arrived_eng %>% select(DocId, Title, Matched, arrived_year, arrived_month)
+
+head(arrived_eng)
+
+```
+
+
+## Return 
+
+We use the same method for extracting the date of return: 
+
+```{r}
+
+# retrieve year when he returned to China using histtext "search_concordance" function
+
+imh_eng_returned<- histtext::search_concordance_ex('"returned to china"', 
+                                                    corpus = "imh-en", context_size = 200, 
+                                                    filter_query = list(book = "游美同學錄"))
+
+head(imh_eng_returned)
+
+# identify whether individuals who returned more than once
+
+imh_eng_returned_count <- imh_eng_returned %>% group_by(DocId) %>% 
+  count(sort = TRUE) # 2 individuals returned twice (Id 272, 9)
+
+# clean return date
+
+imh_eng_returned <- imh_eng_returned %>% mutate(after_clean = str_remove(After, "[^0-9]+$")) # remove everything after year  
+imh_eng_returned <- imh_eng_returned %>% mutate(returned_year = str_extract_numbers(After)) %>% # extract year
+  mutate(returned_year = as.character(returned_year)) 
+
+# use extracted year to extract month 
+imh_eng_returned <- imh_eng_returned %>% mutate(returned_month = str_remove_all(after_clean, returned_year)) %>% 
+  mutate(returned_month = str_replace_all(returned_month, "[[:punct:]]", "")) %>%  # remove punctuation
+  mutate(returned_month = str_trim(returned_month)) %>%  # remove white space
+  mutate(returned_month = str_to_title(returned_month)) # uppercase month
+
+# discard useless variables before joining
+
+returned_eng <- imh_eng_returned %>% select(DocId, Title, Matched, returned_year, returned_month)
+
+head(returned_eng)
+
+```
+
+## Funding
+
+We also use concordance to retrieve information on funding: 
+```{r}
+
+# search the term "support" using concordance 
+
+imh_eng_funding <- histtext::search_concordance_ex('"support"', 
+                                                   corpus = "imh-en", context_size = 50, 
+                                                   filter_query = list(book = "游美同學錄"))
+
+# extract everything after "."
+imh_eng_funding <- imh_eng_funding %>% 
+  mutate(Before, funding=str_replace(Before,"[^\\.]+\\.","")) %>% 
+  mutate(funding = str_remove_all(funding,"-|<p>|</p>")) %>% 
+  mutate(funding = str_replace_all(funding, "[:digit:]", "")) %>% 
+  mutate(funding=str_replace(funding,"[^\\.]+\\.",""))  %>% 
+  mutate(funding=str_replace(funding,"[^\\,]+\\,","")) %>% 
+  mutate(funding = str_replace_all(funding, "[[:punct:]]", "")) %>%  # remove punctuation
+  mutate(funding = str_trim(funding))  # remove white space
+
+head(imh_eng_funding)
+
+```
+```{r}
+
+# count type of funding source 
+
+imh_eng_funding %>% group_by(funding) %>% count(sort = TRUE)
+
+# lump together partial support 
+
+imh_eng_funding <- imh_eng_funding %>% 
+  mutate(funding = fct_collapse(funding,
+                                Partial = c("Partial government", "Partialgovernment", "Partial Government"),
+                                Government = "Government",
+                                Private = "Private"))
+
+# count again 
+
+imh_eng_funding %>% count(funding)
+
+# reassemble type of support 
+
+imh_eng_funding <- imh_eng_funding %>% mutate(Matched = str_to_lower(Matched)) %>% 
+  mutate(Funding = paste(funding, Matched, sep=" "))
+
+# discard useless variables before joining
+
+funding_eng <- imh_eng_funding %>% select(DocId, Title, Funding)
+
+head(funding_eng)
+
+```
+## Preparation 
+```{r}
+
+# search the term "prepare" and its variants using concordance and fuzzy search
+
+# detect variants 
+imh_eng_prepar_variants <- histtext::search_concordance_ex('prepar*', 
+                                                       corpus = "imh-en", context_size = 150, 
+                                                       filter_query = list(book = "游美同學錄"))
+
+head(imh_eng_prepar_variants)
+
+imh_eng_prepar_variants %>% group_by(Matched) %>% count(sort = TRUE)
+
+# search the candidates terms (53 matches)
+
+imh_eng_prepared <- histtext::search_concordance_ex('"prepared" | "Prepard" | "from preparatory"', 
+                                                    corpus = "imh-en", context_size = 150, 
+                                                    filter_query = list(book = "游美同學錄"))
+
+head(imh_eng_prepared)
+
+```
+<br>
+Extract the name of the preparatory institution: 
+```{r}
+
+# extract everything before the full point or semi colon
+
+imh_eng_prepa_instit <- imh_eng_prepared %>% mutate(preparation = str_extract(After, "^[^\\.|\\;:]+"))
+
+head(imh_eng_prepa_instit)
+
+# extract date/year of preparation 
+
+imh_eng_prepa_instit <- imh_eng_prepa_instit %>% mutate(prepared_date = str_extract_all(preparation, "[:digit:]"))
+
+imh_eng_prepa_instit <- imh_eng_prepa_instit %>% mutate(prepared_date = str_extract_numbers(preparation)) %>% 
+  mutate(prepared_date = as.character(prepared_date))
+
+# separate start and end year 
+
+imh_eng_prepa_instit <- imh_eng_prepa_instit %>% mutate(prepared_date = str_remove_all(prepared_date,"c\\(")) %>% 
+  mutate(prepared_date = str_remove_all(prepared_date,"\\)")) %>% 
+  mutate(prepared_date,
+                          start_prep=str_extract(prepared_date,"[^,]+,"),
+                          end_prep=str_extract(prepared_date,",.*")) %>% 
+  mutate(start_prep = str_remove_all(start_prep,",")) %>% 
+  mutate(end_prep = str_remove_all(end_prep,", ")) %>% 
+  mutate(end_year_nchar = nchar(end_prep))
+
+# extract name of institution 
+
+imh_eng_prepa_instit <- imh_eng_prepa_instit %>% mutate(prepar_instit = str_remove_all(preparation,"Department, ")) %>% 
+  mutate(prepar_instit = str_remove_all(prepar_instit,"for college at ")) %>% 
+  mutate(prepar_instit = str_remove_all(prepar_instit,"for collegeat ")) %>% 
+  mutate(prepar_instit = str_remove_all(prepar_instit,"for college at")) %>% 
+  mutate(prepar_instit = str_remove_all(prepar_instit,"forcollege at"))  %>% 
+  mutate(prepar_instit = str_remove_all(prepar_instit,"for college in ")) %>% 
+  mutate(prepar_instit = str_remove_all(prepar_instit, "[:digit:]"))  %>% 
+  mutate(prepar_instit = str_remove_all(prepar_instit, ", -"))   %>% 
+  mutate(prepar_instit = str_remove_all(prepar_instit, ",-"))  %>%      
+  mutate(prepar_instit = str_trim(prepar_instit))  # remove white space  
+
+# extract everything after comma
+
+imh_eng_prepa_instit <- imh_eng_prepa_instit %>%  
+  mutate(prepar_instit,
+         prep_instit_clean =str_extract(prepar_instit,"[^,]+,"),
+         prep_location =str_extract(prepar_instit,",.*")) %>% 
+  mutate(prep_instit_clean = str_remove_all(prep_instit_clean, "[[:punct:]]"))   %>% 
+  mutate(prep_location = str_remove_all(prep_location, "[[:punct:]]"))  %>%      
+  mutate(prep_location = str_trim(prep_location))  # remove white space 
+
+
+# discard useless variables before joining and cleaning
+
+prepared_eng <- imh_eng_prepa_instit %>% select(DocId, Title, After, 
+                                 prepar_instit, prep_instit_clean, prep_location, 
+                                 prepared_date, start_prep, end_prep, end_year_nchar)
+
+head(prepared_eng)
+```
+
+## Marriage
+
+We also use concordance to retrieve information on marriage: 
+```{r}
+
+# search the term "married" using concordance 
+
+imh_eng_married <- histtext::search_concordance_ex('"married"', 
+                                                    corpus = "imh-en", context_size = 25, 
+                                                    filter_query = list(book = "游美同學錄"))
+
+head(imh_eng_married)
+
+imh_eng_married <- imh_eng_married %>% 
+  mutate(married_year = str_extract_numbers(After)) %>% # extract year
+  mutate(married_year = as.character(married_year)) 
+
+# discard useless variables before joining
+
+married_eng <- imh_eng_married %>% select(DocId, Title, married_year)
+
+head(married_eng)
+```
+## Address
+
+```{r}
+
+# search the term "address" using concordance
+
+imh_eng_address <- histtext::search_concordance_ex('"address"', 
+                                                   corpus = "imh-en", context_size = 150, 
+                                                   filter_query = list(book = "游美同學錄"))
+
+imh_eng_address <- imh_eng_address %>% 
+  mutate(address = str_remove_all(After,":|: |- ")) %>%
+  mutate(address = str_trim(address)) %>%
+  mutate(address = str_replace(address,"c/o","c/o ")) %>%
+  mutate(address = str_replace(address,"49Porland","49 Porland")) 
+
+# discard useless variables before joining
+
+address_eng <- imh_eng_address %>% select(DocId, Title, address)
+
+```
+
+
+## Compile results
+
+```{r}
+
+imh_eng_join_to_clean <- full_join(arrived_eng, returned_eng, by = "DocId")
+imh_eng_join_to_clean <- full_join(imh_eng_join_to_clean, married_eng, by = "DocId")
+imh_eng_join_to_clean <- full_join(imh_eng_join_to_clean, funding_eng, by = "DocId")
+imh_eng_join_to_clean <- full_join(imh_eng_join_to_clean, prepared_eng, by = "DocId")
+imh_eng_join_to_clean <- full_join(imh_eng_join_to_clean, address_eng, by = "DocId")
+```
+
+
