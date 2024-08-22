@@ -1,4 +1,4 @@
-# Reshaping the Chinese Ladder of Success: Documentation on Data Processing
+# Reshaping the Chinese Ladder of Success: Data and Documentation
 
 **Abstract.** This repository contains the data and scripts related to the paper titled "Reshaping the Chinese Ladder of Success in the Era of Globalization: Family Strategies and Social Mobility of Early American-Educated Chinese (1850-1917)," published in *Twentieth-Century China*.
 
