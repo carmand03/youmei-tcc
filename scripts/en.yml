@@ -1,0 +1,93 @@
+name:
+  subtopics:
+    full:
+      max_answers: 1
+      always_answer: True
+      questions:
+        - "What name?"
+        - "What is his full name?"
+    transliteration:
+      max_answers: 1
+      ignore: True
+      questions:
+        - "What is the transliteration of {name:full}?"
+    sinographs:
+      max_answers: 1
+      ignore: True
+      questions:
+        - "What are the sinographs for {name:full}?"
+birth:
+  subtopics:
+    location:
+      max_answers: 1
+      questions:
+        - "Where born?"
+        - "In what location is he born?"
+        - "In what location is {name:full} born?"
+    year:
+      max_answers: 1
+      questions:
+        - "When born?"
+        - "What year is he born?"
+        - "What year is {name:full} born?"
+# degree:
+#   subtopics:
+#     degree:
+#       max_answers: 1
+#       questions:
+#         - "What is {name:full}'s degree?"
+education:
+  subtopics:
+    location:
+      max_answers: 3
+      max_start: 200
+      questions:
+        - "Where {name:full} study at?"
+        - "Where study at?"
+        - "What school, college or university did {name:full} attend?"
+    year:
+      max_answers: 1
+      questions:
+        - "When {name:full} study at {#education:location}?"
+        - "When study at {#education:location}?"
+position:
+  subtopics:
+    job:
+      max_answers: 10
+      min_start: 130
+      questions:
+        - "What job position?"
+        - "What job?"
+      list:
+        path: "../data/indexes/positions.en.txt"
+        ignore_case: True
+    job_location:
+      max_answers: 1
+      questions:
+        - "Where {name:full} was {#position:job}?"
+        - "In what location {#position:job}?"
+        - "Where {#position:job}?"
+    job_year:
+      max_answers: 1
+      questions:
+        - "When {name:full} was {#position:job}?"
+        - "What year {#position:job}?"
+        - "When {#position:job}?"
+    # role:
+    #   max_answers: 10
+    #   min_start: 130
+    #   questions:
+    #     - "What role or function?"
+    #     # - "What role or function?"
+    # role_location:
+    #   max_answers: 1
+    #   questions:
+    #     - "Where {name:full} was {#position:role}?"
+    #     - "In what location {#position:role}?"
+    #     - "Where {#position:role}?"
+    # role_year:
+    #   max_answers: 1
+    #   questions:
+    #     - "When {name:full} was {#position:role}?"
+    #     - "What year {#position:role}?"
+    #     - "When {#position:role}?"

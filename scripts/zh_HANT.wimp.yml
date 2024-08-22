@@ -1,0 +1,58 @@
+name:
+  subtopics:
+    full:
+      max_answers: 1
+      always_answer: True
+      questions:
+        - "什麼名字？"
+    given:
+      max_answers: 1
+      questions:
+        - "名什麼？"
+    art:
+      max_answers: 1
+      questions:
+        - "號是什麼？"
+    courtesy:
+      max_answers: 1
+      questions:
+        - "字是什麼？"
+birth:
+  subtopics:
+    location:
+      max_answers: 1
+      threshold: 0.1
+      questions:
+        - "哪裡出生？"
+        - "他從哪裡來？"
+    age:
+      max_answers: 1
+      threshold: 0.1
+      questions:
+        - "他幾歲了？"
+education:
+  subtopics:
+    location:
+      max_answers: 3
+      threshold: 0.01
+      questions:
+        - "哪裡{%zh}上學？"
+        - "上過什麼{%zh}學校或大學？"
+        - "什麼{%zh}教育？"
+    level:
+      max_answers: 3
+      threshold: 0.01
+      questions:
+        - "您的學歷是多少？"
+position:
+  subtopics:
+    job:
+      max_answers: 10
+      min_start: 10
+      threshold: 0.01
+      questions:
+        # - "什麼第{%zh}工作？"
+        - "什麼工作？"
+      list:
+        path: "../data/indexes/positions.zh.txt"
+        ignore_case: True

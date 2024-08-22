@@ -11,7 +11,7 @@
 
 <meta name="author" content="Cécile Armand" />
 
-<meta name="date" content="2024-08-21" />
+<meta name="date" content="2024-08-22" />
 
 <title>Data extraction from bilingual biographies (Chinese-English)</title>
 
@@ -2869,7 +2869,7 @@ font-size: 0.95em;
 <h3 class="subtitle">Based on the Who’s Who of American returned
 students (1917)</h3>
 <h4 class="author">Cécile Armand</h4>
-<h4 class="date">2024-08-21</h4>
+<h4 class="date">2024-08-22</h4>
 <div class="abstract">
 <p class="abstract">Abstract</p>
 <p>This document explains how to use HistText and more generic packages
@@ -2955,9 +2955,128 @@ imh17_zh_docs</code></pre>
 <pre class="r"><code>write.csv(imh17_zh_docs, &quot;imh17_zh_fulltext.csv&quot;)
 write.csv(imh17_eng_docs, &quot;imh17_eng_fulltext.csv&quot;)</code></pre>
 </div>
-<div id="information-extraction-chinese" class="section level1">
-<h1>Information extraction (Chinese)</h1>
-<p>First remove extra white space</p>
+<div id="nlp-methods" class="section level1">
+<h1>NLP Methods</h1>
+<p>Three main families of natural language processing (NLP) tools were
+used to extract the data, depending on their nature, as outlined below
+:</p>
+<ol style="list-style-type: decimal">
+<li><strong>Supervised Methods</strong> such as regular expressions
+(Regex) or concordance/Keyword in Context (KWIC) were employed for date
+of arrival and return, source of funding, relatives’ names and
+occupation, Chinese degrees, special scholarships.</li>
+<li><strong>Unsupervised Methods</strong>, specifically Named Entity
+Recognition (NER) were employed to extract affiliation data (name of
+organizations)</li>
+<li><strong>Mixed Methods</strong> including Question &amp; Answering
+(Q&amp;A) were employed to extract date and place of birth, complete
+educational curricula (including relations between degree, discipline,
+university, and date of graduation) and career data (position name,
+employer name, date of position taking/ending). The list of questions
+and the resulting raw outputs are attached for reference in the GitHub
+repository.</li>
+</ol>
+<p><br></p>
+<style type="text/css">
+.tg {border-collapse:collapse;border-spacing:0;}
+.tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg .tg-br4e{background-color:#F5EFEA;text-align:left;vertical-align:bottom}
+.tg .tg-31q7{background-color:#CF786A;text-align:center;vertical-align:bottom}
+.tg .tg-wcu0{background-color:#F5EFEA;text-align:left;vertical-align:middle}
+.tg .tg-ctp2{background-color:#E9D6BD;text-align:left;vertical-align:bottom}
+</style>
+<table class="tg">
+<thead>
+<tr>
+<th class="tg-31q7" colspan="2">
+   <br><span style="font-weight:bold;color:black">FAMILY   OF
+TOOLS</span>   
+</th>
+<th class="tg-31q7">
+   <br><span style="font-weight:bold;color:black">INFORMATION   RETRIEVED</span>   
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tg-wcu0" colspan="2">
+   <br> <span style="font-weight:bold;color:black">Question &amp;
+Answering (Q&amp;A)</span>   
+</td>
+<td class="tg-wcu0">
+<br><span style="color:black">Persons’ names, date and place of birth
+</span><br> <br><span style="color:black">Educational curricula,
+professional career</span>
+</td>
+</tr>
+<tr>
+<td class="tg-wcu0" rowspan="3">
+   <br> <span style="font-weight:bold;color:black">Rule-based</span>   
+</td>
+<td class="tg-ctp2">
+   <br><span style="color:black">Concordance/KWIC</span>   
+</td>
+<td class="tg-wcu0" rowspan="3">
+<br><span style="color:black">Gender, marital status, descendance,
+relatives’ names &amp; occupations</span><br> <br><span style="color:black">Date of Arrival and Return in America</span><br>
+<br><span style="color:black">Source of Funding, Preparation in
+China</span><br> <br><span style="color:black">Academic Degrees &amp;
+Disciplines</span><br> <br><span style="color:black">Address in
+1917</span>
+</td>
+</tr>
+<tr>
+<td class="tg-br4e">
+<br><span style="color:black">Pattern Matching</span>
+</td>
+</tr>
+<tr>
+<td class="tg-ctp2">
+   <br><span style="color:black">Regex</span>   
+</td>
+</tr>
+<tr>
+<td class="tg-wcu0" rowspan="4">
+<br><span style="font-weight:bold;color:black">Named Entity</span> <span style="font-weight:bold;color:black">Recognition (NER)</span>
+</td>
+<td class="tg-br4e">
+   <br><span style="color:black">Persons</span>   
+</td>
+<td class="tg-wcu0" rowspan="4">
+<br><span style="color:black">Educational Institutions (Schools,
+Universities)</span><br> <br><span style="color:black">Employing
+Institutions (Government, Universities, Companies…)</span><br> <br><span style="color:black">Clubs and Associations</span>
+</td>
+</tr>
+<tr>
+<td class="tg-ctp2">
+   <br><span style="color:black">Organizations</span>   
+</td>
+</tr>
+<tr>
+<td class="tg-br4e">
+   <br><span style="color:black">Locations</span>   
+</td>
+</tr>
+<tr>
+<td class="tg-ctp2">
+   <br><span style="color:black">Dates</span>   
+</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+</div>
+<div id="supervised-extraction-chinese-biographies" class="section level1">
+<h1>Supervised Extraction (Chinese Biographies)</h1>
+<p>Rule-based methods, such as regular expressions and pattern matching,
+were employed to extract information on family, source of funding, and
+localities from Chinese biographies. The different steps are described
+in detail below.</p>
+<p><br> First remove extra white space</p>
 <pre class="r"><code>imh17_zh_clean &lt;- imh17_zh_docs %&gt;% mutate(text_clean = str_squish(Text))
 imh17_zh_clean &lt;- imh17_zh_clean %&gt;% mutate(text_clean = str_replace_all(text_clean, &quot; &quot;, &quot;&quot;))</code></pre>
 <div id="family-data" class="section level2">
@@ -3179,8 +3298,8 @@ imh_zh_conc_join &lt;- full_join(imh_zh_conc_join, ancestry_clean, by = &quot;Do
 <pre class="r"><code>write.csv(imh_zh_conc_join, &quot;imh_zh_fulltext_to_clean.csv&quot;)</code></pre>
 </div>
 </div>
-<div id="information-extraction-english" class="section level1">
-<h1>Information extraction (English)</h1>
+<div id="supervised-extraction-english-biographies" class="section level1">
+<h1>Supervised Extraction (English Biographies)</h1>
 <p>This section explains how we used concordance and regular expressions
 to retrieve information on the date of arrival and return, the type of
 funding, the preparation received before going to the United States,
@@ -3780,6 +3899,39 @@ imh17_eng_org_no_na &lt;-  imh17_eng_org_no_na %&gt;% mutate(length = nchar(Text
 # export results for further cleaning in Excel (not run)
 # write.csv(imh17_eng_org_no_na, &quot;imh17_eng_org.csv&quot;)</code></pre>
 </div>
+</div>
+<div id="question-answering-qa" class="section level1">
+<h1>Question &amp; Answering (Q&amp;A)</h1>
+<p>Q&amp;A was employed for retrieving more complex, relational data,
+such as educational curricula (relations between institution of
+education, location, discipline, degree, and year of graduation), career
+(position, employer, location, year of position taking and ending), and
+attribute data such as multiple names, gender, age, year and place of
+birth, which are extracted in chain for the same person.</p>
+<p><br> For English biographies, the <a href="https://rajpurkar.github.io/mlx/qa-and-squad/">The Stanford
+Question Answering Dataset (SQuAD)</a> was used. For Chinese
+biographies, the <a href="https://paperswithcode.com/paper/drcd-a-chinese-machine-reading-comprehension">Delta
+Reading Comprehension Dataset (DRCD)</a> was used. The models were fined
+tuned to achieve the best accuracy on our specific source. The list of
+questions and the scripts used for fine tuning are accessible in the
+GitHub repository (script folder). <br> Q&amp;A was employed to retrieve
+more complex, relational data, such as educational curricula (including
+relationships between institutions of education, location, discipline,
+degree, and year of graduation), career information (including position,
+employer, location, and the years of taking and leaving a position), and
+attribute data such as multiple names, gender, age, and the year and
+place of birth, which were extracted in sequence for the same person.
+<br> For English biographies, the <a href="https://rajpurkar.github.io/mlx/qa-and-squad/">The Stanford
+Question Answering Dataset (SQuAD)</a>, while for Chinese biographies,
+the <a href="https://paperswithcode.com/paper/drcd-a-chinese-machine-reading-comprehension">Delta
+Reading Comprehension Dataset (DRCD)</a> was utilized. The models were
+fine-tuned by computer scientist Jeremy Auguste to achieve optimal
+accuracy on our specific source. The list of questions and the scripts
+used for fine-tuning are accessible in the GitHub repository (script
+folder). <br> Jeremy Auguste later developed a specific function in
+HistText for applying Question &amp; Answering to any type of text. For
+further information on this function and its application, please refer
+to the dedicated<a href="https://bookdown.enpchina.eu/HistText_Book/question-answer.html">documentation</a>.</p>
 </div>
 
 

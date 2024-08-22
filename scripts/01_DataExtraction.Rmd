@@ -95,8 +95,72 @@ write.csv(imh17_zh_docs, "imh17_zh_fulltext.csv")
 write.csv(imh17_eng_docs, "imh17_eng_fulltext.csv")
 ```
 
-# Information extraction (Chinese)
+# NLP Methods
 
+Three main families of natural language processing (NLP) tools were used to extract the data, depending on their nature, as outlined below : 
+
+  1. **Supervised Methods** such as regular expressions (Regex) or concordance/Keyword in Context (KWIC) were employed for date of arrival and return, source of funding, relatives’ names and occupation, Chinese degrees, special scholarships. 
+  2. **Unsupervised Methods**, specifically Named Entity Recognition (NER) were employed to extract affiliation data (name of organizations)
+  3. **Mixed Methods** including Question & Answering (Q&A) were employed to extract date and place of birth, complete educational curricula  (including relations between degree, discipline, university, and date of graduation) and career data (position name, employer name, date of position taking/ending). The list of questions and the resulting raw outputs are attached for reference in the GitHub repository.
+  
+<br>
+
+<style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0;}
+.tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+  overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+  font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg .tg-br4e{background-color:#F5EFEA;text-align:left;vertical-align:bottom}
+.tg .tg-31q7{background-color:#CF786A;text-align:center;vertical-align:bottom}
+.tg .tg-wcu0{background-color:#F5EFEA;text-align:left;vertical-align:middle}
+.tg .tg-ctp2{background-color:#E9D6BD;text-align:left;vertical-align:bottom}
+</style>
+<table class="tg"><thead>
+  <tr>
+    <th class="tg-31q7" colspan="2">&nbsp;&nbsp;&nbsp;<br><span style="font-weight:bold;color:black">FAMILY&nbsp;&nbsp;&nbsp;OF TOOLS</span>&nbsp;&nbsp;&nbsp;</th>
+    <th class="tg-31q7">&nbsp;&nbsp;&nbsp;<br><span style="font-weight:bold;color:black">INFORMATION&nbsp;&nbsp;&nbsp;RETRIEVED</span>&nbsp;&nbsp;&nbsp;</th>
+  </tr></thead>
+<tbody>
+  <tr>
+    <td class="tg-wcu0" colspan="2">&nbsp;&nbsp;&nbsp;<br> <span style="font-weight:bold;color:black">Question &amp; Answering (Q&amp;A)</span>&nbsp;&nbsp;&nbsp;</td>
+    <td class="tg-wcu0">   <br><span style="color:black">Persons' names, date and place of birth </span><br>   <br><span style="color:black">Educational curricula, professional career</span></td>
+  </tr>
+  <tr>
+    <td class="tg-wcu0" rowspan="3">&nbsp;&nbsp;&nbsp;<br> <span style="font-weight:bold;color:black">Rule-based</span>&nbsp;&nbsp;&nbsp;</td>
+    <td class="tg-ctp2">&nbsp;&nbsp;&nbsp;<br><span style="color:black">Concordance/KWIC</span>&nbsp;&nbsp;&nbsp;</td>
+    <td class="tg-wcu0" rowspan="3">   <br><span style="color:black">Gender, marital status, descendance, relatives' names &amp; occupations</span><br>   <br><span style="color:black">Date of Arrival and Return in America</span><br>   <br><span style="color:black">Source of Funding, Preparation in China</span><br>   <br><span style="color:black">Academic Degrees &amp; Disciplines</span><br>   <br><span style="color:black">Address in 1917</span>   </td>
+  </tr>
+  <tr>
+    <td class="tg-br4e">   <br><span style="color:black">Pattern Matching</span>   </td>
+  </tr>
+  <tr>
+    <td class="tg-ctp2">&nbsp;&nbsp;&nbsp;<br><span style="color:black">Regex</span>&nbsp;&nbsp;&nbsp;</td>
+  </tr>
+  <tr>
+    <td class="tg-wcu0" rowspan="4">   <br><span style="font-weight:bold;color:black">Named Entity</span> <span style="font-weight:bold;color:black">Recognition (NER)</span>   </td>
+    <td class="tg-br4e">&nbsp;&nbsp;&nbsp;<br><span style="color:black">Persons</span>&nbsp;&nbsp;&nbsp;</td>
+    <td class="tg-wcu0" rowspan="4">   <br><span style="color:black">Educational Institutions (Schools, Universities)</span><br>   <br><span style="color:black">Employing Institutions (Government, Universities, Companies...)</span><br>   <br><span style="color:black">Clubs and Associations</span>   </td>
+  </tr>
+  <tr>
+    <td class="tg-ctp2">&nbsp;&nbsp;&nbsp;<br><span style="color:black">Organizations</span>&nbsp;&nbsp;&nbsp;</td>
+  </tr>
+  <tr>
+    <td class="tg-br4e">&nbsp;&nbsp;&nbsp;<br><span style="color:black">Locations</span>&nbsp;&nbsp;&nbsp;</td>
+  </tr>
+  <tr>
+    <td class="tg-ctp2">&nbsp;&nbsp;&nbsp;<br><span style="color:black">Dates</span>&nbsp;&nbsp;&nbsp;</td>
+  </tr>
+</tbody></table>
+
+<br>
+
+
+# Supervised Extraction (Chinese Biographies)
+
+Rule-based methods, such as regular expressions and pattern matching, were employed to extract information on family, source of funding, and localities from Chinese biographies. The different steps are described in detail below.  
+
+<br>
 First remove extra white space 
 ```{r}
 imh17_zh_clean <- imh17_zh_docs %>% mutate(text_clean = str_squish(Text))
@@ -339,7 +403,7 @@ write.csv(imh_zh_conc_join, "imh_zh_fulltext_to_clean.csv")
 
 ```
 
-# Information extraction (English)
+# Supervised Extraction (English Biographies)
 
 This section explains how we used concordance and regular expressions to retrieve information on the date of arrival and return, the type of funding, the preparation received before going to the United States, marital status, and the address in 1917. This method is based on a close reading of biographies to identify the most common terms used as triggers to retrieve the relevant information.
 
@@ -801,4 +865,15 @@ imh17_eng_org_no_na <-  imh17_eng_org_no_na %>% mutate(length = nchar(Text_clean
 
 ```
 
+# Question & Answering (Q&A)
 
+Q&A was employed for retrieving more complex, relational data, such as educational curricula (relations between institution of education, location, discipline, degree, and year of graduation), career (position, employer, location, year of position taking and ending), and attribute data such as multiple names, gender, age, year and place of birth, which are extracted in chain for the same person. 
+
+<br>
+For English biographies, the [The Stanford Question Answering Dataset (SQuAD)](https://rajpurkar.github.io/mlx/qa-and-squad/) was used. For Chinese biographies, the [Delta Reading Comprehension Dataset (DRCD)](https://paperswithcode.com/paper/drcd-a-chinese-machine-reading-comprehension) was used. The models were fined tuned to achieve the best accuracy on our specific source. The list of questions and the scripts used for fine tuning are accessible in the GitHub repository (script folder). 
+<br>
+Q&A was employed to retrieve more complex, relational data, such as educational curricula (including relationships between institutions of education, location, discipline, degree, and year of graduation), career information (including position, employer, location, and the years of taking and leaving a position), and attribute data such as multiple names, gender, age, and the year and place of birth, which were extracted in sequence for the same person.
+<br>
+For English biographies, the [The Stanford Question Answering Dataset (SQuAD)](https://rajpurkar.github.io/mlx/qa-and-squad/), while for Chinese biographies, the [Delta Reading Comprehension Dataset (DRCD)](https://paperswithcode.com/paper/drcd-a-chinese-machine-reading-comprehension) was utilized. The models were fine-tuned by computer scientist Jeremy Auguste to achieve optimal accuracy on our specific source. The list of questions and the scripts used for fine-tuning are accessible in the GitHub repository (script folder).
+<br>
+Jeremy Auguste later developed a specific function in HistText for applying Question & Answering to any type of text. For further information on this function and its application, please refer to the dedicated[documentation](https://bookdown.enpchina.eu/HistText_Book/question-answer.html).
