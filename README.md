@@ -20,9 +20,9 @@ Several digital avatars of this directory are accessible online, including on [W
 
 The study has 3 main directions:   
 
-  1. Analyze the social characteristics of the population to build a collective portrait of late Qing-early Republican American returned students 
-  2. Uncover hidden connections among biographies based on shared affiliations or family ties 
-  3. Reconstruct career paths to examine social mobility and multigenerationnal patterns of study abroad 
+  1. Analyze the social characteristics of the population to build a collective portrait of late Qing-early Republican American returned students. 
+  2. Uncover hidden connections among biographies based on shared affiliations or family ties.
+  3. Reconstruct career paths to examine social mobility and multigenerationnal patterns of study abroad.
   
 Part of this comprehensive research is published in *Twentieth-Century China* under the title "Reshaping the Chinese Ladder of Success in the Era of Globalization: Family Strategies and Social Mobility of Early American-educated Chinese (1850-1917)" as part of the special issue titled "Rethinking the Study Abroad Movement in Modern China (1850-1950s)" (Armand, 2024). 
 
